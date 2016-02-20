@@ -142,11 +142,19 @@ export default class VictoryBar extends React.Component {
      */
     labels: PropTypes.array,
     /**
+     * The labelComponent prop takes in an entire, HTML-complete label component
+     * which will be used to create labels for scatter to use
+     */
+    labelComponent: PropTypes.element,
+    /**
+     * Deprecated: Use labelComponent instead!
      * The labelComponents prop takes in an array of entire, HTML-complete label components
      * which will be used to create labels for individual bars, stacked bars, or groups of
      * bars as appropriate.
-     */
-    labelComponents: PropTypes.array,
+    labelComponents: PropTypes.deprecated(PropTypes.array, `You'll find you
+                                          have less repetition if you use the
+                                          new labelComponent propType`),
+    */
     /**
      * The padding props specifies the amount of padding in number of pixels between
      * the edge of the chart and any rendered child components. This prop can be given
@@ -272,8 +280,6 @@ export default class VictoryBar extends React.Component {
         const labelIndex = BarHelpers.getLabelIndex(datum, calculatedProps);
         const labelText = this.props.labels ?
           this.props.labels[labelIndex] || this.props.labels[0] : "";
-        const labelComponent = this.props.labelComponents ?
-          this.props.labelComponents[labelIndex] || this.props.labelComponents[0] : undefined;
         return (
           <g key={`series-${index}-bar-${barIndex}`}>
             {barComponent}
@@ -283,7 +289,7 @@ export default class VictoryBar extends React.Component {
               position={position}
               datum={datum}
               labelText={datum.label || labelText}
-              labelComponent={labelComponent}
+              labelComponent={this.props.labelComponent}
             />
           </g>
         );
