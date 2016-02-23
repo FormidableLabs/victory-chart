@@ -7,6 +7,7 @@ import { VictoryAnimation } from "victory-animation";
 import AxisLine from "./axis-line";
 import GridLine from "./grid";
 import Tick from "./tick";
+import constrainTickLabels from "./constrain-tick-labels.js";
 import AxisHelpers from "./helper-methods";
 import { PropTypes as CustomPropTypes, Helpers } from "victory-util";
 import Axis from "../../helpers/axis";
@@ -242,6 +243,13 @@ export default class VictoryAxis extends React.Component {
     const {style, orientation} = layoutProps;
     const {scale, ticks, stringTicks} = tickProps;
     const tickFormat = AxisHelpers.getTickFormat(props, tickProps);
+
+    let finalTicks;
+    if (props.tickValues && props.style.tickLabels) {
+      finalTicks = constrainTickLabels({
+        props, layoutProps, tickProps
+      });
+    }
     return ticks.map((tick, index) => {
       const position = scale(tick);
       return (
@@ -249,11 +257,18 @@ export default class VictoryAxis extends React.Component {
           position={position}
           tick={stringTicks ? props.tickValues[tick - 1] : tick}
           orientation={orientation}
-          label={tickFormat.call(this, tick, index)}
+          label={
+            finalTicks
+              ? finalTicks.tickValues[tick - 1]
+              : tickFormat.call(this, tick, index)
+          }
           style={{
             ticks: style.ticks,
             tickLabels: style.tickLabels
           }}
+          failedConstraints={
+            finalTicks && finalTicks.failedConstraints || null
+          }
         />
       );
     });
