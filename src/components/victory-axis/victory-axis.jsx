@@ -245,32 +245,43 @@ export default class VictoryAxis extends React.Component {
     const {scale, ticks, stringTicks} = tickProps;
     const tickFormat = AxisHelpers.getTickFormat(props, tickProps);
 
-    let finalTicks;
+    let tickValues;
+    let failedConstraints;
     if (props.tickValues && props.style.tickLabels) {
-      finalTicks = constrainTickLabels({
+      const finalTicks = constrainTickLabels({
         props, layoutProps, tickProps
       });
+
+      if (finalTicks) {
+        tickValues = finalTicks.tickValues;
+        failedConstraints = finalTicks.failedConstraints;
+      }
     }
 
     return ticks.map((tick, index) => {
       const position = scale(tick);
-      const finalTick = finalTicks && finalTicks.tickValues
-        ? finalTicks.tickValues[index]
-        : undefined;
+
+      let finalLabel;
+      if (tickValues) {
+        const finalTick = tickValues[index];
+        if (finalTick) {
+          finalLabel = stringTicks
+            ? finalTick
+            : tickFormat(finalTick, index);
+        }
+      }
 
       return (
         <Tick key={`tick-${index}`}
           position={position}
           tick={stringTicks ? props.tickValues[tick - 1] : tick}
           orientation={orientation}
-          label={finalTick || tickFormat(tick, index)}
+          label={finalLabel || tickFormat(tick, index)}
           style={{
             ticks: style.ticks,
             tickLabels: style.tickLabels
           }}
-          failedConstraints={
-            finalTicks && finalTicks.failedConstraints || null
-          }
+          failedConstraints={failedConstraints || null}
         />
       );
     });
