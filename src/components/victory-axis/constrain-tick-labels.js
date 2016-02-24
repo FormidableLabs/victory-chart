@@ -20,17 +20,18 @@ const getFontWeight = (fontWeight) => {
 };
 
 const measureTicks = (props, layoutProps, tickProps) => {
-  const { fontSize, fontWeight } = props.style.tickLabels;
+  const FALLBACK_LINE_HEIGHT = 1.2;
+
+  const { fontSize, fontWeight, lineHeight } = props.style.tickLabels;
   const { fontFamily } = layoutProps.style.tickLabels;
   const tickFormat = Helpers.getTickFormat(props, tickProps);
-
   return props.tickValues.map((tick, index) => {
     const text = tickFormat(tick, index);
     const measurement = measureText({
       text: textToArray(text),
       fontFamily,
       fontSize: `${fontSize}px`,
-      lineHeight: 1.2, // TODO: where do you find this?
+      lineHeight: lineHeight || FALLBACK_LINE_HEIGHT,
       fontWeight: getFontWeight(fontWeight),
       canvas: props.canvas
     });

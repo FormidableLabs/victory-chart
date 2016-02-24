@@ -44,6 +44,7 @@ const defaultStyles = {
     fill: "#756f6a",
     fontFamily: "Helvetica",
     fontSize: 10,
+    lineHeight: 1.2,
     padding: 5
   }
 };
