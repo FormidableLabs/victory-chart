@@ -251,18 +251,19 @@ export default class VictoryAxis extends React.Component {
         props, layoutProps, tickProps
       });
     }
+
     return ticks.map((tick, index) => {
       const position = scale(tick);
+      const finalTick = finalTicks && finalTicks.tickValues
+        ? finalTicks.tickValues[index]
+        : undefined;
+
       return (
         <Tick key={`tick-${index}`}
           position={position}
           tick={stringTicks ? props.tickValues[tick - 1] : tick}
           orientation={orientation}
-          label={
-            finalTicks
-              ? finalTicks.tickValues[tick - 1]
-              : tickFormat.call(this, tick, index)
-          }
+          label={finalTick || tickFormat(tick, index)}
           style={{
             ticks: style.ticks,
             tickLabels: style.tickLabels
