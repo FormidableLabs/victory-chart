@@ -14,7 +14,8 @@ const textToArray = (text) => {
 const getFontWeight = (fontWeight) => {
   if (fontWeight) {
     return typeof fontWeight === "function"
-      ? fontWeight() : fontWeight;
+      ? fontWeight()
+      : fontWeight;
   }
   return "normal";
 };
