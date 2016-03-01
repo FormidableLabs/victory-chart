@@ -13,7 +13,7 @@ import GridLine from "./grid";
 import Tick from "./tick";
 import AxisHelpers from "./helper-methods";
 import Axis from "../../helpers/axis";
-
+import { AutoLayout } from "../autolayout/autolayout.js";
 
 const defaultStyles = {
   axis: {
@@ -325,7 +325,7 @@ export default class VictoryAxis extends React.Component {
   render() {
     // If animating, return a `VictoryAnimation` element that will create
     // a new `VictoryAxis` with nearly identical props, except (1) tweened
-    // and (2) `animate` set to null so we don't recurse forever.
+    // and (2) `animate` set to null so we don"t recurse forever.
     if (this.props.animate) {
       // Do less work by having `VictoryAnimation` tween only values that
       // make sense to tween. In the future, allow customization of animated
@@ -346,13 +346,68 @@ export default class VictoryAxis extends React.Component {
     const {style} = layoutProps;
     const transform = AxisHelpers.getTransform(this.props, layoutProps);
     const group = (
-      <g style={style.parent} transform={transform}>
-        {this.renderLabel(this.props, layoutProps)}
-        {this.renderTicks(this.props, layoutProps, tickProps)}
-        {this.renderLine(this.props, layoutProps)}
-        {this.renderGrid(this.props, layoutProps, tickProps)}
-      </g>
+      <AutoLayout
+        width={400}
+        height={350}
+        constraints={[
+          {
+            view1: null,
+            attr1: "width",    // see AutoLayout.Attribute
+            relation: "equ",   // see AutoLayout.Relation
+            view2: "superview",
+            attr2: "width"
+          },
+          {
+            view1: null,
+            attr1: "height",    // see AutoLayout.Attribute
+            relation: "equ",   // see AutoLayout.Relation
+            view2: "superview",
+            attr2: "height"
+          },
+          {
+            view1: null,
+            attr1: "centerX",    // see AutoLayout.Attribute
+            relation: "equ",   // see AutoLayout.Relation
+            view2: "superview",
+            attr2: "centerX"
+          },
+          {
+            view1: null,
+            attr1: "centerY",    // see AutoLayout.Attribute
+            relation: "equ",   // see AutoLayout.Relation
+            view2: "superview",
+            attr2: "centerY"
+          },
+          {
+            view1: "line",
+            attr1: "centerX",    // see AutoLayout.Attribute
+            relation: "equ",   // see AutoLayout.Relation
+            view2: "superview",
+            attr2: "centerX"
+          },
+          {
+            view1: "line",
+            attr1: "bottom",    // see AutoLayout.Attribute
+            relation: "equ",   // see AutoLayout.Relation
+            view2: "superview",
+            attr2: "bottom",
+            constant: 20
+          }
+        ]}
+      >
+        <div viewName="superview">
+          <p viewName="line" intrinsicWidth="100" intrinsicHeight="50">lol</p>
+        </div>
+      </AutoLayout>
     );
+    //const group = (
+      //<g style={style.parent} transform={transform}>
+        //{this.renderLabel(this.props, layoutProps)}
+        //{this.renderTicks(this.props, layoutProps, tickProps)}
+        //{this.renderLine(this.props, layoutProps)}
+        //{this.renderGrid(this.props, layoutProps, tickProps)}
+      //</g>
+    //);
     return this.props.standalone ? (
       <svg style={style.parent}>
         {group}
