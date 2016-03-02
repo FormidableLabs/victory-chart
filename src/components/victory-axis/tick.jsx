@@ -1,5 +1,5 @@
 import React, { PropTypes } from "react";
-import { VictoryLabel, Helpers } from "victory-core";
+import { Helpers } from "victory-core";
 
 export default class Tick extends React.Component {
   static role = "tick";
@@ -25,41 +25,13 @@ export default class Tick extends React.Component {
     };
   }
 
-  getAnchors(props, isVertical) {
-    const anchorOrientation = { top: "end", left: "end", right: "start", bottom: "start" };
-    const anchor = anchorOrientation[props.orientation];
-    return {
-      textAnchor: isVertical ? anchor : "middle",
-      verticalAnchor: isVertical ? "middle" : anchor
-    };
-  }
-
-  renderLabel(props, position, isVertical) {
-    if (!props.label) {
-      return undefined;
-    }
-    const componentProps = props.label.props ? props.label.props : {};
-    const style = componentProps.style || props.style.tickLabels;
-    const anchors = this.getAnchors(props, isVertical);
-    const newProps = {
-      x: position.x,
-      y: position.y,
-      textAnchor: componentProps.textAnchor || anchors.textAnchor,
-      verticalAnchor: componentProps.verticalAnchor || anchors.verticalAnchor,
-      style: Helpers.evaluateStyle(style, props.tick)
-    };
-    return props.label.props ?
-      React.cloneElement(props.label, newProps) :
-      React.createElement(VictoryLabel, newProps, props.label);
-  }
-
   renderTick(props, position) {
     return (
       <line
-        x={position.x}
-        x2={position.x2}
-        y={position.y}
-        y2={position.y2}
+        x1={this.props.layout.left}
+        x2={this.props.layout.left}
+        y1={this.props.layout.top}
+        y2={this.props.layout.bottom}
         style={Helpers.evaluateStyle(props.style.ticks, props.ticks)}
       />
     );
@@ -67,14 +39,7 @@ export default class Tick extends React.Component {
 
   render() {
     const isVertical = this.props.orientation === "left" || this.props.orientation === "right";
-    const transform = isVertical ?
-      `translate(0, ${this.props.position})` : `translate(${this.props.position}, 0)`;
     const position = this.getPosition(this.props, isVertical);
-    return (
-      <g transform={transform}>
-        {this.renderTick(this.props, position)}
-        {this.renderLabel(this.props, position, isVertical)}
-      </g>
-    );
+    return this.renderTick(this.props, position);
   }
 }

@@ -15,13 +15,13 @@ export default class GridLine extends React.Component {
 
   render() {
     return (
-      <g transform={`translate(${this.props.xTransform}, ${this.props.yTransform})`}>
-        <line
-          x2={this.props.x2}
-          y2={this.props.y2}
-          style={Helpers.evaluateStyle(this.props.style, this.props.tick)}
-        />
-      </g>
+      <line
+        x1={this.props.layout.left}
+        x2={this.props.layout.left}
+        y1={this.props.layout.top}
+        y2={this.props.layout.bottom}
+        style={Helpers.evaluateStyle(this.props.style, this.props.tick)}
+      />
     );
   }
 }

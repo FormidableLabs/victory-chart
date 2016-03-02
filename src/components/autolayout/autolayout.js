@@ -6,8 +6,15 @@ const componentWithLayoutProps = (component, view) => {
     children: rawChildren,
     viewName,
     intrinsicWidth,
-    intrinsicHeight
+    intrinsicHeight,
+    constraints
   } = component.props;
+
+  if (view && constraints) {
+    view.addConstraints(
+      constraints.map((constraint) => constraint.build())
+    );
+  }
 
   const children = typeof rawChildren !== "string"
     ? Children.map(rawChildren, (child) => {
@@ -16,10 +23,13 @@ const componentWithLayoutProps = (component, view) => {
     : null;
 
   const subViews = view.subViews;
-  console.log(subViews[viewName], viewName);
   const layout = viewName && subViews[viewName]
     ? subViews[viewName]
     : null;
+
+  if (viewName && !layout) {
+    console.warn(`Constraint failed for ${viewName}!`);
+  }
 
   if (layout && intrinsicWidth) {
     layout.intrinsicWidth = intrinsicWidth;
@@ -43,12 +53,14 @@ const componentWithLayoutProps = (component, view) => {
   });
 };
 
-export class AutoLayout extends Component {
+export default class AutoLayout extends Component {
   constructor(props) {
     super(props);
     this.state = {
       view: new View({
-        constraints: props.constraints,
+        constraints: props.constraints.map(
+          (constraint) => constraint.build()
+        ),
         width: props.width,
         height: props.height,
         spacing: 0
@@ -57,9 +69,99 @@ export class AutoLayout extends Component {
   }
 
   render() {
+    const Container = this.props.container;
+    const root = <Container>{this.props.children}</Container>;
     return componentWithLayoutProps(
-      this.props.children, this.state.view
+      root, this.state.view
     );
   }
 }
 
+class Constraint {
+  constructor(leftView, leftAttr) {
+    this.constraint = {
+      view1: leftView,
+      attr1: leftAttr
+    };
+  }
+
+  equals(rightView, rightAttr) {
+    this.constraint = {
+      ...this.constraint,
+      relation: "equ",
+      view2: rightView,
+      attr2: rightAttr
+    };
+    return this;
+  }
+
+  lessThanOrEqualTo(rightView, rightAttr) {
+    this.constraint = {
+      ...this.constraint,
+      relation: "leq",
+      view2: rightView,
+      attr2: rightAttr
+    };
+    return this;
+  }
+
+  greaterThanOrEqualTo(rightView, rightAttr) {
+    this.constraint = {
+      ...this.constraint,
+      relation: "geq",
+      view2: rightView,
+      attr2: rightAttr
+    };
+    return this;
+  }
+
+  constant(constant) {
+    this.constraint = {
+      ...this.constraint,
+      relation: "equ",
+      attr2: "const",
+      constant
+    };
+    return this;
+  }
+
+  plus(constant) {
+    this.constraint = {
+      ...this.constraint,
+      constant
+    };
+    return this;
+  }
+
+  minus(constant) {
+    this.constraint = {
+      ...this.constraint,
+      constant: -constant
+    };
+    return this;
+  }
+
+  times(multiplier) {
+    this.constraint = {
+      ...this.constraint,
+      multiplier
+    };
+    return this;
+  }
+
+  withPriority(priority) {
+    this.constraint = {
+      ...this.constraint,
+      priority
+    };
+    return this;
+  }
+
+  build() {
+    return this.constraint;
+  }
+}
+
+export const constrain = (leftView, leftAttr) => {
+  return new Constraint(leftView, leftAttr);
+};
