@@ -14,7 +14,7 @@ import Tick from "./tick";
 import TickLabel, { addMeasurements } from "./tick-label";
 import AxisHelpers from "./helper-methods";
 import Axis from "../../helpers/axis";
-import AutoLayout, { constrain } from "../autolayout/autolayout.js";
+import AutoLayout, { constrain } from "../autolayout/autolayout";
 
 const defaultStyles = {
   axis: {
@@ -248,7 +248,9 @@ export default class VictoryAxis extends React.Component {
           style={style.grid}
           constraints={[
             constrain(gridName, "top").equals(null, "top"),
-            constrain(gridName, "height").equals("line", "top"),
+            constrain(gridName, "height").equals("line", "top").withPriority(1000),
+            //constrain(gridName, "bottom").equals(null, "bottom"),
+            //constrain(gridName, "height").constant(200),
             constrain(gridName, "left").constant(position)
           ]}
         />
@@ -302,6 +304,14 @@ export default class VictoryAxis extends React.Component {
         x2={isVertical ? null : props.width - padding.right}
         y1={isVertical ? padding.top : null}
         y2={isVertical ? props.height - padding.bottom : null}
+        constraints={[
+          constrain("line", "left").equals(null, "left")
+            .plus(layoutProps.padding.left),
+          constrain("line", "right").equals(null, "right")
+            .minus(layoutProps.padding.right),
+          constrain("line", "bottom").lessThanOrEqualTo(null, "bottom").minus(50),
+          constrain("line", "centerX").equals(null, "centerX")
+        ]}
       />
     );
   }
@@ -311,9 +321,10 @@ export default class VictoryAxis extends React.Component {
       return undefined;
     }
     const newProps = this.getLabelProps(props, layoutProps);
-    return (props.label.props) ?
-      React.cloneElement(props.label, newProps) :
-      React.createElement(VictoryLabel, newProps, props.label);
+    return addMeasurements(props.label.props
+      ? React.cloneElement(props.label, newProps)
+      : React.createElement(VictoryLabel, newProps, props.label)
+    );
   }
 
   getLabelProps(props, layoutProps) {
@@ -331,12 +342,21 @@ export default class VictoryAxis extends React.Component {
     return {
       key: "label",
       viewName: "label",
-      x: componentProps.x || x,
-      y: componentProps.y || y,
+      mapLayoutToProps: {
+        x: "left",
+        y: "top"
+      },
+      //x: componentProps.x || x,
+      //y: componentProps.y || y,
       textAnchor: componentProps.textAnchor || "middle",
       verticalAnchor: componentProps.verticalAnchor || verticalAnchor,
       style: defaults({}, style.axisLabel, componentProps.style),
-      transform: componentProps.transform || transform
+      constraints: [
+        constrain("label", "bottom").equals(null, "bottom"),
+        constrain("label", "top").lessThanOrEqualTo("tick-0", "top"),
+        constrain("label", "left").equals("line", "centerX")
+      ]
+      //transform: componentProps.transform || transform
     };
   }
 
@@ -363,21 +383,10 @@ export default class VictoryAxis extends React.Component {
     const tickProps = this.getTickProps(this.props);
     const {style} = layoutProps;
     const group = (
-      <AutoLayout
-        width={450}
-        height={300}
-        container="g"
-        constraints={[
-          constrain("line", "left").equals(null, "left")
-            .plus(layoutProps.padding.left),
-          constrain("line", "right").equals(null, "right")
-            .minus(layoutProps.padding.right),
-          constrain("line", "bottom").equals(null, "bottom").minus(50),
-          constrain("line", "centerX").equals(null, "centerX")
-        ]}
-      >
+      <AutoLayout width={this.props.width} height={this.props.height} container="g">
         {this.renderLine(this.props, layoutProps)}
         {this.renderDomainFeatures(this.props, layoutProps, tickProps)}
+        {this.renderLabel(this.props, layoutProps)}
       </AutoLayout>
     );
 

@@ -49,11 +49,26 @@ export default class TickLabel extends Component {
   }
 }
 
+const extractText = (element) => {
+  const { props } = element;
+
+  if (props) {
+    if (props.children && props.children.split) {
+      return props.children.split("\n");
+    }
+    if (props.label && props.label.split) {
+      return props.label.split("\n");
+    }
+    return props.label.toString();
+  }
+  return "";
+};
 
 export const addMeasurements = (element) => {
   const { fontSize, fontFamily, lineHeight, fontWeight, fontStyle } = element.props.style;
+
   const measurement = measureText({
-    text: element.props.label.split ? element.props.label.split("\n") : element.props.label,
+    text: extractText(element),
     fontFamily, fontSize: `${fontSize}px`,
     lineHeight: lineHeight || 1.2,
     fontWeight: fontWeight || 400,
@@ -65,3 +80,4 @@ export const addMeasurements = (element) => {
     intrinsicHeight: height.value
   });
 };
+
