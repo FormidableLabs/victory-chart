@@ -2,12 +2,17 @@ import React, { Children, Component, PropTypes, cloneElement } from "react";
 import { View } from "autolayout";
 
 const componentWithLayoutProps = (component, view) => {
+  if (!component) {
+    return null;
+  }
+
   const {
     children: rawChildren,
     viewName,
     intrinsicWidth,
     intrinsicHeight,
-    constraints
+    constraints,
+    mapLayoutToProps
   } = component.props;
 
   if (view && constraints) {
@@ -20,7 +25,7 @@ const componentWithLayoutProps = (component, view) => {
     ? Children.map(rawChildren, (child) => {
       return componentWithLayoutProps(child, view);
     })
-    : null;
+    : rawChildren;
 
   const subViews = view.subViews;
   const layout = viewName && subViews[viewName]
@@ -39,8 +44,17 @@ const componentWithLayoutProps = (component, view) => {
     layout.intrinsicHeight = intrinsicHeight;
   }
 
+  let mappedProps;
+  if (layout && mapLayoutToProps) {
+    mappedProps = Object.keys(mapLayoutToProps)
+      .reduce((acc, key) => {
+        return {...acc, [key]: layout[mapLayoutToProps[key]]};
+      }, {});
+  }
+
   return cloneElement(component, {
     children,
+    ...mappedProps || null,
     layout: layout ? {
       name: layout.name,
       top: layout.top,
@@ -58,9 +72,11 @@ export default class AutoLayout extends Component {
     super(props);
     this.state = {
       view: new View({
-        constraints: props.constraints.map(
-          (constraint) => constraint.build()
-        ),
+        constraints: props.constraints
+          ? props.constraints.map(
+            (constraint) => constraint.build()
+          )
+          : null,
         width: props.width,
         height: props.height,
         spacing: 0
