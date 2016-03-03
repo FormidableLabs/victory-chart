@@ -249,8 +249,6 @@ export default class VictoryAxis extends React.Component {
           constraints={[
             constrain(gridName, "top").equals(null, "top"),
             constrain(gridName, "height").equals("line", "top").withPriority(1000),
-            //constrain(gridName, "bottom").equals(null, "bottom"),
-            //constrain(gridName, "height").constant(200),
             constrain(gridName, "left").constant(position)
           ]}
         />
@@ -296,6 +294,27 @@ export default class VictoryAxis extends React.Component {
 
   renderLine(props, layoutProps) {
     const {style, padding, isVertical} = layoutProps;
+
+    const constraints = isVertical ?
+      [
+        constrain("line", "top").equals(null, "top"),
+        constrain("line", "bottom").equals(null, "bottom").minus(50),
+        constrain("line", "left").equals(null, "left")
+          .plus(layoutProps.padding.left),
+        constrain("line", "right").equals(null, "left")
+          .plus(layoutProps.padding.left),
+        //constrain("line", "bottom").lessThanOrEqualTo(null, "bottom").minus(50),
+        //constrain("line", "centerX").equals(null, "centerX")
+      ] :
+      [
+        constrain("line", "left").equals(null, "left")
+          .plus(layoutProps.padding.left),
+        constrain("line", "right").equals(null, "right")
+          .minus(layoutProps.padding.right),
+        constrain("line", "bottom").lessThanOrEqualTo(null, "bottom").minus(50),
+        constrain("line", "centerX").equals(null, "centerX")
+      ];
+
     return (
       <AxisLine key="line"
         viewName="line"
@@ -304,14 +323,7 @@ export default class VictoryAxis extends React.Component {
         x2={isVertical ? null : props.width - padding.right}
         y1={isVertical ? padding.top : null}
         y2={isVertical ? props.height - padding.bottom : null}
-        constraints={[
-          constrain("line", "left").equals(null, "left")
-            .plus(layoutProps.padding.left),
-          constrain("line", "right").equals(null, "right")
-            .minus(layoutProps.padding.right),
-          constrain("line", "bottom").lessThanOrEqualTo(null, "bottom").minus(50),
-          constrain("line", "centerX").equals(null, "centerX")
-        ]}
+        constraints={constraints}
       />
     );
   }
