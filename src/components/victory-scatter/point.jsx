@@ -11,7 +11,7 @@ export default class Point extends React.Component {
       x: React.PropTypes.any,
       y: React.PropTypes.any
     }),
-    labelComponent: React.PropTypes.element,
+    label: React.PropTypes.element,
     symbol: PropTypes.oneOfType([
       PropTypes.oneOf([
         "circle", "diamond", "plus", "square", "star", "triangleDown", "triangleUp"
@@ -64,7 +64,7 @@ export default class Point extends React.Component {
     if (props.showLabels === false || !props.data.label) {
       return undefined;
     }
-    const component = props.labelComponent;
+    const component = props.label;
     const componentStyle = component && component.props.style || {};
     const baseStyle = defaults({}, componentStyle, style.labels);
     const labelStyle = Helpers.evaluateStyle(baseStyle, props.data);
