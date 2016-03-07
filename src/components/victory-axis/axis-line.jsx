@@ -12,6 +12,15 @@ export default class AxisLine extends React.Component {
   };
 
   render() {
-    return <line {...this.props}/>;
+    //return <line {...this.props}/>;
+    return (
+      <line
+        {...this.props}
+        x1={this.props.layout.left}
+        x2={this.props.layout.left + this.props.layout.width}
+        y1={this.props.layout.top}
+        y2={this.props.layout.top + this.props.layout.height}
+      />
+    );
   }
 }

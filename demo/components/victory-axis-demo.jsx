@@ -26,12 +26,12 @@ export default class App extends React.Component {
 
   componentDidMount() {
     /* eslint-disable react/no-did-mount-set-state */
-    this.setStateInterval = window.setInterval(() => {
-      this.setState({
-        tickValues: this.getTickValues(),
-        domain: this.getDomain()
-      });
-    }, 2000);
+    //this.setStateInterval = window.setInterval(() => {
+      //this.setState({
+        //tickValues: this.getTickValues(),
+        //domain: this.getDomain()
+      //});
+    //}, 2000);
   }
 
   componentWillUnmount() {
