@@ -230,7 +230,7 @@ export default class VictoryScatter extends React.Component {
         style={calculatedProps.style}
         x={position.x}
         y={position.y}
-        data={data}
+        datum={data}
         size={ScatterHelpers.getSize(data, this.props, calculatedProps)}
         symbol={ScatterHelpers.getSymbol(data, this.props)}
       />
