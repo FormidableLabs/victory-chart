@@ -241,7 +241,7 @@ export default class VictoryLine extends React.Component {
       return (
         <LineSegment
           key={`line-segment-${index}`}
-          data={segment}
+          datum={segment}
           interpolation={this.props.interpolation}
           scale={scale}
           style={style.data}
@@ -261,7 +261,7 @@ export default class VictoryLine extends React.Component {
     return (
       <LineLabel
         key={`line-label`}
-        data={dataset}
+        datum={dataset}
         position={{
           x: scale.x.call(this, lastPoint.x),
           y: scale.y.call(this, lastPoint.y)
