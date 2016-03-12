@@ -51,10 +51,12 @@ export default class Point extends React.Component {
 
 
   renderPoint(props, style) {
+    const {x, y, symbol, size, datum} = props;
+
     return (
       <path
         style={style.data}
-        d={getPath(props)}
+        d={getPath({x, y, symbol, size, data: datum})}
         shapeRendering="optimizeSpeed"
       />
     );
