@@ -46,6 +46,7 @@ export default class Tick extends React.Component {
       y: position.y,
       textAnchor: componentProps.textAnchor || anchors.textAnchor,
       verticalAnchor: componentProps.verticalAnchor || anchors.verticalAnchor,
+      datum: props.datum,
       style: Helpers.evaluateStyle(style, props.tick),
       text: props.label
     };

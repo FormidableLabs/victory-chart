@@ -44,7 +44,7 @@ export default class BarLabel extends React.Component {
     const newProps = {
       x: component.props.x || position.x + padding.x,
       y: component.props.y || position.y - padding.y,
-      data: props.datum, // Pass data for custom label component to access - todo: rename to datum
+      datum: props.datum,
       text: labelText,
       textAnchor: component.props.textAnchor || anchors.text,
       verticalAnchor: component.props.verticalAnchor || anchors.vertical,
@@ -61,7 +61,7 @@ export default class BarLabel extends React.Component {
       <VictoryLabel
         x={position.x + padding.x}
         y={position.y - padding.y}
-        data={props.datum}
+        datum={props.datum}
         textAnchor={anchors.text}
         verticalAnchor={anchors.vertical}
         style={style}

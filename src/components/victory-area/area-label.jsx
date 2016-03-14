@@ -4,7 +4,7 @@ import { VictoryLabel, Helpers } from "victory-core";
 
 export default class AreaLabel extends React.Component {
   static propTypes = {
-    data: PropTypes.array,
+    datum: PropTypes.array,
     labelComponent: PropTypes.any,
     labelText: PropTypes.string,
     position: PropTypes.object,
@@ -14,7 +14,7 @@ export default class AreaLabel extends React.Component {
   renderLabelComponent(props) {
     const component = props.labelComponent;
     const baseStyle = defaults({padding: 0}, component.props.style, props.style);
-    const style = Helpers.evaluateStyle(baseStyle, props.data);
+    const style = Helpers.evaluateStyle(baseStyle, props.datum);
     const children = component.props.children || props.labelText || "";
     const newProps = {
       x: component.props.x || props.position.x + style.padding,
@@ -27,7 +27,7 @@ export default class AreaLabel extends React.Component {
   }
 
   renderVictoryLabel(props) {
-    const style = Helpers.evaluateStyle(defaults({padding: 0}, props.style), props.data);
+    const style = Helpers.evaluateStyle(defaults({padding: 0}, props.style), props.datum);
     return (
       <VictoryLabel
         x={props.position.x + style.padding}

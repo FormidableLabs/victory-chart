@@ -256,7 +256,7 @@ export default class VictoryArea extends React.Component {
           scale={scale}
           style={style}
           interpolation={dataset.attrs.interpolation || this.props.interpolation}
-          data={dataWithBaseline}
+          datum={dataWithBaseline}
         />
       );
       const label = this.props.labels && this.props.labels[index];
@@ -270,7 +270,7 @@ export default class VictoryArea extends React.Component {
             {areaComponent}
             <AreaLabel key={`area-label-${index}`}
               style={baseStyle.labels}
-              data={dataset.data}
+              datum={dataset.data}
               position={position}
               labelText={label}
               labelComponent={this.props.labelComponent}

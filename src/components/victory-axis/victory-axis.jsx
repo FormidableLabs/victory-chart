@@ -324,6 +324,7 @@ export default class VictoryAxis extends React.Component {
       y: componentProps.y || y,
       textAnchor: componentProps.textAnchor || "middle",
       verticalAnchor: componentProps.verticalAnchor || verticalAnchor,
+      datum: props.datum,
       style: defaults({}, style.axisLabel, componentProps.style),
       transform: componentProps.transform || transform,
       text: labelText

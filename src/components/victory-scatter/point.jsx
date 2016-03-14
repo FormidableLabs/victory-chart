@@ -7,7 +7,7 @@ import { getPath } from "./helper-methods";
 
 export default class Point extends React.Component {
   static propTypes = {
-    data: PropTypes.shape({
+    datum: PropTypes.shape({
       x: React.PropTypes.any,
       y: React.PropTypes.any
     }),
@@ -36,44 +36,46 @@ export default class Point extends React.Component {
   }
 
   getStyle(props) {
-    const stylesFromData = omit(props.data, [
+    const stylesFromData = omit(props.datum, [
       "x", "y", "z", "size", "symbol", "name", "label"
     ]);
     const baseDataStyle = defaults({}, stylesFromData, props.style.data);
-    const dataStyle = Helpers.evaluateStyle(baseDataStyle, props.data);
+    const dataStyle = Helpers.evaluateStyle(baseDataStyle, props.datum);
     // match certain label styles to data if styles are not given
     const matchedStyle = pick(dataStyle, ["opacity", "fill"]);
     const padding = props.style.labels.padding || props.size * 0.25;
     const baseLabelStyle = defaults({padding}, props.style.labels, matchedStyle);
-    const labelStyle = Helpers.evaluateStyle(baseLabelStyle, props.data);
+    const labelStyle = Helpers.evaluateStyle(baseLabelStyle, props.datum);
     return {data: dataStyle, labels: labelStyle};
   }
 
 
   renderPoint(props, style) {
+    const {x, y, symbol, size, datum} = props;
+
     return (
       <path
         style={style.data}
-        d={getPath(props)}
+        d={getPath({x, y, symbol, size, data: datum})}
         shapeRendering="optimizeSpeed"
       />
     );
   }
 
   renderLabel(props, style) {
-    if (props.showLabels === false || !props.data.label) {
+    if (props.showLabels === false || !props.datum.label) {
       return undefined;
     }
     const component = props.labelComponent;
     const componentStyle = component && component.props.style || {};
     const baseStyle = defaults({}, componentStyle, style.labels);
-    const labelStyle = Helpers.evaluateStyle(baseStyle, props.data);
-    const labelText = props.data.label;
+    const labelStyle = Helpers.evaluateStyle(baseStyle, props.datum);
+    const labelText = props.datum.label;
     const labelProps = {
       x: component && component.props.x || props.x,
       y: component && component.props.y || props.y - labelStyle.padding,
       dy: component && component.props.dy,
-      data: props.data,
+      datum: props.datum,
       text: labelText,
       textAnchor: component && component.props.textAnchor || labelStyle.textAnchor,
       verticalAnchor: component && component.props.verticalAnchor || "end",

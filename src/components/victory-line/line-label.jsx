@@ -4,7 +4,7 @@ import { VictoryLabel, Helpers} from "victory-core";
 
 export default class LineLabel extends React.Component {
   static propTypes = {
-    data: PropTypes.array,
+    datum: PropTypes.array,
     label: PropTypes.any,
     position: PropTypes.object,
     style: PropTypes.object
@@ -13,11 +13,11 @@ export default class LineLabel extends React.Component {
   renderLabelComponent(props) {
     const component = props.label;
     const baseStyle = defaults({padding: 0}, component.props.style, props.style);
-    const style = Helpers.evaluateStyle(baseStyle, props.data);
+    const style = Helpers.evaluateStyle(baseStyle, props.datum);
     const newProps = {
       x: component.props.x || props.position.x + style.padding,
       y: component.props.y || props.position.y - style.padding,
-      data: props.data,
+      datum: props.datum,
       textAnchor: component.props.textAnchor || "start",
       verticalAnchor: component.props.verticalAnchor || "middle",
       style
@@ -26,11 +26,12 @@ export default class LineLabel extends React.Component {
   }
 
   renderVictoryLabel(props) {
-    const style = Helpers.evaluateStyle(defaults({padding: 0}, props.style), props.data);
+    const style = Helpers.evaluateStyle(defaults({padding: 0}, props.style), props.datum);
     return (
       <VictoryLabel
         x={props.position.x + style.padding}
         y={props.position.y - style.padding}
+        datum={props.datum}
         textAnchor={"start"}
         verticalAnchor={"middle"}
         style={style}

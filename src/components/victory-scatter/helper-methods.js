@@ -38,7 +38,7 @@ export default {
     }
   },
 
-  getPath(props) {
+  getPath({x, y, symbol, size, data}) {
     const pathFunctions = {
       circle: pathHelpers.circle,
       square: pathHelpers.square,
@@ -48,8 +48,8 @@ export default {
       plus: pathHelpers.plus,
       star: pathHelpers.star
     };
-    const size = Helpers.evaluateProp(props.size, props.data);
-    const symbol = Helpers.evaluateProp(props.symbol, props.data);
-    return pathFunctions[symbol].call(null, props.x, props.y, size);
+    const evaluatedSize = Helpers.evaluateProp(size, data);
+    const evaluatedSymbol = Helpers.evaluateProp(symbol, data);
+    return pathFunctions[evaluatedSymbol].call(null, x, y, evaluatedSize);
   }
 };
