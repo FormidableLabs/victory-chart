@@ -36,6 +36,20 @@ const defaultData = [
 
 export default class VictoryBar extends React.Component {
   static role = "bar";
+
+  static defaultTransitions = {
+    onExit: {
+      duration: 600,
+      before: () => ({}),
+      after: () => ({ y: 0 })
+    },
+    onEnter: {
+      duration: 600,
+      before: () => ({ y: 0 }),
+      after: () => ({})
+    }
+  }
+
   static propTypes = {
     /**
      * The animate prop specifies props for victory-animation to use. It this prop is
