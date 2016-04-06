@@ -19,7 +19,8 @@ class App extends React.Component {
       lineData: this.getData(),
       numericBarData: this.getNumericBarData(),
       barData: this.getBarData(),
-      lineStyle: this.getStyles()
+      lineStyle: this.getStyles(),
+      barTransitionData: this.getBarTransitionData()
     };
   }
 
@@ -70,6 +71,13 @@ class App extends React.Component {
     });
   }
 
+  getBarTransitionData() {
+    const bars = _.random(6, 10);
+    return _.map(_.range(bars), (bar) => {
+      return { x: bar, y: _.random(2, 10) };
+    });
+  }
+
   getScatterData() {
     const colors =
       ["violet", "cornflowerblue", "gold", "orange", "turquoise", "tomato", "greenyellow"];
@@ -104,7 +112,8 @@ class App extends React.Component {
         lineData: this.getData(),
         barData: this.getBarData(),
         numericBarData: this.getNumericBarData(),
-        lineStyle: this.getStyles()
+        lineStyle: this.getStyles(),
+        barTransitionData: this.getBarTransitionData()
       });
     }, UPDATE_INTERVAL);
   }
@@ -130,6 +139,12 @@ class App extends React.Component {
 
           <VictoryChart>
             <VictoryBar/>
+          </VictoryChart>
+
+          <VictoryChart animate={{ duration: 800 }}>
+            <VictoryBar
+              data={this.state.barTransitionData}
+            />
           </VictoryChart>
 
           <VictoryChart scale={"linear"}>
