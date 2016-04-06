@@ -260,12 +260,13 @@ export default class VictoryChart extends React.Component {
 
   render() {
     const style = this.getStyles(this.props);
-    const childComponents = this.state && this.state.nodesWillExit ?
-      ChartHelpers.getChildComponents(this.state.oldProps, defaultAxes) :
-      ChartHelpers.getChildComponents(this.props, defaultAxes);
+    const propsToRender = this.state && this.state.nodesWillExit ?
+      this.state.oldProps :
+      this.props;
+    const childComponents = ChartHelpers.getChildComponents(propsToRender, defaultAxes);
     const group = (
       <g style={style.parent}>
-        {this.getNewChildren(this.props, childComponents, style)}
+        {this.getNewChildren(propsToRender, childComponents, style)}
       </g>
     );
     return this.props.standalone ?
