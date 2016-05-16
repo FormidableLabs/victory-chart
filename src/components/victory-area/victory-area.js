@@ -6,7 +6,7 @@ import Data from "../../helpers/data";
 import Domain from "../../helpers/domain";
 import Scale from "../../helpers/scale";
 import {
-  PropTypes as CustomPropTypes, Helpers, VictoryTransition, VictoryLabel
+  PropTypes as CustomPropTypes, Helpers, VictoryTransition, VictoryLabel, Log
 } from "victory-core";
 import Area from "./area";
 
@@ -179,9 +179,19 @@ export default class VictoryArea extends React.Component {
     ]),
     /**
      * The samples prop specifies how many individual points to plot when plotting
+     * @param {Object} props The component of which the samples prop belongs to.
+     * @param {String} propName The name of the prop of which the function belongs to.
+     * @param {String} componentName The name of the component.
+     * @returns {String} Returns a warning to the user in the form of a String via the console.
      * y as a function of x. Samples is ignored if x props are provided instead.
      */
-    samples: CustomPropTypes.nonNegative,
+    samples: (props, propName, componentName) => {
+      if (props.x !== undefined) {
+        Log.warn("The `samples` prop is overridden when" +
+          " the `x` prop of a component is passed value(s).");
+      }
+      return CustomPropTypes.nonNegative(props, propName, componentName);
+    },
     /**
      * The scale prop determines which scales your chart should use. This prop can be
      * given as a string specifying a supported scale ("linear", "time", "log", "sqrt"),
