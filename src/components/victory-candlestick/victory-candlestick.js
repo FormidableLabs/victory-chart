@@ -297,7 +297,7 @@ export default class VictoryCandlestick extends React.Component {
           candleY={candleY}
           candleFill={candleFill}
           candleWidth={candleWidth}
-          candleHeight={candleHeight}/>
+          candleHeight={candleHeight} />
         )
     });
 

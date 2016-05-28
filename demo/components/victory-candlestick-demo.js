@@ -59,7 +59,7 @@ export default class App extends React.Component {
           style={{parent: style.parent}}
           data={[
             {x: 50, open: 30, close: 80, high: 100, low: 10},
-            {x: 100, open: 30, close: 80, high: 100, low: 10},
+            {x: 100, open: 40, close: 80, high: 100, low: 10},
             {x: 150, open: 34, close: 80, high: 100, low: 100},
             {x: 200, open: 34, close: 80, high: 100, low: 100},
             {x: 250, open: 34, close: 80, high: 100, low: 100},
