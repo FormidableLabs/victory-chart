@@ -9,6 +9,8 @@ import {
 } from "victory-core";
 import CandlestickHelpers from "./helper-methods";
 
+// TODO: linting, get bars to actually line up, get data to be accessible from multiple formats
+
 const defaultStyles = {
   data: {
     fill: "#756f6a",
@@ -275,20 +277,20 @@ export default class VictoryCandlestick extends React.Component {
   }
 
   renderData() {
-    var props = this.props;
-    var dataSeries = props.data.map( (datum, idx) => {
-      var wickX1 = datum.x,
-      wickX2 = wickX1,
-      wickY1 = datum.high,
-      wickY2 = datum.low,
-      candleY = Math.max(datum.open, datum.close),
-      candleFill = "black",
-      candleWidth = ((this.props.data.length + 2)) * 0.5,
-      candleHeight = Math.abs(datum.open - datum.close),
-      candleX = datum.x;
+    const props = this.props;
+    const dataSeries = props.data.map((datum) => {
+      const wickX1 = datum.x;
+      const wickX2 = wickX1;
+      const wickY1 = datum.high;
+      const wickY2 = datum.low;
+      const candleY = Math.max(datum.open, datum.close);
+      const candleFill = "black";
+      const candleWidth = ((this.props.data.length + 2)) * 0.5;
+      const candleHeight = Math.abs(datum.open - datum.close);
+      const candleX = datum.x;
 
       return (
-        <Candle 
+        <Candle
           wickX1={wickX1}
           wickY1={wickY1}
           wickX2={wickX2}
@@ -297,8 +299,9 @@ export default class VictoryCandlestick extends React.Component {
           candleY={candleY}
           candleFill={candleFill}
           candleWidth={candleWidth}
-          candleHeight={candleHeight} />
-        )
+          candleHeight={candleHeight}
+        />
+        );
     });
 
     return dataSeries;
