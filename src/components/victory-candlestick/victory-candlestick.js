@@ -52,6 +52,15 @@ export default class VictoryCandlestick extends React.Component {
      */
     animate: PropTypes.object,
     /**
+     * Candle colors allow a user to specify the color for candles where open is higher
+     * than close (negative), and candles where close is higher than open (positive).
+     * These default to green for positive, and red for negative.
+     */
+    candleColors: PropTypes.shape({
+      positive: PropTypes.string,
+      negative: PropTypes.string
+    }),
+    /**
      * The categories prop specifies how categorical data for a chart should be ordered.
      * This prop should be given as an array of string values, or an object with
      * these arrays of values specified for x and y. If this prop is not set,
@@ -147,10 +156,6 @@ export default class VictoryCandlestick extends React.Component {
       PropTypes.func,
       PropTypes.array
     ]),
-    /**
-     * The maxBubbleSize prop sets an upper limit for scaling data points in a bubble chart
-     */
-    maxBubbleSize: CustomPropTypes.nonNegative,
     /**
      * The padding props specifies the amount of padding in number of pixels between
      * the edge of the chart and any rendered child components. This prop can be given
@@ -260,6 +265,10 @@ export default class VictoryCandlestick extends React.Component {
     standalone: true,
     symbol: "circle",
     width: 450,
+    candleColors: {
+      positive: "green",
+      negative: "red"
+    },
     x: "x",
     y: "y",
     dataComponent: <Candle/>,
@@ -276,132 +285,110 @@ export default class VictoryCandlestick extends React.Component {
     this.getEventState = Helpers.getEventState.bind(this);
   }
 
-  renderData() {
-    const props = this.props;
-    const dataSeries = props.data.map((datum) => {
-      const wickX1 = datum.x;
-      const wickX2 = wickX1;
-      const wickY1 = datum.high;
-      const wickY2 = datum.low;
-      const candleY = Math.max(datum.open, datum.close);
-      const candleFill = "black";
-      const candleWidth = ((this.props.data.length + 2)) * 0.5;
-      const candleHeight = Math.abs(datum.open - datum.close);
-      const candleX = datum.x;
-
-      return (
-        <Candle
-          wickX1={wickX1}
-          wickY1={wickY1}
-          wickX2={wickX2}
-          wickY2={wickY2}
-          candleX={candleX}
-          candleY={candleY}
-          candleFill={candleFill}
-          candleWidth={candleWidth}
-          candleHeight={candleHeight}
-        />
-        );
-    });
-
-    return dataSeries;
+  getDataStyles(data, style) {
+    const stylesFromData = omit(data, [
+      "x", "y", "z", "size", "symbol", "name", "label"
+    ]);
+    const baseDataStyle = defaults({}, stylesFromData, style);
+    return Helpers.evaluateStyle(baseDataStyle, data);
   }
 
-  // getDataStyles(data, style) {
-  //   const stylesFromData = omit(data, [
-  //     "x", "y", "z", "size", "symbol", "name", "label"
-  //   ]);
-  //   const baseDataStyle = defaults({}, stylesFromData, style);
-  //   return Helpers.evaluateStyle(baseDataStyle, data);
-  // }
+  getLabelText(props, datum, index) {
+    const propsLabel = Array.isArray(props.labels) ?
+      props.labels[index] : Helpers.evaluateProp(props.labels, datum);
+    return datum.label || propsLabel;
+  }
 
-  // getLabelText(props, datum, index) {
-  //   const propsLabel = Array.isArray(props.labels) ?
-  //     props.labels[index] : Helpers.evaluateProp(props.labels, datum);
-  //   return datum.label || propsLabel;
-  // }
+  getLabelStyle(labelStyle, dataProps) {
+    const { datum, size, style } = dataProps;
+    const matchedStyle = pick(style, ["opacity", "fill"]);
+    const padding = labelStyle.padding || size * 0.25;
+    const baseLabelStyle = defaults({}, labelStyle, matchedStyle, {padding});
+    return Helpers.evaluateStyle(baseLabelStyle, datum);
+  }
 
-  // getLabelStyle(labelStyle, dataProps) {
-  //   const { datum, size, style } = dataProps;
-  //   const matchedStyle = pick(style, ["opacity", "fill"]);
-  //   const padding = labelStyle.padding || size * 0.25;
-  //   const baseLabelStyle = defaults({}, labelStyle, matchedStyle, {padding});
-  //   return Helpers.evaluateStyle(baseLabelStyle, datum);
-  // }
+  renderData(props, calculatedProps, style) {
+    const dataEvents = this.getEvents(props.events.data, "data");
+    const labelEvents = this.getEvents(props.events.labels, "labels");
+    const { scale, data } = calculatedProps;
+    return data.map((datum, index) => {
+      // const x = scale.x(datum.x);
+      // const wickY1 = scale.y(datum.high);
+      // const wickY2 = scale.y(datum.low);
+      const x = datum.x;
+      const wickY1 = datum.high;
+      const wickY2 = datum.low;
+      const candleColor = datum.open > datum.close ?
+            props.candleColors.negative : props.candleColors.positive;
+      const candleWidth = (this.props.data.length + 2) * 0.5;
+      const candleHeight = Math.abs(datum.open - datum.close);
+      const candleY = Math.max(datum.open, datum.close);
+      const size = CandlestickHelpers.getSize(datum, props, calculatedProps);
+      const dataStyle = this.getDataStyles(datum, style.data);
+      const dataProps = defaults(
+        {},
+        this.getEventState(index, "data"),
+        props.dataComponent.props,
+        {
+          x, wickY1, wickY2, candleColor, candleWidth, candleHeight,
+          candleY, size, scale, datum, index, style: dataStyle, key: `point-${index}`
+        }
+      );
+      const candleComponent = React.cloneElement(props.dataComponent, assign(
+        {}, dataProps, {events: Helpers.getPartialEvents(dataEvents, index, dataProps)}
+      ));
+      const text = this.getLabelText(props, dataProps.datum, index);
+      if (text !== null && text !== undefined) {
+        const labelStyle = this.getLabelStyle(style.labels, dataProps);
+        const labelProps = defaults(
+          {},
+          this.getEventState(index, "labels"),
+          props.labelComponent.props,
+          {
+            key: `point-label-${index}`,
+            style: labelStyle,
+            x: x + labelStyle.padding * 2,
+            y: wickY1 + labelStyle.padding,
+            text,
+            index,
+            scale,
+            datum: dataProps.datum,
+            textAnchor: labelStyle.textAnchor,
+            verticalAnchor: labelStyle.verticalAnchor || "end",
+            angle: labelStyle.angle
+          }
+        );
+        const candleLabel = React.cloneElement(props.labelComponent, assign({
+          events: Helpers.getPartialEvents(labelEvents, index, labelProps)
+        }, labelProps));
+        return (
+          <g key={`point-group-${index}`}>
+            {candleComponent}
+            {candleLabel}
+          </g>
+        );
+      }
+      return candleComponent;
+    });
+  }
 
-  // renderData(props, calculatedProps, style) {
-  //   const dataEvents = this.getEvents(props.events.data, "data");
-  //   const labelEvents = this.getEvents(props.events.labels, "labels");
-  //   const { scale, data } = calculatedProps;
-  //   return data.map((datum, index) => {
-  //     const x = scale.x(datum.x);
-  //     const y = scale.y(datum.y);
-  //     const size = CandlestickHelpers.getSize(datum, props, calculatedProps);
-  //     const symbol = CandlestickHelpers.getSymbol(datum, props);
-  //     const dataStyle = this.getDataStyles(datum, style.data);
-  //     const dataProps = defaults(
-  //       {},
-  //       this.getEventState(index, "data"),
-  //       props.dataComponent.props,
-  //       {
-  //         x, y, size, scale, datum, symbol, index, style: dataStyle, key: `point-${index}`
-  //       }
-  //     );
-  //     const pointComponent = React.cloneElement(props.dataComponent, assign(
-  //       {}, dataProps, {events: Helpers.getPartialEvents(dataEvents, index, dataProps)}
-  //     ));
-  //     const text = this.getLabelText(props, dataProps.datum, index);
-  //     if (text !== null && text !== undefined) {
-  //       const labelStyle = this.getLabelStyle(style.labels, dataProps);
-  //       const labelProps = defaults(
-  //         {},
-  //         this.getEventState(index, "labels"),
-  //         props.labelComponent.props,
-  //         {
-  //           key: `point-label-${index}`,
-  //           style: labelStyle,
-  //           x,
-  //           y: y - labelStyle.padding,
-  //           text,
-  //           index,
-  //           scale,
-  //           datum: dataProps.datum,
-  //           textAnchor: labelStyle.textAnchor,
-  //           verticalAnchor: labelStyle.verticalAnchor || "end",
-  //           angle: labelStyle.angle
-  //         }
-  //       );
-  //       const pointLabel = React.cloneElement(props.labelComponent, assign({
-  //         events: Helpers.getPartialEvents(labelEvents, index, labelProps)
-  //       }, labelProps));
-  //       return (
-  //         <g key={`point-group-${index}`}>
-  //           {pointComponent}
-  //           {pointLabel}
-  //         </g>
-  //       );
-  //     }
-  //     return pointComponent;
-  //   });
-  // }
-
-  // getCalculatedProps(props, style) {
-  //   const data = Data.getData(props);
-  //   const range = {
-  //     x: Helpers.getRange(props, "x"),
-  //     y: Helpers.getRange(props, "y")
-  //   };
-  //   const domain = {
-  //     x: Domain.getDomain(props, "x"),
-  //     y: Domain.getDomain(props, "y")
-  //   };
-  //   const scale = {
-  //     x: Scale.getBaseScale(props, "x").domain(domain.x).range(range.x),
-  //     y: Scale.getBaseScale(props, "y").domain(domain.y).range(range.y)
-  //   };
-  //   const z = props.bubbleProperty || "z";
-  //   return {data, scale, style, z};
-  // }
+  getCalculatedProps(props, style) {
+    const data = Data.getData(props);
+    const range = {
+      x: Helpers.getRange(props, "x"),
+      y: Helpers.getRange(props, "y")
+    };
+    const domain = {
+      x: Domain.getDomain(props, "x"),
+      y: Domain.getDomain(props, "y")
+    };
+    const scale = {
+      x: Scale.getBaseScale(props, "x").domain(domain.x).range(range.x),
+      y: Scale.getBaseScale(props, "y").domain(domain.y).range(range.y)
+    };
+    const z = props.bubbleProperty || "z";
+    return {data, scale, style, z};
+  }
 
   render() {
     // If animating, return a `VictoryAnimation` element that will create
@@ -428,8 +415,8 @@ export default class VictoryCandlestick extends React.Component {
       "auto",
       "100%"
     );
-    // const calculatedProps = this.getCalculatedProps(this.props, style);
-    const group = <g style={style.parent}>{this.renderData()}</g>;
+    const calculatedProps = this.getCalculatedProps(this.props, style);
+    const group = <g style={style.parent}>{this.renderData(this.props, calculatedProps, style)}</g>;
     return this.props.standalone ?
       <svg
         style={style.parent}

@@ -57,15 +57,16 @@ export default class App extends React.Component {
 
         <VictoryCandlestick
           style={{parent: style.parent}}
+          candleColors={{positive: "purple", negative: "blue"}}
           data={[
             {x: 50, open: 30, close: 80, high: 100, low: 10},
-            {x: 100, open: 40, close: 80, high: 100, low: 10},
-            {x: 150, open: 34, close: 80, high: 100, low: 100},
-            {x: 200, open: 34, close: 80, high: 100, low: 100},
-            {x: 250, open: 34, close: 80, high: 100, low: 100},
-            {x: 300, open: 34, close: 80, high: 100, low: 100},
-            {x: 350, open: 34, close: 80, high: 100, low: 100},
-            {x: 400, open: 34, close: 80, high: 100, low: 100}
+            {x: 100, open: 80, close: 40, high: 100, low: 10},
+            {x: 150, open: 30, close: 80, high: 100, low: 10},
+            {x: 200, open: 30, close: 80, high: 100, low: 10},
+            {x: 250, open: 30, close: 80, high: 100, low: 10},
+            {x: 300, open: 30, close: 80, high: 100, low: 10},
+            {x: 350, open: 30, close: 80, high: 100, low: 10},
+            {x: 400, open: 30, close: 80, high: 100, low: 10}
           ]}
           size={8}
         />
