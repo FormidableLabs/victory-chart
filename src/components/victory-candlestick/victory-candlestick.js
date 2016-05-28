@@ -394,20 +394,20 @@ export default class VictoryCandlestick extends React.Component {
     // If animating, return a `VictoryAnimation` element that will create
     // a new `VictoryScatter` with nearly identical props, except (1) tweened
     // and (2) `animate` set to null so we don't recurse forever.
-    // if (this.props.animate) {
-    //   // Do less work by having `VictoryAnimation` tween only values that
-    //   // make sense to tween. In the future, allow customization of animated
-    //   // prop whitelist/blacklist?
-    //   const whitelist = [
-    //     "data", "domain", "height", "maxBubbleSize", "padding", "samples", "size",
-    //     "style", "width", "x", "y"
-    //   ];
-    //   return (
-    //     <VictoryTransition animate={this.props.animate} animationWhitelist={whitelist}>
-    //       <VictoryCandlestick {...this.props}/>
-    //     </VictoryTransition>
-    //   );
-    // }
+    if (this.props.animate) {
+      // Do less work by having `VictoryAnimation` tween only values that
+      // make sense to tween. In the future, allow customization of animated
+      // prop whitelist/blacklist?
+      const whitelist = [
+        "data", "domain", "height", "maxBubbleSize", "padding", "samples", "size",
+        "style", "width", "x", "y"
+      ];
+      return (
+        <VictoryTransition animate={this.props.animate} animationWhitelist={whitelist}>
+          <VictoryCandlestick {...this.props}/>
+        </VictoryTransition>
+      );
+    }
 
     const style = Helpers.getStyles(
       this.props.style,

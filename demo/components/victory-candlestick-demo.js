@@ -3,8 +3,6 @@ import React from "react";
 import { random, range } from "lodash";
 import {VictoryCandlestick} from "../../src/index";
 import {VictoryLabel} from "victory-core";
-import bubbleData from "./bubble-data.js";
-import symbolData from "./symbol-data.js";
 
 const getData = () => {
   const colors =
