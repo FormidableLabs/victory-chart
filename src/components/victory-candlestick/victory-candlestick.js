@@ -9,8 +9,6 @@ import {
 } from "victory-core";
 import CandlestickHelpers from "./helper-methods";
 
-// TODO: linting, get bars to actually line up, get data to be accessible from multiple formats
-
 const defaultStyles = {
   data: {
     fill: "#756f6a",
@@ -392,7 +390,7 @@ export default class VictoryCandlestick extends React.Component {
 
   render() {
     // If animating, return a `VictoryAnimation` element that will create
-    // a new `VictoryScatter` with nearly identical props, except (1) tweened
+    // a new `VictoryCandlestick` with nearly identical props, except (1) tweened
     // and (2) `animate` set to null so we don't recurse forever.
     if (this.props.animate) {
       // Do less work by having `VictoryAnimation` tween only values that
