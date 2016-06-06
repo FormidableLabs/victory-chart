@@ -13,6 +13,7 @@ export default class Candle extends React.Component {
     candleWidth: PropTypes.number,
     candleHeight: PropTypes.number,
     scale: PropTypes.object,
+    // style: PropTypes.object,
     datum: PropTypes.object
   }
 

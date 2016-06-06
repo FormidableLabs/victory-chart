@@ -384,8 +384,7 @@ export default class VictoryCandlestick extends React.Component {
       x: Scale.getBaseScale(props, "x").domain(domain.x).range(range.x),
       y: Scale.getBaseScale(props, "y").domain(domain.y).range(range.y)
     };
-    const z = props.bubbleProperty || "z";
-    return {data, scale, style, z};
+    return {data, scale, style};
   }
 
   render() {
