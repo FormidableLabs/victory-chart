@@ -57,14 +57,14 @@ export default class App extends React.Component {
           style={{parent: style.parent}}
           candleColors={{positive: "purple", negative: "blue"}}
           data={[
-            {x: 50, open: 9, close: 30, high: 56, low: 7},
+            {x: 50, open: 30, close: 80, high: 100, low: 10},
             {x: 100, open: 80, close: 40, high: 100, low: 10},
-            {x: 150, open: 50, close: 80, high: 90, low: 20},
-            {x: 200, open: 70, close: 22, high: 70, low: 5},
-            {x: 250, open: 20, close: 35, high: 50, low: 10},
-            {x: 300, open: 35, close: 30, high: 40, low: 3},
-            {x: 350, open: 30, close: 90, high: 95, low: 30},
-            {x: 400, open: 80, close: 81, high: 83, low: 75}
+            {x: 150, open: 30, close: 80, high: 90, low: 20},
+            {x: 200, open: 30, close: 80, high: 100, low: 10},
+            {x: 250, open: 30, close: 80, high: 100, low: 10},
+            {x: 300, open: 30, close: 80, high: 100, low: 10},
+            {x: 350, open: 30, close: 80, high: 100, low: 10},
+            {x: 400, open: 30, close: 80, high: 100, low: 10}
           ]}
           size={8}
         />
