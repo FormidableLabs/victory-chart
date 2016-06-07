@@ -42,7 +42,7 @@ export default {
   },
 
   getDomainFromData(dataset, axis) {
-    console.log(dataset);
+    // console.log(dataset);
     const allData = flatten(dataset).map((datum) => datum[axis]);
     // console.log(allData);
     const min = Math.min(...allData);

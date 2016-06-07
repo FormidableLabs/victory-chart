@@ -5,7 +5,8 @@ import React, { PropTypes } from "react";
 export default class Candle extends React.Component {
   static propTypes = {
     index: React.PropTypes.number,
-    x: PropTypes.number,
+    wickX: PropTypes.number,
+    candleX: PropTypes.number,
     wickY1: PropTypes.number,
     wickY2: PropTypes.number,
     candleColor: PropTypes.string,
@@ -20,8 +21,8 @@ export default class Candle extends React.Component {
   renderWick() {
     return (
         <line
-          x1={this.props.x}
-          x2={this.props.x}
+          x1={this.props.wickX}
+          x2={this.props.wickX}
           y1={this.props.wickY1}
           y2={this.props.wickY2}
           stroke={this.props.candleColor}
@@ -34,7 +35,7 @@ export default class Candle extends React.Component {
     return (
       <rect
         fill={this.props.candleColor}
-        x={this.props.x}
+        x={this.props.candleX}
         y={this.props.candleY}
         stroke={this.props.candleColor}
         strokeWidth={1}

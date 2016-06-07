@@ -8,6 +8,7 @@ import {
   PropTypes as CustomPropTypes, Helpers, VictoryTransition, VictoryLabel
 } from "victory-core";
 import CandlestickHelpers from "./helper-methods";
+import d3Scale from "d3-scale";
 
 const defaultStyles = {
   data: {
@@ -313,13 +314,14 @@ export default class VictoryCandlestick extends React.Component {
       // const x = scale.x(datum.x);
       // const wickY1 = scale.y(datum.high);
       // const wickY2 = scale.y(datum.low);
-      const x = datum.x;
+      const candleX = datum.x;
+      const wickX = datum.x + 0.25 * (props.width - 2 * props.padding)/data.length;
       const wickY1 = datum.high;
       const wickY2 = datum.low;
       const candleColor = datum.open > datum.close ?
             props.candleColors.negative : props.candleColors.positive;
-      const candleWidth = (this.props.data.length + 2) * 0.5;
-      const candleHeight = Math.abs(datum.open - datum.close);
+      const candleWidth = 0.5 * (props.width - 2 * props.padding)/data.length;
+      const candleHeight = Math.max(datum.open, datum.close) - Math.min(datum.open, datum.close);
       const candleY = Math.max(datum.open, datum.close);
       const size = CandlestickHelpers.getSize(datum, props, calculatedProps);
       const dataStyle = this.getDataStyles(datum, style.data);
@@ -328,7 +330,7 @@ export default class VictoryCandlestick extends React.Component {
         this.getEventState(index, "data"),
         props.dataComponent.props,
         {
-          x, wickY1, wickY2, candleColor, candleWidth, candleHeight,
+          wickX, candleX, wickY1, wickY2, candleColor, candleWidth, candleHeight,
           candleY, size, scale, datum, index, style: dataStyle, key: `point-${index}`
         }
       );
@@ -372,19 +374,22 @@ export default class VictoryCandlestick extends React.Component {
 
   getCalculatedProps(props, style) {
     const data = Data.getData(props);
-    const range = {
-      x: Helpers.getRange(props, "x"),
-      y: Helpers.getRange(props, "y")
-    };
-    const domain = {
-      x: Domain.getDomain(props, "x"),
-      y: Domain.getDomain(props, "y")
-    };
+    // const range = {
+    //   x: Helpers.getRange(props, "x"),
+    //   y: Helpers.getRange(props, "y")
+    // };
+    // const domain = {
+    //   x: Domain.getDomain(props, "x"),
+    //   y: Domain.getDomain(props, "y")
+    // };
+    // const scale = {
+    //   x: Scale.getBaseScale(props, "x").domain(domain.x).range(range.x),
+    //   y: Scale.getBaseScale(props, "y").domain(domain.y).range(range.y)
+    // };
     const scale = {
-      x: Scale.getBaseScale(props, "x").domain(domain.x).range(range.x),
-      y: Scale.getBaseScale(props, "y").domain(domain.y).range(range.y)
+      x: d3Scale.scaleLinear().domain([Math.min(data.map((datum) => {return datum.x;})), Math.max(data.map((datum) => {return datum.x;}))]).range([props.padding, props.width - props.padding]),
+      y: d3Scale.scaleLinear().domain([Math.min(data.map((datum) => {return datum.low;})), Math.max(data.map((datum) => {return datum.high;}))]).range([props.height - props.padding, props.padding])
     };
-    // console.log(domain.x, domain.y);
     return {data, scale, style};
   }
 
