@@ -373,10 +373,10 @@ export default class VictoryCandlestick extends React.Component {
 
   getCalculatedProps(props, style) {
     const data = Data.getData(props);
-    // const range = {
-    //   x: Helpers.getRange(props, "x"),
-    //   y: Helpers.getRange(props, "y")
-    // };
+    const range = {
+      x: Helpers.getRange(props, "x"),
+      y: Helpers.getRange(props, "y")
+    };
     // const domain = {
     //   x: Domain.getDomain(props, "x"),
     //   y: Domain.getDomain(props, "y")
@@ -386,8 +386,8 @@ export default class VictoryCandlestick extends React.Component {
     //   y: Scale.getBaseScale(props, "y").domain(domain.y).range(range.y)
     // };
     const scale = {
-      x: Scale.getBaseScale(props, "x").domain([Math.min(data.map((datum) => {return datum.x;})), Math.max(data.map((datum) => {return datum.x;}))]).range([props.padding, props.width - props.padding]),
-      y: Scale.getBaseScale(props, "y").domain([Math.min(data.map((datum) => {return datum.low;})), Math.max(data.map((datum) => {return datum.high;}))]).range([props.height - props.padding, props.padding])
+      x: Scale.getBaseScale(props, "x").domain([Math.min(data.map((datum) => {return datum.x;})), Math.max(data.map((datum) => {return datum.x;}))]).range(range.x),
+      y: Scale.getBaseScale(props, "y").domain([Math.min(data.map((datum) => {return datum.low;})), Math.max(data.map((datum) => {return datum.high;}))]).range(range.y)
     };
     return {data, scale, style};
   }
