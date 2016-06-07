@@ -310,24 +310,24 @@ export default class VictoryCandlestick extends React.Component {
     const labelEvents = this.getEvents(props.events.labels, "labels");
     const { scale, data } = calculatedProps;
     return data.map((datum, index) => {
-      const candleX = scale.x(datum.x);
-      const wickX = scale.x(datum.x) + 0.25 * (props.width - 2 * props.padding)/data.length;
-      const wickY1 = scale.y(datum.high);
-      const wickY2 = scale.y(datum.low);
+      const x = scale.x(datum.x);
+      const y1 = scale.y(datum.high);
+      const y2 = scale.y(datum.low);
       const candleColor = datum.open > datum.close ?
             props.candleColors.negative : props.candleColors.positive;
-      const candleWidth = 0.5 * (props.width - 2 * props.padding)/data.length;
       const candleHeight = Math.abs(scale.y(datum.open) - scale.y(datum.close));
-      const candleY = scale.y(Math.max(datum.open, datum.close));
+      const y = scale.y(Math.max(datum.open, datum.close));
       const size = CandlestickHelpers.getSize(datum, props, calculatedProps);
       const dataStyle = this.getDataStyles(datum, style.data);
+      const width = props.width;
+      const padding = props.padding;
       const dataProps = defaults(
         {},
         this.getEventState(index, "data"),
         props.dataComponent.props,
         {
-          wickX, candleX, wickY1, wickY2, candleColor, candleWidth, candleHeight,
-          candleY, size, scale, datum, index, style: dataStyle, key: `point-${index}`
+          x, y1, y2, width, padding, candleColor, candleHeight,
+          y, size, scale, datum, index, data, style: dataStyle, key: `point-${index}`
         }
       );
       const candleComponent = React.cloneElement(props.dataComponent, assign(
@@ -379,10 +379,8 @@ export default class VictoryCandlestick extends React.Component {
     //   y: Domain.getDomain(props, "y")
     // };
     const scale = {
-      // x: Scale.getBaseScale(props, "x").domain([Math.min(data.map((datum) => {return datum.x;})), Math.max(data.map((datum) => {return datum.x;}))]).range(range.x),
-      // y: Scale.getBaseScale(props, "y").domain([Math.min(data.map((datum) => {return datum.low;})), Math.max(data.map((datum) => {return datum.high;}))]).range(range.y)
       x: Scale.getBaseScale(props, "x").domain([50, 400]).range(range.x),
-      y: Scale.getBaseScale(props, "y").domain([10, 100]).range(range.y)
+      y: Scale.getBaseScale(props, "y").domain([0, 100]).range(range.y)
     };
     return {data, scale, style};
   }
