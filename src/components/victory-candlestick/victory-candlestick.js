@@ -8,7 +8,6 @@ import {
   PropTypes as CustomPropTypes, Helpers, VictoryTransition, VictoryLabel
 } from "victory-core";
 import CandlestickHelpers from "./helper-methods";
-import d3Scale from "d3-scale";
 
 const defaultStyles = {
   data: {
@@ -387,8 +386,8 @@ export default class VictoryCandlestick extends React.Component {
     //   y: Scale.getBaseScale(props, "y").domain(domain.y).range(range.y)
     // };
     const scale = {
-      x: d3Scale.scaleLinear().domain([Math.min(data.map((datum) => {return datum.x;})), Math.max(data.map((datum) => {return datum.x;}))]).range([props.padding, props.width - props.padding]),
-      y: d3Scale.scaleLinear().domain([Math.min(data.map((datum) => {return datum.low;})), Math.max(data.map((datum) => {return datum.high;}))]).range([props.height - props.padding, props.padding])
+      x: Scale.getBaseScale(props, "x").domain([Math.min(data.map((datum) => {return datum.x;})), Math.max(data.map((datum) => {return datum.x;}))]).range([props.padding, props.width - props.padding]),
+      y: Scale.getBaseScale(props, "y").domain([Math.min(data.map((datum) => {return datum.low;})), Math.max(data.map((datum) => {return datum.high;}))]).range([props.height - props.padding, props.padding])
     };
     return {data, scale, style};
   }
