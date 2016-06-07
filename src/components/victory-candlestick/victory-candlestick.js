@@ -384,6 +384,7 @@ export default class VictoryCandlestick extends React.Component {
       x: Scale.getBaseScale(props, "x").domain(domain.x).range(range.x),
       y: Scale.getBaseScale(props, "y").domain(domain.y).range(range.y)
     };
+    // console.log(domain.x, domain.y);
     return {data, scale, style};
   }
 

@@ -42,7 +42,9 @@ export default {
   },
 
   getDomainFromData(dataset, axis) {
+    console.log(dataset);
     const allData = flatten(dataset).map((datum) => datum[axis]);
+    // console.log(allData);
     const min = Math.min(...allData);
     const max = Math.max(...allData);
     // TODO: is this the correct behavior, or should we just error. How do we
