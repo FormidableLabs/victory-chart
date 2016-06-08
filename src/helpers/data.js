@@ -89,7 +89,7 @@ export default {
   },
 
   cleanData(dataset, props) {
-    // Some scale types break when certain data is supplies. This method will
+    // Some scale types break when certain data is supplied. This method will
     // remove data points that break scales. So far this method only removes
     // zeroes for log scales
     // TODO other cases?
