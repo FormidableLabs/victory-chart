@@ -163,7 +163,6 @@ export default class App extends React.Component {
             scale={"log"}
             domain={[1, 5]}
             offsetX={50}
-            theme={VictoryTheme.grayscale}
           />
           <VictoryAxis
             style={style}
@@ -172,7 +171,6 @@ export default class App extends React.Component {
             orientation="right"
             scale={"log"}
             domain={[1, 5]}
-            theme={VictoryTheme.grayscale}
           />
         </div>
         {/*<div>
