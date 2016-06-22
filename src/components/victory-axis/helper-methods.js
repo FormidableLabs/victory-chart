@@ -90,7 +90,6 @@ export default {
 
     const parentProps = {style: style.parent, ticks, scale, width, height};
     const axisLabelProps = this.getAxisLabelProps(modifiedProps, calculatedValues, globalTransform);
-    console.log(axisLabelProps);
 
     return ticks.reduce((memo, data, index) => {
       const tick = stringTicks ? modifiedProps.tickValues[data - 1] : data;
