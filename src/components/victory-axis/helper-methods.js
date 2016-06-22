@@ -179,8 +179,9 @@ export default {
     const verticalAnchor = sign < 0 ? "end" : "start";
     const labelStyle = style.axisLabel;
     return {
-      x: x + globalTransform.x,
-      y: (sign * labelPadding) + globalTransform.y,
+      x: x - (globalTransform.x / vPadding),
+      y: isVertical ? (sign * labelPadding) + globalTransform.y + (vPadding * 3)
+      : (sign * labelPadding) + globalTransform.y + (vPadding / 6),
       verticalAnchor: labelStyle.verticalAnchor || verticalAnchor,
       textAnchor: labelStyle.textAnchor || "middle",
       angle: labelStyle.angle,

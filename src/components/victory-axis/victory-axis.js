@@ -398,7 +398,6 @@ export default class VictoryAxis extends React.Component {
       props.axisLabelComponent.props,
       this.baseProps[key].axisLabel
     );
-    console.log(axisLabelProps);
     return React.cloneElement(props.axisLabelComponent, Object.assign(
       {}, axisLabelProps, {events: Events.getPartialEvents(axisLabelEvents, key, axisLabelProps)}
     ));
