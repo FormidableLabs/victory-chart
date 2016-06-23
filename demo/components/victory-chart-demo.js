@@ -167,7 +167,7 @@ class App extends React.Component {
       alignItems: "center",
       justifyContent: "center"
     };
-    const chartStyle = {parent: {border: "1px solid #ccc", margin: "2%", maxWidth: "60%"}};
+    const chartStyle = {parent: {border: "1px solid #ccc", margin: "2%", maxWidth: "40%"}};
     return (
       <div className="demo">
         <h1>VictoryChart</h1>
@@ -386,7 +386,9 @@ class App extends React.Component {
 
           <VictoryChart style={chartStyle} scale={"linear"}>
             <VictoryAxis/>
-            <VictoryAxis label="AWESOME LABEL" dependentAxis crossAxis={false} offsetX={30}/>
+            <VictoryAxis label="AWESOME LABEL" dependentAxis crossAxis={false} offsetX={30}
+              style={{axisLabel: {padding: 55}}}
+            />
 
               <VictoryLine
                 style={{data:
@@ -404,7 +406,9 @@ class App extends React.Component {
           </VictoryChart>
 
           <VictoryChart style={chartStyle} animate={{duration: 2000}}>
-            <VictoryAxis dependentAxis orientation="left" label="AWESOME LABEL" style={{grid: {strokeWidth: 1}}}/>
+            <VictoryAxis dependentAxis orientation="left" label="AWESOME LABEL"
+              style={{grid: {strokeWidth: 1}}}
+            />
             <VictoryLine
               data={this.state.lineData}
               style={{data: this.state.lineStyle}}
