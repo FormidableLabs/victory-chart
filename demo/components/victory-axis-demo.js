@@ -156,7 +156,7 @@ export default class App extends React.Component {
         <div>
         <h2>Log Scale Axis</h2>
           <VictoryAxis
-            style={{axisLabel: {padding: 200}, parent: style.parent}}
+            style={style}
             label="cool log axis"
             padding={{top: 10, bottom: 60}}
             orientation="left"
@@ -166,7 +166,7 @@ export default class App extends React.Component {
             theme={VictoryTheme.grayscale}
           />
           <VictoryAxis
-            style={style}
+            style={{axisLabel: {padding: 200}, parent: style.parent}}
             label="cool log axis"
             padding={{top: 10, bottom: 60, right: 60}}
             orientation="right"
