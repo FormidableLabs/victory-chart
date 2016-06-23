@@ -180,7 +180,7 @@ export default {
     const labelStyle = style.axisLabel;
     return {
       x: x - (globalTransform.x / vPadding),
-      y: isVertical ? (sign * labelPadding) + globalTransform.y + (vPadding / 2.25)
+      y: isVertical ? (sign * labelPadding) + globalTransform.y + (vPadding / 1.75)
       : (sign * labelPadding) + globalTransform.y + (vPadding / 6),
       verticalAnchor: labelStyle.verticalAnchor || verticalAnchor,
       textAnchor: labelStyle.textAnchor || "middle",

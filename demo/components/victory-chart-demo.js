@@ -167,7 +167,7 @@ class App extends React.Component {
       alignItems: "center",
       justifyContent: "center"
     };
-    const chartStyle = {parent: {border: "1px solid #ccc", margin: "2%", maxWidth: "40%"}};
+    const chartStyle = {parent: {border: "1px solid #ccc", margin: "2%", maxWidth: "60%"}};
     return (
       <div className="demo">
         <h1>VictoryChart</h1>
