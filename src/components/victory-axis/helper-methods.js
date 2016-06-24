@@ -89,7 +89,8 @@ export default {
     };
 
     const parentProps = {style: style.parent, ticks, scale, width, height};
-    const axisLabelProps = this.getAxisLabelProps(modifiedProps, calculatedValues, globalTransform);
+    const axisLabelProps =
+      this.getAxisLabelProps(modifiedProps, calculatedValues, globalTransform, axisProps);
 
     return ticks.reduce((memo, data, index) => {
       const tick = stringTicks ? modifiedProps.tickValues[data - 1] : data;
@@ -169,7 +170,6 @@ export default {
 
   getAxisLabelProps(props, calculatedValues, globalTransform) {
     const {style, orientation, padding, labelPadding, isVertical} = calculatedValues;
-    // console.log(calculatedValues);
     const sign = orientationSign[orientation];
     const hPadding = padding.left + padding.right;
     const vPadding = padding.top + padding.bottom;
@@ -180,8 +180,8 @@ export default {
     const labelStyle = style.axisLabel;
     return {
       x: x - (globalTransform.x / vPadding),
-      y: isVertical ? (sign * labelPadding) + globalTransform.y + (vPadding / 1.75)
-      : (sign * labelPadding) + globalTransform.y + (vPadding / 6),
+      y: isVertical ? ((padding.top + globalTransform.y) - vPadding / 3.5) - labelPadding
+      : globalTransform.y + labelPadding,
       verticalAnchor: labelStyle.verticalAnchor || verticalAnchor,
       textAnchor: labelStyle.textAnchor || "middle",
       angle: labelStyle.angle,
@@ -237,7 +237,7 @@ export default {
     }
     const isVertical = Axis.isVertical(props);
     // TODO: magic numbers
-    return props.label ? (labelStyle.fontSize * (isVertical ? 2.3 : 1.6)) : 0;
+    return props.label ? (labelStyle.fontSize * (isVertical ? 0 : 1.3)) : 0;
   },
 
   getOffset(props, calculatedValues) {
