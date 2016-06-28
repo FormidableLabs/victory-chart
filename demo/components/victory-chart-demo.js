@@ -173,220 +173,222 @@ class App extends React.Component {
         <h1>VictoryChart</h1>
         <div style={containerStyle}>
           <VictoryChart style={chartStyle}>
-            <VictoryBar
-              horizontal
-              style={{data: {fill: "tomato"}}}
-              data={[
-                {x: 1, y: 1},
-                {x: 2, y: 2},
-                {x: 3, y: 7}
-              ]}
-            />
-         </VictoryChart>
-
-         <VictoryChart style={chartStyle}>
-            <VictoryGroup
-              labels={["a", "b", "c"]}
-              horizontal
-              offset={20}
-              colorScale={"qualitative"}
-            >
               <VictoryBar
+                horizontal
+                style={{data: {fill: "tomato"}}}
                 data={[
                   {x: 1, y: 1},
                   {x: 2, y: 2},
-                  {x: 3, y: 5}
-                ]}
-              />
-              <VictoryBar
-                data={[
-                  {x: 1, y: 2},
-                  {x: 2, y: 1},
                   {x: 3, y: 7}
                 ]}
               />
-              <VictoryBar
-                data={[
-                  {x: 1, y: 3},
-                  {x: 2, y: 4},
-                  {x: 3, y: 9}
-                ]}
-              />
-            </VictoryGroup>
-         </VictoryChart>
+           </VictoryChart>
 
-         <VictoryChart style={chartStyle}>
-            <VictoryGroup
-              offset={20}
-              colorScale={"qualitative"}
-            >
-              <VictoryBar
-                data={[
-                  {x: 1, y: 1},
-                  {x: 2, y: 2},
-                  {x: 3, y: 5}
-                ]}
-              />
-              <VictoryBar
-                data={[
-                  {x: 1, y: 2},
-                  {x: 2, y: 1},
-                  {x: 3, y: 7}
-                ]}
-              />
-              <VictoryBar
-                data={[
-                  {x: 1, y: 3},
-                  {x: 2, y: 4},
-                  {x: 3, y: 9}
-                ]}
-              />
-            </VictoryGroup>
-         </VictoryChart>
+           <VictoryChart style={chartStyle}>
+              <VictoryGroup
+                labels={["a", "b", "c"]}
+                horizontal
+                offset={20}
+                colorScale={"qualitative"}
+              >
+                <VictoryBar
+                  data={[
+                    {x: 1, y: 1},
+                    {x: 2, y: 2},
+                    {x: 3, y: 5}
+                  ]}
+                />
+                <VictoryBar
+                  data={[
+                    {x: 1, y: 2},
+                    {x: 2, y: 1},
+                    {x: 3, y: 7}
+                  ]}
+                />
+                <VictoryBar
+                  data={[
+                    {x: 1, y: 3},
+                    {x: 2, y: 4},
+                    {x: 3, y: 9}
+                  ]}
+                />
+              </VictoryGroup>
+           </VictoryChart>
 
-
-         <VictoryChart style={chartStyle}>
-            <VictoryStack
-              colorScale={"qualitative"}
-            >
-              <VictoryBar
-                data={[
-                  {x: 1, y: 1},
-                  {x: 2, y: 2},
-                  {x: 3, y: 5}
-                ]}
-              />
-              <VictoryBar
-                data={[
-                  {x: 1, y: 2},
-                  {x: 2, y: 1},
-                  {x: 3, y: 7}
-                ]}
-              />
-              <VictoryBar
-                data={[
-                  {x: 1, y: 3},
-                  {x: 2, y: 4},
-                  {x: 3, y: 9}
-                ]}
-              />
-            </VictoryStack>
-         </VictoryChart>
-         <VictoryChart style={chartStyle}>
-            <VictoryStack horizontal
-              labels={["a", "b", "c"]}
-              colorScale={"qualitative"}
-            >
-              <VictoryBar
-                data={[
-                  {x: 1, y: 1},
-                  {x: 2, y: 2},
-                  {x: 3, y: 5}
-                ]}
-              />
-              <VictoryBar
-                data={[
-                  {x: 1, y: 2},
-                  {x: 2, y: 1},
-                  {x: 3, y: 7}
-                ]}
-              />
-              <VictoryBar
-                data={[
-                  {x: 1, y: 3},
-                  {x: 2, y: 4},
-                  {x: 3, y: 9}
-                ]}
-              />
-            </VictoryStack>
-         </VictoryChart>
-
-          <VictoryChart
-            style={chartStyle}
-            animate={{ duration: 1500 }}
-            containerComponent={
-              <VictoryContainer
-                desc="This is an example of a bar chart wrapped in Victory Chart."
-              />
-            }
-          >
-          <Wrapper>
-            <VictoryBar
-              data={this.state.barTransitionData}
-            />
-            </Wrapper>
-          </VictoryChart>
-
-          <VictoryChart style={chartStyle} animate={{ duration: 1500 }}>
-            <VictoryBar
-              data={this.state.barTransitionData}
-            />
-          </VictoryChart>
-
-          <VictoryChart style={chartStyle} animate={{duration: 1000}}>
-            <VictoryStack colorScale={"warm"}>
-              {this.state.multiBarTransitionData.map((data, index) => {
-                return <VictoryBar key={index} data={data}/>;
-              })}
-            </VictoryStack>
-          </VictoryChart>
-
-          <VictoryChart style={chartStyle}/>
-
-          <VictoryChart style={chartStyle}>
-            <Wrapper>
-              <VictoryLabel text={"WOW"} x={150} y={150}/>
-              <VictoryScatter/>
-            </Wrapper>
-          </VictoryChart>
-
-          <VictoryChart style={chartStyle}>
-            <VictoryLine/>
-          </VictoryChart>
+           <VictoryChart style={chartStyle}>
+              <VictoryGroup
+                offset={20}
+                colorScale={"qualitative"}
+              >
+                <VictoryBar
+                  data={[
+                    {x: 1, y: 1},
+                    {x: 2, y: 2},
+                    {x: 3, y: 5}
+                  ]}
+                />
+                <VictoryBar
+                  data={[
+                    {x: 1, y: 2},
+                    {x: 2, y: 1},
+                    {x: 3, y: 7}
+                  ]}
+                />
+                <VictoryBar
+                  data={[
+                    {x: 1, y: 3},
+                    {x: 2, y: 4},
+                    {x: 3, y: 9}
+                  ]}
+                />
+              </VictoryGroup>
+           </VictoryChart>
 
 
-          <VictoryChart style={chartStyle}
-            events={[
-              {
-                childName: "bar",
-                target: "data",
-                eventHandlers: {
-                  onClick: (evt) => {
-                    evt.stopPropagation();
-                    return [
-                      {
-                        mutation: () => {
-                          return {style: {fill: "orange"}};
-                        }
-                      }
-                    ];
-                  }
-                }
-              }, {
-                target: "parent",
-                eventHandlers: {
-                  onClick: () => {
-                    return [
-                      {
-                        childName: "bar",
-                        target: "labels",
-                        mutation: () => {
-                          return {text: "o shit"};
-                        }
-                      }
-                    ];
-                  }
-                }
+           <VictoryChart style={chartStyle}>
+              <VictoryStack
+                colorScale={"qualitative"}
+              >
+                <VictoryBar
+                  data={[
+                    {x: 1, y: 1},
+                    {x: 2, y: 2},
+                    {x: 3, y: 5}
+                  ]}
+                />
+                <VictoryBar
+                  data={[
+                    {x: 1, y: 2},
+                    {x: 2, y: 1},
+                    {x: 3, y: 7}
+                  ]}
+                />
+                <VictoryBar
+                  data={[
+                    {x: 1, y: 3},
+                    {x: 2, y: 4},
+                    {x: 3, y: 9}
+                  ]}
+                />
+              </VictoryStack>
+           </VictoryChart>
+           <VictoryChart style={chartStyle}>
+              <VictoryStack horizontal
+                labels={["a", "b", "c"]}
+                colorScale={"qualitative"}
+              >
+                <VictoryBar
+                  data={[
+                    {x: 1, y: 1},
+                    {x: 2, y: 2},
+                    {x: 3, y: 5}
+                  ]}
+                />
+                <VictoryBar
+                  data={[
+                    {x: 1, y: 2},
+                    {x: 2, y: 1},
+                    {x: 3, y: 7}
+                  ]}
+                />
+                <VictoryBar
+                  data={[
+                    {x: 1, y: 3},
+                    {x: 2, y: 4},
+                    {x: 3, y: 9}
+                  ]}
+                />
+              </VictoryStack>
+           </VictoryChart>
+
+            <VictoryChart
+              style={chartStyle}
+              animate={{ duration: 1500 }}
+              containerComponent={
+                <VictoryContainer
+                  desc="This is an example of a bar chart wrapped in Victory Chart."
+                />
               }
-            ]}
-          >
-            <VictoryLabel text="Parent Events" y={50} x={150}/>
-            <VictoryBar name="bar"/>
-          </VictoryChart>
+            >
+            <Wrapper>
+              <VictoryBar
+                data={this.state.barTransitionData}
+              />
+              </Wrapper>
+            </VictoryChart>
+
+            <VictoryChart style={chartStyle} animate={{ duration: 1500 }}>
+              <VictoryBar
+                data={this.state.barTransitionData}
+              />
+            </VictoryChart>
+
+            <VictoryChart style={chartStyle} animate={{duration: 1000}}>
+              <VictoryStack colorScale={"warm"}>
+                {this.state.multiBarTransitionData.map((data, index) => {
+                  return <VictoryBar key={index} data={data}/>;
+                })}
+              </VictoryStack>
+            </VictoryChart>
+
+            <VictoryChart style={chartStyle}/>
+
+            <VictoryChart style={chartStyle}>
+              <Wrapper>
+                <VictoryLabel text={"WOW"} x={150} y={150}/>
+                <VictoryScatter/>
+              </Wrapper>
+            </VictoryChart>
+
+            <VictoryChart style={chartStyle}>
+              <VictoryLine/>
+            </VictoryChart>
+
+
+            <VictoryChart style={chartStyle}
+              events={[
+                {
+                  childName: "bar",
+                  target: "data",
+                  eventHandlers: {
+                    onClick: (evt) => {
+                      evt.stopPropagation();
+                      return [
+                        {
+                          mutation: () => {
+                            return {style: {fill: "orange"}};
+                          }
+                        }
+                      ];
+                    }
+                  }
+                }, {
+                  target: "parent",
+                  eventHandlers: {
+                    onClick: () => {
+                      return [
+                        {
+                          childName: "bar",
+                          target: "labels",
+                          mutation: () => {
+                            return {text: "o shit"};
+                          }
+                        }
+                      ];
+                    }
+                  }
+                }
+              ]}
+            >
+              <VictoryLabel text="Parent Events" y={50} x={150}/>
+              <VictoryBar name="bar"/>
+            </VictoryChart>
 
           <VictoryChart style={chartStyle} scale={"linear"}>
             <VictoryAxis/>
-            <VictoryAxis dependentAxis crossAxis={false} offsetX={30}/>
+            <VictoryAxis label="AWESOME LABEL" dependentAxis crossAxis={false} offsetX={30}
+              style={{axisLabel: {padding: 15}}}
+            />
 
               <VictoryLine
                 style={{data:
@@ -404,7 +406,9 @@ class App extends React.Component {
           </VictoryChart>
 
           <VictoryChart style={chartStyle} animate={{duration: 2000}}>
-            <VictoryAxis dependentAxis orientation="left" style={{grid: {strokeWidth: 1}}}/>
+            <VictoryAxis dependentAxis orientation="left" label="AWESOME LABEL"
+              style={{grid: {strokeWidth: 1}}}
+            />
             <VictoryLine
               data={this.state.lineData}
               style={{data: this.state.lineStyle}}
@@ -426,6 +430,7 @@ class App extends React.Component {
                 new Date(2020, 1, 1)
               ]}
               tickFormat={(x) => new Date(x).getFullYear()}
+              label="X axis label"
             />
             <VictoryLine
               style={{

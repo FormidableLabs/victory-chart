@@ -130,29 +130,29 @@ export default class App extends React.Component {
             tickFormat={(x) => x.getFullYear()}
           />
 
-        </div>
+          </div>
 
-        <div>
-        <h2>X-Y Axis</h2>
-          <svg style={style} width={500} height={400}>
-            <VictoryAxis crossAxis
-              width={500}
-              height={400}
-              domain={this.state.domain}
-              theme={VictoryTheme.grayscale}
-              offsetY={200}
-              standalone={false}
-            />
-            <VictoryAxis dependentAxis crossAxis
-              width={500}
-              height={400}
-              domain={this.state.domain}
-              theme={VictoryTheme.grayscale}
-              offsetX={250}
-              standalone={false}
-            />
-          </svg>
-        </div>
+          <div>
+          <h2>X-Y Axis</h2>
+            <svg style={style} width={500} height={400}>
+              <VictoryAxis crossAxis
+                width={500}
+                height={400}
+                domain={this.state.domain}
+                theme={VictoryTheme.grayscale}
+                offsetY={200}
+                standalone={false}
+              />
+              <VictoryAxis dependentAxis crossAxis
+                width={500}
+                height={400}
+                domain={this.state.domain}
+                theme={VictoryTheme.grayscale}
+                offsetX={250}
+                standalone={false}
+              />
+            </svg>
+          </div>
         <div>
         <h2>Log Scale Axis</h2>
           <VictoryAxis
@@ -163,14 +163,16 @@ export default class App extends React.Component {
             scale={"log"}
             domain={[1, 5]}
             offsetX={50}
+            theme={VictoryTheme.grayscale}
           />
           <VictoryAxis
-            style={style}
+            style={{axisLabel: {padding: 200}, parent: style.parent}}
             label="cool log axis"
             padding={{top: 10, bottom: 60, right: 60}}
             orientation="right"
             scale={"log"}
             domain={[1, 5]}
+            theme={VictoryTheme.grayscale}
           />
         </div>
         <div>
