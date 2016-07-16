@@ -4,6 +4,7 @@ import Ecology from "ecology";
 import { merge, random, range } from "lodash";
 import Radium, { Style } from "radium";
 import * as docgen from "react-docgen";
+import DataSource from "./data-source";
 import {
   VictoryChart, VictoryLine, VictoryAxis, VictoryBar, VictoryScatter, VictoryStack
 } from "../../src/index";
@@ -17,7 +18,7 @@ class Docs extends React.Component {
           overview={require("!!raw!./ecology.md")}
           source={docgen.parse(require("!!raw!../../src/components/victory-chart/victory-chart"))}
           scope={{
-            merge, range, random, React, ReactDOM, VictoryScatter, VictoryLine,
+            merge, range, random, DataSource, React, ReactDOM, VictoryScatter, VictoryLine,
             VictoryAxis, VictoryBar, VictoryChart, VictoryStack
           }}
           playgroundtheme="elegant"
