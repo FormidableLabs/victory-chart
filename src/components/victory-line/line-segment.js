@@ -3,7 +3,7 @@ import * as d3Shape from "d3-shape";
 
 export default class LineSegment extends React.Component {
   static propTypes = {
-    clipId: PropTypes.string,
+    clipId: PropTypes.number,
     data: PropTypes.array,
     events: PropTypes.object,
     index: PropTypes.number,

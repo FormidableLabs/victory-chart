@@ -1,6 +1,7 @@
-import { isFunction, defaults, partialRight } from "lodash";
+import { isFunction, defaults, partialRight, random } from "lodash";
 import React, { PropTypes } from "react";
 import Data from "../../helpers/data";
+import ClipPath from "../helpers/clip-path";
 import Domain from "../../helpers/domain";
 import {
   PropTypes as CustomPropTypes, Helpers, Events, VictoryContinuousTransition, VictoryLabel,
@@ -341,6 +342,7 @@ export default class VictoryArea extends React.Component {
   };
 
   static defaultProps = {
+    clipId: random(0, 1000),
     dataComponent: <Area/>,
     labelComponent: <VictoryLabel/>,
     padding: 50,
@@ -351,7 +353,8 @@ export default class VictoryArea extends React.Component {
     x: "x",
     y: "y",
     containerComponent: <VictoryContainer />,
-    groupComponent: <g/>
+    groupComponent: <g/>,
+    clipPathComponent: <ClipPath/>
   };
 
   static getDomain = Domain.getDomainWithZero.bind(Domain);
@@ -382,11 +385,11 @@ export default class VictoryArea extends React.Component {
   }
 
   renderData(props) {
-    const { dataComponent, labelComponent, groupComponent } = props;
+    const { dataComponent, labelComponent, groupComponent, clipId } = props;
     const { role } = VictoryArea;
     const dataEvents = this.getEvents(props, "data", "all");
     const dataProps = defaults(
-      {role},
+      {role, clipId},
       this.getEventState("all", "data"),
       this.getSharedEventState("all", "data"),
       dataComponent.props,
@@ -431,11 +434,18 @@ export default class VictoryArea extends React.Component {
     );
   }
 
-  renderGroup(children, style) {
+  renderGroup(children, modifiedProps, style) {
+    const { clipPathComponent } = modifiedProps;
+
+    const clipComponent = React.cloneElement(clipPathComponent, Object.assign(
+      {}, modifiedProps
+    ));
+
     return React.cloneElement(
       this.props.groupComponent,
       { role: "presentation", style},
-      children
+      children,
+      clipComponent
     );
   }
 
@@ -458,8 +468,10 @@ export default class VictoryArea extends React.Component {
     : fallbackProps.style;
 
     const baseStyles = Helpers.getStyles(style, styleObject, "auto", "100%");
-
-    const group = this.renderGroup(this.renderData(modifiedProps), baseStyles.parent);
+    const group = this.renderGroup(
+      this.renderData(modifiedProps),
+      modifiedProps,
+      baseStyles.parent);
 
     return standalone ? this.renderContainer(modifiedProps, group) : group;
   }

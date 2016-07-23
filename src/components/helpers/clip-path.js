@@ -1,5 +1,4 @@
 import React, { PropTypes } from "react";
-import { isObject } from "lodash";
 import {
   PropTypes as CustomPropTypes, Helpers
 } from "victory-core";
@@ -11,7 +10,7 @@ export default class ClipPath extends React.Component {
      * specific chart
      * @type {String}
      */
-    clipId: PropTypes.string,
+    clipId: PropTypes.number,
     /**
      * The height props specifies the height the svg viewBox of the chart container.
      * This value should be given as a number of pixels
