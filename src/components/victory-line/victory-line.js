@@ -5,7 +5,7 @@ import LineHelpers from "./helper-methods";
 import Domain from "../../helpers/domain";
 import Data from "../../helpers/data";
 import {
-  PropTypes as CustomPropTypes, Helpers, Events, VictoryTransition, VictoryLabel,
+  PropTypes as CustomPropTypes, Helpers, Events, VictoryContinuousTransition, VictoryLabel,
   VictoryContainer
 } from "victory-core";
 
@@ -476,9 +476,9 @@ export default class VictoryLine extends React.Component {
         "data", "domain", "height", "padding", "samples", "style", "width", "x", "y"
       ];
       return (
-        <VictoryTransition animate={animate} animationWhitelist={whitelist}>
+        <VictoryContinuousTransition animate={animate} animationWhitelist={whitelist}>
           {React.createElement(this.constructor, modifiedProps)}
-        </VictoryTransition>
+        </VictoryContinuousTransition>
       );
     }
 

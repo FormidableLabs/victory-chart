@@ -3,7 +3,7 @@ import React, { PropTypes } from "react";
 import Data from "../../helpers/data";
 import Domain from "../../helpers/domain";
 import {
-  PropTypes as CustomPropTypes, Helpers, Events, VictoryTransition, VictoryLabel,
+  PropTypes as CustomPropTypes, Helpers, Events, VictoryContinuousTransition, VictoryLabel,
   VictoryContainer
 } from "victory-core";
 import Area from "./area";
@@ -448,9 +448,9 @@ export default class VictoryArea extends React.Component {
         "data", "domain", "height", "padding", "style", "width"
       ];
       return (
-        <VictoryTransition animate={animate} animationWhitelist={whitelist}>
+        <VictoryContinuousTransition animate={animate} animationWhitelist={whitelist}>
           {React.createElement(this.constructor, modifiedProps)}
-        </VictoryTransition>
+        </VictoryContinuousTransition>
       );
     }
 
