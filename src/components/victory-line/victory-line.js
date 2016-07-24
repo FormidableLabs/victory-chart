@@ -420,14 +420,14 @@ export default class VictoryLine extends React.Component {
       ));
 
       const labelProps = defaults(
-          {key: `${role}-label-${key}`},
-          this.getEventState("all", "labels"),
-          this.getSharedEventState("all", "labels"),
-          { data },
-          labelComponent.props,
-          this.baseProps.all.labels,
-          props
-        );
+        {key: `${role}-label-${key}`},
+        this.getEventState("all", "labels"),
+        this.getSharedEventState("all", "labels"),
+        { data },
+        labelComponent.props,
+        this.baseProps.all.labels,
+        props
+      );
       if (labelProps && labelProps.text) {
         const labelEvents = this.getEvents(props, "labels", "all");
         const lineLabel = React.cloneElement(labelComponent, Object.assign({
