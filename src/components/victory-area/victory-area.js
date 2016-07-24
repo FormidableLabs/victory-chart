@@ -4,7 +4,7 @@ import Data from "../../helpers/data";
 import ClipPath from "../helpers/clip-path";
 import Domain from "../../helpers/domain";
 import {
-  PropTypes as CustomPropTypes, Helpers, Events, VictoryContinuousTransition, VictoryLabel,
+  PropTypes as CustomPropTypes, Helpers, Events, VictoryTransition, VictoryLabel,
   VictoryContainer
 } from "victory-core";
 import Area from "./area";
@@ -458,9 +458,9 @@ export default class VictoryArea extends React.Component {
         "data", "domain", "height", "padding", "style", "width"
       ];
       return (
-        <VictoryContinuousTransition animate={animate} animationWhitelist={whitelist}>
+        <VictoryTransition animate={animate} animationWhitelist={whitelist}>
           {React.createElement(this.constructor, modifiedProps)}
-        </VictoryContinuousTransition>
+        </VictoryTransition>
       );
     }
 

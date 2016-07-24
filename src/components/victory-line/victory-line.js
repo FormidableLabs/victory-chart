@@ -6,7 +6,7 @@ import ClipPath from "../helpers/clip-path";
 import Domain from "../../helpers/domain";
 import Data from "../../helpers/data";
 import {
-  PropTypes as CustomPropTypes, Helpers, Events, VictoryContinuousTransition, VictoryLabel,
+  PropTypes as CustomPropTypes, Helpers, Events, VictoryTransition, VictoryLabel,
   VictoryContainer
 } from "victory-core";
 
@@ -486,9 +486,9 @@ export default class VictoryLine extends React.Component {
         "data", "domain", "height", "padding", "samples", "style", "width", "x", "y"
       ];
       return (
-        <VictoryContinuousTransition animate={animate} animationWhitelist={whitelist}>
+        <VictoryTransition animate={animate} animationWhitelist={whitelist}>
           {React.createElement(this.constructor, modifiedProps)}
-        </VictoryContinuousTransition>
+        </VictoryTransition>
       );
     }
 
