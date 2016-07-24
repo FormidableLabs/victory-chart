@@ -1,4 +1,4 @@
-import { defaults, partialRight, isFunction, random } from "lodash";
+import { defaults, partialRight, isFunction } from "lodash";
 import React, { PropTypes } from "react";
 import LineSegment from "./line-segment";
 import LineHelpers from "./helper-methods";
@@ -356,7 +356,6 @@ export default class VictoryLine extends React.Component {
   };
 
   static defaultProps = {
-    clipId: random(0, 1000),
     interpolation: "linear",
     padding: 50,
     samples: 50,
@@ -412,8 +411,10 @@ export default class VictoryLine extends React.Component {
         this.getSharedEventState("all", "data"),
         { data },
         dataComponent.props,
-        this.baseProps.all.data
+        this.baseProps.all.data,
+        props
       );
+
       const lineComponent = React.cloneElement(dataComponent, Object.assign(
         {}, dataProps, {events: Events.getPartialEvents(dataEvents, "all", dataProps)}
       ));
@@ -424,7 +425,8 @@ export default class VictoryLine extends React.Component {
           this.getSharedEventState("all", "labels"),
           { data },
           labelComponent.props,
-          this.baseProps.all.labels
+          this.baseProps.all.labels,
+          props
         );
       if (labelProps && labelProps.text) {
         const labelEvents = this.getEvents(props, "labels", "all");
@@ -474,7 +476,8 @@ export default class VictoryLine extends React.Component {
   }
 
   render() {
-    const modifiedProps = Helpers.modifyProps(this.props, fallbackProps);
+    const clipId = Math.round(Math.random() * 10000);
+    const modifiedProps = Helpers.modifyProps(this.props, fallbackProps, {clipId});
     const { animate, style, standalone } = modifiedProps;
 
     if (animate) {
