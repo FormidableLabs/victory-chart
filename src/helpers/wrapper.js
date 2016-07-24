@@ -3,7 +3,14 @@ import React from "react";
 import Axis from "./axis";
 import Data from "./data";
 import Domain from "./domain";
-import { Style, Transitions, Helpers, Collection } from "victory-core";
+import {
+  Style,
+  ContinuousTransitions,
+  Transitions,
+  TransitionHelpers,
+  Helpers,
+  Collection
+} from "victory-core";
 
 
 export default {
@@ -26,9 +33,11 @@ export default {
     if (!this.props.animate) {
       return;
     }
+
     if (this.props.animate.parentState) {
-      const nodesWillExit = this.props.animate.parentState.nodesWillExit;
-      const oldProps = nodesWillExit ? this.props : null;
+      const oldProps = this.props.animate.parentState.nodesWillEnter
+        || this.props.animate.parentState.nodesWillExit
+        ? this.props : null;
       this.setState(defaults({oldProps}, this.props.animate.parentState));
     } else {
       const oldChildren = React.Children.toArray(this.props.children);
@@ -37,15 +46,17 @@ export default {
         nodesWillExit,
         nodesWillEnter,
         childrenTransitions,
-        nodesShouldEnter
-      } = Transitions.getInitialTransitionState(oldChildren, nextChildren);
+        nodesShouldEnter,
+        nodesShouldExit
+      } = TransitionHelpers.getInitialTransitionState(oldChildren, nextChildren);
 
       this.setState({
         nodesWillExit,
         nodesWillEnter,
         childrenTransitions,
         nodesShouldEnter,
-        oldProps: nodesWillExit ? this.props : null
+        nodesShouldExit,
+        oldProps: nodesWillEnter || nodesWillExit ? this.props : null
       });
     }
   },
@@ -54,6 +65,12 @@ export default {
     if (!props.animate) {
       return child.props.animate;
     }
+
+    let childTransitions = Transitions;
+    if (TransitionHelpers.checkContinuousChartType(child)) {
+      childTransitions = ContinuousTransitions;
+    }
+
     const getFilteredState = () => {
       let childrenTransitions = this.state && this.state.childrenTransitions;
       childrenTransitions = Collection.isArrayOfArrays(childrenTransitions) ?
@@ -65,7 +82,7 @@ export default {
     const state = getFilteredState();
     const parentState = props.animate && props.animate.parentState || state;
     if (!getTransitions) {
-      const getTransitionProps = Transitions.getTransitionPropsFactory(
+      const getTransitionProps = childTransitions.getTransitionPropsFactory(
         props,
         state,
         (newState) => this.setState(newState)
