@@ -2,6 +2,7 @@ import { defaults, partialRight, isFunction } from "lodash";
 import React, { PropTypes } from "react";
 import LineSegment from "./line-segment";
 import LineHelpers from "./helper-methods";
+import ClipPath from "../helpers/clip-path";
 import Domain from "../../helpers/domain";
 import Data from "../../helpers/data";
 import {
@@ -40,12 +41,12 @@ export default class VictoryLine extends React.Component {
   static defaultTransitions = {
     onExit: {
       duration: 500,
-      before: () => ({ y: null })
+      before: (datum) => ({ y: datum.y })
     },
     onEnter: {
       duration: 500,
       before: () => ({ y: null }),
-      after: (datum) => ({ y: datum.y})
+      after: (datum) => ({ y: datum.y })
     }
   };
 
@@ -370,7 +371,8 @@ export default class VictoryLine extends React.Component {
     dataComponent: <LineSegment/>,
     labelComponent: <VictoryLabel/>,
     containerComponent: <VictoryContainer/>,
-    groupComponent: <g/>
+    groupComponent: <g/>,
+    clipPathComponent: <ClipPath/>
   };
 
   static getDomain = Domain.getDomain.bind(Domain);
@@ -402,32 +404,35 @@ export default class VictoryLine extends React.Component {
   }
 
   renderData(props) {
-    const { dataComponent, labelComponent, groupComponent } = props;
+    const { dataComponent, labelComponent, groupComponent, clipId } = props;
     const dataSegments = LineHelpers.getDataSegments(Data.getData(props));
 
     return dataSegments.map((data, key) => {
       const role = `${VictoryLine.role}-${key}`;
       const dataEvents = this.getEvents(props, "data", "all");
       const dataProps = defaults(
-        {index: key, key: role, role},
+        {index: key, key: role, role, clipId},
         this.getEventState("all", "data"),
         this.getSharedEventState("all", "data"),
         { data },
         dataComponent.props,
-        this.baseProps.all.data
+        this.baseProps.all.data,
+        props
       );
+
       const lineComponent = React.cloneElement(dataComponent, Object.assign(
         {}, dataProps, {events: Events.getPartialEvents(dataEvents, "all", dataProps)}
       ));
 
       const labelProps = defaults(
-          {key: `${role}-label-${key}`},
-          this.getEventState("all", "labels"),
-          this.getSharedEventState("all", "labels"),
-          { data },
-          labelComponent.props,
-          this.baseProps.all.labels
-        );
+        {key: `${role}-label-${key}`},
+        this.getEventState("all", "labels"),
+        this.getSharedEventState("all", "labels"),
+        { data },
+        labelComponent.props,
+        this.baseProps.all.labels,
+        props
+      );
       if (labelProps && labelProps.text) {
         const labelEvents = this.getEvents(props, "labels", "all");
         const lineLabel = React.cloneElement(labelComponent, Object.assign({
@@ -460,16 +465,24 @@ export default class VictoryLine extends React.Component {
     );
   }
 
-  renderGroup(children, style) {
+  renderGroup(children, modifiedProps, style) {
+    const { clipPathComponent } = modifiedProps;
+
+    const clipComponent = React.cloneElement(clipPathComponent, Object.assign(
+      {}, modifiedProps
+    ));
+
     return React.cloneElement(
       this.props.groupComponent,
       { role: "presentation", style},
-      children
+      children,
+      clipComponent
     );
   }
 
   render() {
-    const modifiedProps = Helpers.modifyProps(this.props, fallbackProps);
+    const clipId = Math.round(Math.random() * 10000);
+    const modifiedProps = Helpers.modifyProps(this.props, fallbackProps, {clipId});
     const { animate, style, standalone } = modifiedProps;
 
     if (animate) {
@@ -491,8 +504,10 @@ export default class VictoryLine extends React.Component {
     : fallbackProps.style;
 
     const baseStyles = Helpers.getStyles(style, styleObject, "auto", "100%");
-
-    const group = this.renderGroup(this.renderData(modifiedProps), baseStyles.parent);
+    const group = this.renderGroup(
+      this.renderData(modifiedProps),
+      modifiedProps,
+      baseStyles.parent);
 
     return standalone ? this.renderContainer(modifiedProps, group) : group;
   }
