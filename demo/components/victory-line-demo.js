@@ -1,7 +1,7 @@
 /*global window:false */
 import React from "react";
 import { merge, random, range } from "lodash";
-import {VictoryLine, VictoryChart} from "../../src/index";
+import {VictoryLine, VictoryBar, VictoryChart} from "../../src/index";
 import LineSegment from "../../src/components/victory-line/line-segment";
 import Point from "../../src/components/victory-scatter/point";
 import { VictoryContainer, VictoryTheme } from "victory-core";
@@ -59,6 +59,7 @@ export default class App extends React.Component {
     this.state = {
       data: this.getData(),
       transitionData: this.getTransitionData(),
+      transitionData2: this.getTransitionData(),
       arrayData: this.getArrayData(),
       style: {
         stroke: "blue",
@@ -100,6 +101,7 @@ export default class App extends React.Component {
       this.setState({
         data: this.getData(),
         transitionData: this.getTransitionData(),
+        transitionData2: this.getTransitionData(),
         style: this.getStyles()
       });
     }, 3000);
@@ -235,6 +237,36 @@ export default class App extends React.Component {
           theme={VictoryTheme.material}
         >
           <VictoryLine
+            style={{parent: parentStyle, data: this.state.style}}
+            data={this.state.transitionData}
+            animate={{duration: 1500}}
+            containerComponent={
+              <VictoryContainer
+                title="Line Chart"
+                desc="This is a line chart for displaying data."
+              />
+            }
+          />
+        </VictoryChart>
+
+        <VictoryChart
+          style={{parent: parentStyle}}
+          theme={VictoryTheme.material}
+          animate={{duration: 1500}}
+        >
+          <VictoryLine
+            style={{parent: parentStyle, data: this.state.style}}
+            data={this.state.transitionData}
+            animate={{duration: 1500}}
+            containerComponent={
+              <VictoryContainer
+                title="Line Chart"
+                desc="This is a line chart for displaying data."
+              />
+            }
+          />
+
+          <VictoryBar
             style={{parent: parentStyle, data: this.state.style}}
             data={this.state.transitionData}
             animate={{duration: 1500}}

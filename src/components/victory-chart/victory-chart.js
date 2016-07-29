@@ -17,6 +17,13 @@ const fallbackProps = {
 };
 
 export default class VictoryChart extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.setAnimationState = Wrapper.setAnimationState.bind(this);
+    this.getAnimationProps = Wrapper.getAnimationProps.bind(this);
+  }
+
   static propTypes = {
     /**
      * The animate prop specifies props for VictoryAnimation to use. If this prop is
@@ -227,11 +234,6 @@ export default class VictoryChart extends React.Component {
     }
   };
 
-  componentWillReceiveProps(nextProps) {
-    const setAnimationState = Wrapper.setAnimationState.bind(this);
-    setAnimationState(nextProps);
-  }
-
   getStyles(props) {
     const styleProps = props.style && props.style.parent;
     return {
@@ -317,12 +319,11 @@ export default class VictoryChart extends React.Component {
 
   getNewChildren(props, childComponents, calculatedProps) {
     const baseStyle = calculatedProps.style.parent;
-    const getAnimationProps = Wrapper.getAnimationProps.bind(this);
     return childComponents.map((child, index) => {
       const style = defaults({}, child.props.style, {parent: baseStyle});
       const childProps = this.getChildProps(child, props, calculatedProps);
       const newProps = defaults({
-        animate: getAnimationProps(props, child, index),
+        animate: this.getAnimationProps(props, child),
         height: props.height,
         width: props.width,
         padding: Helpers.getPadding(props),
@@ -342,7 +343,7 @@ export default class VictoryChart extends React.Component {
     const parentProps = defaults(
       {},
       containerComponent.props,
-      {style: style.parent, scale, width, height}
+      { style: style.parent, scale, width, height}
     );
     return React.cloneElement(containerComponent, parentProps);
   }

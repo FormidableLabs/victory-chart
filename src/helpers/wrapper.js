@@ -1,15 +1,12 @@
-import { defaults, flatten, isFunction, partialRight, uniq } from "lodash";
+import { defaults, flatten, isFunction, uniq } from "lodash";
 import React from "react";
 import Axis from "./axis";
 import Data from "./data";
 import Domain from "./domain";
 import {
   Style,
-  ContinuousTransitions,
-  Transitions,
   TransitionHelpers,
-  Helpers,
-  Collection
+  Helpers
 } from "victory-core";
 
 
@@ -56,40 +53,17 @@ export default {
         childrenTransitions,
         nodesShouldEnter,
         nodesShouldExit,
-        oldProps: nodesWillEnter || nodesWillExit ? this.props : null
+        oldProps: (nodesWillEnter || nodesWillExit) ? this.props : null
       });
     }
   },
 
-  getAnimationProps(props, child, index) {
+  getAnimationProps(props, child) {
     if (!props.animate) {
+      // if parent don't have an animate props return child animate
       return child.props.animate;
     }
-
-    let childTransitions = Transitions;
-    if (TransitionHelpers.checkContinuousChartType(child)) {
-      childTransitions = ContinuousTransitions;
-    }
-
-    const getFilteredState = () => {
-      let childrenTransitions = this.state && this.state.childrenTransitions;
-      childrenTransitions = Collection.isArrayOfArrays(childrenTransitions) ?
-        childrenTransitions[index] : childrenTransitions;
-      return defaults({childrenTransitions}, this.state);
-    };
-
-    let getTransitions = props.animate && props.animate.getTransitions;
-    const state = getFilteredState();
-    const parentState = props.animate && props.animate.parentState || state;
-    if (!getTransitions) {
-      const getTransitionProps = childTransitions.getTransitionPropsFactory(
-        props,
-        state,
-        (newState) => this.setState(newState)
-      );
-      getTransitions = partialRight(getTransitionProps, index);
-    }
-    return defaults({getTransitions, parentState}, props.animate, child.props.animate);
+    return defaults(props.animate, child.props.animate);
   },
 
   getDomainFromChildren(props, axis, childComponents) {
