@@ -499,7 +499,6 @@ export default class VictoryCandlestick extends React.Component {
       } else {
         components[index] = candleComponent;
       }
-      
     }
     return components;
   }
