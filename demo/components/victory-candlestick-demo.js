@@ -110,7 +110,79 @@ export default class App extends React.Component {
         />
         </svg>
 
-       
+        <VictoryCandlestick
+          style={{parent: style.parent}}
+          data={data}
+          theme={VictoryTheme.material}
+          size={8}
+          events={[{
+            target: "labels",
+            eventHandlers: {
+              onClick: () => {
+                return [
+                  {
+                    mutation: (props) => {
+                      return {
+                        style: merge({}, props.style.labels, {fill: "orange"})
+                      };
+                    }
+                  }
+                ];
+              }
+            }
+          },
+          {
+            target: "data",
+            eventHandlers: {
+              onClick: () => {
+                return [
+                  {
+                    mutation: (props) => {
+                      return {
+                        style: merge({}, props.style, {fill: "blue"})
+                      };
+                    }
+                  }
+                ];
+              }
+            }
+          }]}
+        />
+
+        <VictoryChart
+          scale={{x: "time"}}
+          style={{
+            parent: style.parent
+          }}
+          domainPadding={{x: [20, 50]}}
+        >
+          <VictoryCandlestick
+            candleColors={{positive: "#8BC34A", negative: "#C62828"}}
+            data={data}
+            style={{data: {stroke: "none"}}}
+            size={8}
+          />
+        </VictoryChart>
+
+        <VictoryCandlestick
+          animate={{duration: 2000}}
+          data={this.state.data}
+          style={{
+            data: { width: 50, stroke: "transparent" },
+            parent: style.parent
+          }}
+        />
+
+        <VictoryCandlestick
+          size={1}
+        />
+
+        <VictoryChart>
+          <VictoryCandlestick
+            data={[]}
+          />
+        </VictoryChart>
+
       </div>
     );
   }
