@@ -447,7 +447,9 @@ export default class VictoryArea extends React.Component {
   }
 
   render() {
-    const modifiedProps = Helpers.modifyProps(this.props, fallbackProps);
+    const modifiedProps = this.props.theme && this.props.theme.area ?
+    Helpers.modifyProps(this.props, fallbackProps, this.props.theme.area.props) :
+    Helpers.modifyProps(this.props, fallbackProps);
     const { animate, style, standalone } = modifiedProps;
 
     if (animate) {
@@ -461,7 +463,8 @@ export default class VictoryArea extends React.Component {
       );
     }
 
-    const styleObject = modifiedProps.theme && modifiedProps.theme.area ? modifiedProps.theme.area
+    const styleObject = modifiedProps.theme && modifiedProps.theme.area
+    ? modifiedProps.theme.area.style
     : fallbackProps.style;
 
     const baseStyles = Helpers.getStyles(style, styleObject, "auto", "100%");

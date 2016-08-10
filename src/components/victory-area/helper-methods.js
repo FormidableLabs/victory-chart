@@ -7,7 +7,9 @@ import Scale from "../../helpers/scale";
 export default {
 
   getBaseProps(props, fallbackProps) {
-    const modifiedProps = Helpers.modifyProps(props, fallbackProps);
+    const modifiedProps = props.theme && props.theme.area ?
+    Helpers.modifyProps(props, fallbackProps, props.theme.area.props) :
+    Helpers.modifyProps(props, fallbackProps);
     const {scale, style, data} = this.getCalculatedValues(modifiedProps, fallbackProps);
     const {interpolation, label, width, height, groupComponent} = modifiedProps;
 
@@ -48,7 +50,7 @@ export default {
   },
 
   getCalculatedValues(props, fallbackProps) {
-    const defaultStyles = props.theme && props.theme.area ? props.theme.area
+    const defaultStyles = props.theme && props.theme.area ? props.theme.area.style
     : fallbackProps.style;
     const style = Helpers.getStyles(props.style, defaultStyles, "auto", "100%");
     const range = {
