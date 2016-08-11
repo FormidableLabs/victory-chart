@@ -27,6 +27,7 @@ class Wrapper extends React.Component {
   }
 }
 
+
 export default class App extends React.Component {
   constructor() {
     super();

@@ -90,7 +90,7 @@ export default {
   },
 
   getCalculatedValues(props, fallbackProps) {
-    const defaultStyles = props.theme && props.theme.scatter ? props.theme.scatter
+    const defaultStyles = props.theme && props.theme.bar ? props.theme.bar.style
     : fallbackProps.style;
     const style = Helpers.getStyles(props.style, defaultStyles, "auto", "100%");
     const data = Events.addEventKeys(props, Data.getData(props));
