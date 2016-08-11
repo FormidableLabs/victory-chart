@@ -1,4 +1,4 @@
-import { assign, pick, omit, defaults, merge } from "lodash";
+import { assign, pick, omit, defaults } from "lodash";
 import { Helpers, Events, Log } from "victory-core";
 import Scale from "../../helpers/scale";
 import Domain from "../../helpers/domain";
