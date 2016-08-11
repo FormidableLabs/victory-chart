@@ -484,7 +484,9 @@ export default class VictoryScatter extends React.Component {
   }
 
   render() {
-    const modifiedProps = Helpers.modifyProps(this.props, fallbackProps);
+    const modifiedProps = this.props.theme && this.props.theme.scatter
+    ? Helpers.modifyProps(this.props, fallbackProps, this.props.theme.scatter.props)
+    : Helpers.modifyProps(this.props, fallbackProps);
     const { animate, style, standalone } = modifiedProps;
 
     if (animate) {
@@ -503,7 +505,7 @@ export default class VictoryScatter extends React.Component {
     }
 
     const styleObject = modifiedProps.theme && modifiedProps.theme.scatter
-    ? modifiedProps.theme.scatter
+    ? modifiedProps.theme.scatter.style
     : fallbackProps.style;
 
     const baseStyles = Helpers.getStyles(style, styleObject, "auto", "100%");

@@ -374,7 +374,8 @@ export default class VictoryStack extends React.Component {
     if (role !== "group-wrapper" && role !== "stack-wrapper") {
       return undefined;
     }
-    return props.theme ? colorScaleOptions || props.theme.props.colorScale
+    return props.theme && props.theme.stack
+    ? colorScaleOptions || props.theme.stack.props.colorScale
     : colorScaleOptions;
   }
 
@@ -426,7 +427,9 @@ export default class VictoryStack extends React.Component {
   render() {
     const props = this.state && this.state.nodesWillExit ?
       this.state.oldProps : this.props;
-    const modifiedProps = Helpers.modifyProps(props, fallbackProps);
+    const modifiedProps = props.theme && props.theme.stack
+    ? Helpers.modifyProps(props, fallbackProps, props.theme.stack.props)
+    : Helpers.modifyProps(props, fallbackProps);
     const style = Helpers.getStyles(modifiedProps.style, fallbackProps.style, "auto", "100%");
     const childComponents = React.Children.toArray(modifiedProps.children);
     const types = uniq(childComponents.map((child) => child.type.role));

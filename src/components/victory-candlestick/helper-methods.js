@@ -1,4 +1,4 @@
-import { assign, pick, omit, defaults } from "lodash";
+import { assign, pick, omit, defaults, merge } from "lodash";
 import { Helpers, Events, Log } from "victory-core";
 import Scale from "../../helpers/scale";
 import Domain from "../../helpers/domain";
@@ -49,7 +49,10 @@ export default {
   },
 
   getCalculatedValues(props, fallbackProps) {
-    const style = Helpers.getStyles(props.style, fallbackProps.style, "auto", "100%");
+    const styleObject = props.theme && props.theme.candlestick
+      ? props.theme.candlestick.style
+      : fallbackProps.style;
+    const style = Helpers.getStyles(props.style, styleObject, "auto", "100%");
     const data = Events.addEventKeys(props, this.getData(props));
     const range = {
       x: Helpers.getRange(props, "x"),

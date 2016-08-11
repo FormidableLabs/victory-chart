@@ -472,7 +472,9 @@ export default class VictoryLine extends React.Component {
   }
 
   render() {
-    const modifiedProps = Helpers.modifyProps(this.props, fallbackProps);
+    const modifiedProps = this.props.theme && this.props.theme.line
+    ? Helpers.modifyProps(this.props, fallbackProps, this.props.theme.line.props)
+    : Helpers.modifyProps(this.props, fallbackProps);
     const { animate, style, standalone } = modifiedProps;
 
     if (animate) {
@@ -490,7 +492,8 @@ export default class VictoryLine extends React.Component {
       );
     }
 
-    const styleObject = modifiedProps.theme && modifiedProps.theme.line ? modifiedProps.theme.line
+    const styleObject = modifiedProps.theme && modifiedProps.theme.line
+    ? modifiedProps.theme.line.style
     : fallbackProps.style;
 
     const baseStyles = Helpers.getStyles(style, styleObject, "auto", "100%");

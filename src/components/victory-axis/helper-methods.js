@@ -183,7 +183,9 @@ export default {
   },
 
   getCalculatedValues(props, fallbackProps) {
-    const defaultStyles = props.theme && props.theme.axis ? props.theme.axis : fallbackProps.style;
+    const defaultStyles = props.theme && props.theme.axis
+    ? props.theme.axis.style
+    : fallbackProps.style;
     const style = this.getStyles(props, defaultStyles);
     const padding = Helpers.getPadding(props);
     const orientation = props.orientation || (props.dependentAxis ? "left" : "bottom");

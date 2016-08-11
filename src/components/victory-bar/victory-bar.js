@@ -461,7 +461,9 @@ export default class VictoryBar extends React.Component {
   }
 
   render() {
-    const modifiedProps = Helpers.modifyProps(this.props, fallbackProps);
+    const modifiedProps = this.props.theme && this.props.theme.bar
+    ? Helpers.modifyProps(this.props, fallbackProps, this.props.theme.bar.props)
+    : Helpers.modifyProps(this.props, fallbackProps);
     const { animate, style, standalone } = modifiedProps;
 
     if (animate) {
@@ -475,7 +477,8 @@ export default class VictoryBar extends React.Component {
       );
     }
 
-    const styleObject = modifiedProps.theme && modifiedProps.theme.bar ? modifiedProps.theme.bar
+    const styleObject = modifiedProps.theme && modifiedProps.theme.bar
+    ? modifiedProps.theme.bar.style
     : fallbackProps.style;
 
     const baseStyles = Helpers.getStyles(style, styleObject, "auto", "100%");

@@ -511,7 +511,9 @@ export default class VictoryAxis extends React.Component {
   }
 
   render() {
-    const modifiedProps = Helpers.modifyProps(this.props, fallbackProps);
+    const modifiedProps = this.props.theme && this.props.theme.axis
+    ? Helpers.modifyProps(this.props, fallbackProps, this.props.theme.axis.props)
+    : Helpers.modifyProps(this.props, fallbackProps);
     const { animate, standalone } = modifiedProps;
     if (animate) {
       // Do less work by having `VictoryAnimation` tween only values that
@@ -528,7 +530,8 @@ export default class VictoryAxis extends React.Component {
       );
     }
 
-    const styleObject = modifiedProps.theme && modifiedProps.theme.axis ? modifiedProps.theme.axis
+    const styleObject = modifiedProps.theme && modifiedProps.theme.axis
+    ? modifiedProps.theme.axis.style
     : fallbackProps.style;
     const style = AxisHelpers.getStyles(modifiedProps, styleObject);
     const children = [

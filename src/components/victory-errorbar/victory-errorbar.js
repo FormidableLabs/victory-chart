@@ -469,7 +469,9 @@ export default class VictoryErrorBar extends React.Component {
   }
 
   render() {
-    const modifiedProps = Helpers.modifyProps(this.props, fallbackProps);
+    const modifiedProps = this.props.theme && this.props.theme.errorbar
+    ? Helpers.modifyProps(this.props, fallbackProps, this.props.theme.errorbar.props)
+    : Helpers.modifyProps(this.props, fallbackProps);
     const { animate, style, standalone } = modifiedProps;
     if (animate) {
       // Do less work by having `VictoryAnimation` tween only values that
@@ -487,7 +489,7 @@ export default class VictoryErrorBar extends React.Component {
     }
 
     const styleObject = modifiedProps.theme && modifiedProps.theme.errorbar
-    ? modifiedProps.theme.errorbar
+    ? modifiedProps.theme.errorbar.style
     : fallbackProps.style;
 
     const baseStyle = Helpers.getStyles(style, styleObject, "auto", "100%");
