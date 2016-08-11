@@ -99,7 +99,9 @@ export default {
   },
 
   getBaseProps(props, fallbackProps) {
-    const modifiedProps = Helpers.modifyProps(props, fallbackProps);
+    const modifiedProps = props.theme && props.theme.bar
+    ? Helpers.modifyProps(props, fallbackProps, props.theme.bar.props)
+    : Helpers.modifyProps(props, fallbackProps);
     const {style, data, scale } = this.getCalculatedValues(modifiedProps, fallbackProps);
     const { horizontal, width, height, padding } = modifiedProps;
     const childProps = {parent: { scale, width, height, data, style: style.parent }};

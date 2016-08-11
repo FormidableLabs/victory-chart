@@ -255,13 +255,12 @@ export default class App extends React.Component {
           })}
         </VictoryStack>
 
-        <VictoryChart style={{parent: parentStyle}} domainPadding={{x: 30}}
+        <VictoryChart style={{parent: parentStyle}}
           theme={VictoryTheme.material}
         >
           <VictoryGroup
             offset={15}
             animate={{duration: 1000}}
-            colorScale={"warm"}
           >
             {this.state.multiTransitionData.map((data, index) => {
               return <Wrapper key={index}><VictoryBar key={index} data={data}/></Wrapper>;
@@ -506,7 +505,7 @@ export default class App extends React.Component {
           ]}
         />
 
-        <VictoryChart>
+        <VictoryChart theme={VictoryTheme.material}>
           <VictoryBar horizontal
             data={[
               {x: 21, y: "Label 1"},
@@ -516,12 +515,6 @@ export default class App extends React.Component {
             ]}
             x={"y"}
             y={"x"}
-          />
-        </VictoryChart>
-
-        <VictoryChart>
-          <VictoryBar
-            data={[]}
           />
         </VictoryChart>
       </div>

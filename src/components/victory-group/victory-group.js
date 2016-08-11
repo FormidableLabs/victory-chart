@@ -310,7 +310,9 @@ export default class VictoryGroup extends React.Component {
   }
 
   getCalculatedProps(props, childComponents, style) {
-    const modifiedProps = Helpers.modifyProps(props, fallbackProps);
+    const modifiedProps = props.theme && props.theme.group
+    ? Helpers.modifyProps(props, fallbackProps, props.theme.group.props)
+    : Helpers.modifyProps(props, fallbackProps);
     const horizontal = modifiedProps.horizontal || childComponents.every(
       (component) => component.props.horizontal
     );
@@ -390,7 +392,8 @@ export default class VictoryGroup extends React.Component {
     if (role !== "group-wrapper" && role !== "stack-wrapper") {
       return undefined;
     }
-    return props.theme ? colorScaleOptions || props.theme.props.colorScale
+    return props.theme && props.theme.group
+    ? colorScaleOptions || props.theme.group.props.colorScale
     : colorScaleOptions;
   }
 
@@ -453,7 +456,9 @@ export default class VictoryGroup extends React.Component {
   render() {
     const props = this.state && this.state.nodesWillExit ?
       this.state.oldProps : this.props;
-    const modifiedProps = Helpers.modifyProps(props, fallbackProps);
+    const modifiedProps = props.theme && props.theme.group
+    ? Helpers.modifyProps(props, fallbackProps, props.theme.group.props)
+    : Helpers.modifyProps(props, fallbackProps);
     const style = Helpers.getStyles(modifiedProps.style, fallbackProps.style, "auto", "100%");
     const childComponents = React.Children.toArray(modifiedProps.children);
     const calculatedProps = this.getCalculatedProps(modifiedProps, childComponents, style,

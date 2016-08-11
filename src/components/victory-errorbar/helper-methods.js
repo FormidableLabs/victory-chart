@@ -7,7 +7,9 @@ import Data from "../../helpers/data";
 
 export default {
   getBaseProps(props, fallbackProps) {
-    const modifiedProps = Helpers.modifyProps(props, fallbackProps);
+    const modifiedProps = props.theme && props.theme.errorbar
+    ? Helpers.modifyProps(props, fallbackProps, props.theme.errorbar.props)
+    : Helpers.modifyProps(props, fallbackProps);
     const calculatedValues = this.getCalculatedValues(modifiedProps, fallbackProps);
     const { data, style, scale } = calculatedValues;
     const { groupComponent, height, width, borderWidth } = modifiedProps;
@@ -162,7 +164,7 @@ export default {
   },
 
   getCalculatedValues(props, fallbackProps) {
-    const defaultStyles = props.theme && props.theme.errorbar ? props.theme.errorbar
+    const defaultStyles = props.theme && props.theme.errorbar ? props.theme.errorbar.style
     : fallbackProps.style;
     const style = Helpers.getStyles(props.style, defaultStyles, "auto", "100%");
     const assignData = Object.assign(Data.getData(props), this.getErrorData(props));

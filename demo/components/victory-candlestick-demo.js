@@ -177,12 +177,6 @@ export default class App extends React.Component {
           size={1}
         />
 
-        <VictoryChart>
-          <VictoryCandlestick
-            data={[]}
-          />
-        </VictoryChart>
-
       </div>
     );
   }

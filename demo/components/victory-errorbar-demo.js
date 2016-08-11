@@ -55,7 +55,7 @@ export default class App extends React.Component {
       <div className="demo">
         <h1>VictoryErrorBar</h1>
 
-        <VictoryChart>
+        <VictoryChart theme={VictoryTheme.material}>
           <VictoryErrorBar
             data={basicData}
           />
@@ -124,6 +124,7 @@ export default class App extends React.Component {
 
         <VictoryErrorBar
           style={{parent: style.parent, data: this.state.hoverStyle}}
+          theme={VictoryTheme.material}
           data={this.state.data}
           events={[{
             target: "data",

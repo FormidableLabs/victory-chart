@@ -6,7 +6,9 @@ import Data from "../../helpers/data";
 
 export default {
   getBaseProps(props, fallbackProps) {
-    const modifiedProps = Helpers.modifyProps(props, fallbackProps);
+    const modifiedProps = props.theme && props.theme.scatter
+    ? Helpers.modifyProps(props, fallbackProps, props.theme.scatter.props)
+    : Helpers.modifyProps(props, fallbackProps);
     const calculatedValues = this.getCalculatedValues(modifiedProps, fallbackProps);
     const { data, style, scale } = calculatedValues;
     const childProps = { parent: {
@@ -47,7 +49,7 @@ export default {
   },
 
   getCalculatedValues(props, fallbackProps) {
-    const defaultStyles = props.theme && props.theme.scatter ? props.theme.scatter
+    const defaultStyles = props.theme && props.theme.scatter ? props.theme.scatter.style
     : fallbackProps.style;
     const style = Helpers.getStyles(props.style, defaultStyles, "auto", "100%");
     const data = Events.addEventKeys(props, Data.getData(props));
