@@ -403,10 +403,7 @@ export default class VictoryLine extends React.Component {
         {}, dataProps, {events: Events.getPartialEvents(dataEvents, "all", dataProps)}
       ));
 
-      const shouldGetLabelProps = (this.baseProps.all.labels && this.baseProps.all.labels.text)
-        || this.props.events;
-
-      if (shouldGetLabelProps) {
+      if (this.baseProps.all.labels || this.props.events) {
         const labelProps = defaults(
           {index, key: `${role}-label-${index}`},
           this.getEventState("all", "labels"),
@@ -415,10 +412,12 @@ export default class VictoryLine extends React.Component {
           labelComponent.props,
           this.baseProps.all.labels
         );
-        const labelEvents = this.getEvents(props, "labels", "all");
-        lineLabelComponents[index] = React.cloneElement(labelComponent, assign({
-          events: Events.getPartialEvents(labelEvents, "all", labelProps)
-        }, labelProps));
+        if (labelProps && labelProps.text) {
+          const labelEvents = this.getEvents(props, "labels", "all");
+          lineLabelComponents[index] = React.cloneElement(labelComponent, assign({
+            events: Events.getPartialEvents(labelEvents, "all", labelProps)
+          }, labelProps));
+        }
       }
     }
     return lineLabelComponents.length > 0 ?
