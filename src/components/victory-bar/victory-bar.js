@@ -1,4 +1,4 @@
-import { assign, defaults, isFunction, partialRight } from "lodash";
+import { assign, defaults, isFunction, partialRight, identity } from "lodash";
 import React, { PropTypes } from "react";
 import Bar from "./bar";
 import BarHelpers from "./helper-methods";
@@ -13,7 +13,8 @@ import {
 const fallbackProps = {
   width: 450,
   height: 300,
-  padding: 50
+  padding: 50,
+  onEnd: identity
 };
 
 const defaultData = [
@@ -476,13 +477,13 @@ export default class VictoryBar extends React.Component {
   render() {
     const clipId = this.props.clipId || Math.round(Math.random() * 10000);
     const props = Helpers.modifyProps(assign({clipId}, this.props), fallbackProps, "bar");
-    const { animate, style, standalone, theme } = props;
+    const { animate, style, standalone, theme, onEnd } = props;
     if (animate) {
       const whitelist = [
         "data", "domain", "height", "padding", "style", "width", "clipWidth", "clipHeight"
       ];
       return (
-        <VictoryTransition animate={animate} animationWhitelist={whitelist}>
+        <VictoryTransition animate={animate} animationWhitelist={whitelist} onEnd={onEnd}>
           {React.createElement(this.constructor, props)}
         </VictoryTransition>
       );

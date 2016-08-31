@@ -1,5 +1,5 @@
 import React, { PropTypes } from "react";
-import { assign, defaults, isFunction, partialRight } from "lodash";
+import { assign, defaults, isFunction, partialRight, identity } from "lodash";
 import Point from "./point";
 import Domain from "../../helpers/domain";
 import Data from "../../helpers/data";
@@ -14,7 +14,8 @@ const fallbackProps = {
   height: 300,
   padding: 50,
   size: 3,
-  symbol: "circle"
+  symbol: "circle",
+  onEnd: identity
 };
 
 export default class VictoryScatter extends React.Component {
@@ -457,7 +458,7 @@ export default class VictoryScatter extends React.Component {
 
   render() {
     const modifiedProps = Helpers.modifyProps(this.props, fallbackProps);
-    const { animate, style, standalone } = modifiedProps;
+    const { animate, style, standalone, onEnd } = modifiedProps;
 
     if (animate) {
       // Do less work by having `VictoryAnimation` tween only values that
@@ -468,7 +469,7 @@ export default class VictoryScatter extends React.Component {
         "style", "width", "x", "y"
       ];
       return (
-        <VictoryTransition animate={animate} animationWhitelist={whitelist}>
+        <VictoryTransition animate={animate} animationWhitelist={whitelist} onEnd={onEnd}>
           {React.createElement(this.constructor, modifiedProps)}
         </VictoryTransition>
       );

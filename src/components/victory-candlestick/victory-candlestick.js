@@ -1,5 +1,5 @@
 import React, { PropTypes } from "react";
-import { assign, defaults, isFunction, partialRight } from "lodash";
+import { assign, defaults, isFunction, partialRight, identity } from "lodash";
 import Candle from "./candle";
 import {
   PropTypes as CustomPropTypes, Helpers, Events, VictoryTransition, VictoryLabel,
@@ -14,7 +14,8 @@ const fallbackProps = {
   candleColors: {
     positive: "#ffffff",
     negative: "#252525"
-  }
+  },
+  onEnd: identity
 };
 
 const defaultData = [
@@ -507,7 +508,7 @@ export default class VictoryCandlestick extends React.Component {
   render() {
     const props = Helpers.modifyProps(this.props, fallbackProps, "candlestick");
 
-    const { animate, standalone, style, theme } = props;
+    const { animate, standalone, style, theme, onEnd } = props;
     // If animating, return a `VictoryAnimation` element that will create
     // a new `VictoryCandlestick` with nearly identical props, except (1) tweened
     // and (2) `animate` set to null so we don't recurse forever.
@@ -520,7 +521,7 @@ export default class VictoryCandlestick extends React.Component {
         "style", "width", "x", "y"
       ];
       return (
-        <VictoryTransition animate={animate} animationWhitelist={whitelist}>
+        <VictoryTransition animate={animate} animationWhitelist={whitelist} onEnd={onEnd}>
           {React.createElement(this.constructor, props)}
         </VictoryTransition>
       );
