@@ -1,4 +1,4 @@
-import { assign, defaults, partialRight, isFunction } from "lodash";
+import { assign, defaults, partialRight, isFunction, identity } from "lodash";
 import React, { PropTypes } from "react";
 import LineHelpers from "./helper-methods";
 import Domain from "../../helpers/domain";
@@ -12,7 +12,8 @@ const fallbackProps = {
   width: 450,
   height: 300,
   padding: 50,
-  interpolation: "linear"
+  interpolation: "linear",
+  onEnd: identity
 };
 
 export default class VictoryLine extends React.Component {
@@ -462,7 +463,7 @@ export default class VictoryLine extends React.Component {
   render() {
     const clipId = Math.round(Math.random() * 10000);
     const props = Helpers.modifyProps(assign({clipId}, this.props), fallbackProps, "line");
-    const { animate, style, standalone, theme } = props;
+    const { animate, style, standalone, theme, onEnd } = props;
 
     if (animate) {
       // Do less work by having `VictoryAnimation` tween only values that
@@ -474,7 +475,7 @@ export default class VictoryLine extends React.Component {
         "style", "width", "x", "y", "clipWidth", "clipHeight", "translateX"
       ];
       return (
-        <VictoryTransition animate={animate} animationWhitelist={whitelist}>
+        <VictoryTransition animate={animate} animationWhitelist={whitelist} onEnd={onEnd}>
           {React.createElement(this.constructor, props)}
         </VictoryTransition>
       );

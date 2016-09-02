@@ -3,14 +3,15 @@ import {
   PropTypes as CustomPropTypes, Helpers, Events, VictoryTransition, VictoryLabel,
   VictoryContainer, VictoryTheme, DefaultTransitions, ErrorBar
 } from "victory-core";
-import { assign, defaults, isFunction, partialRight } from "lodash";
+import { assign, defaults, isFunction, partialRight, identity } from "lodash";
 import Data from "../../helpers/data";
 import ErrorBarHelpers from "./helper-methods";
 
 const fallbackProps = {
   width: 450,
   height: 300,
-  padding: 50
+  padding: 50,
+  onEnd: identity
 };
 
 const defaultData = [
@@ -441,7 +442,7 @@ export default class VictoryErrorBar extends React.Component {
 
   render() {
     const props = Helpers.modifyProps(this.props, fallbackProps, "errorbar");
-    const { animate, style, standalone, theme } = props;
+    const { animate, style, standalone, theme, onEnd } = props;
     if (animate) {
       // Do less work by having `VictoryAnimation` tween only values that
       // make sense to tween. In the future, allow customization of animated
@@ -451,7 +452,7 @@ export default class VictoryErrorBar extends React.Component {
         "style", "width", "x", "y", "errorX", "errorY", "borderWidth"
       ];
       return (
-        <VictoryTransition animate={this.props.animate} animationWhitelist={whitelist}>
+        <VictoryTransition animate={animate} animationWhitelist={whitelist} onEnd={onEnd}>
           {React.createElement(this.constructor, props)}
         </VictoryTransition>
       );

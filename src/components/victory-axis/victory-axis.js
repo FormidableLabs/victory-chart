@@ -1,4 +1,4 @@
-import { assign, defaults, isFunction, partialRight } from "lodash";
+import { assign, defaults, isFunction, partialRight, identity } from "lodash";
 import React, { PropTypes } from "react";
 import {
   PropTypes as CustomPropTypes, Helpers, Events, VictoryTransition, VictoryLabel,
@@ -10,7 +10,8 @@ import Axis from "../../helpers/axis";
 const fallbackProps = {
   width: 450,
   height: 300,
-  padding: 50
+  padding: 50,
+  onEnd: identity
 };
 
 export default class VictoryAxis extends React.Component {
@@ -474,7 +475,7 @@ export default class VictoryAxis extends React.Component {
 
   render() {
     const props = Helpers.modifyProps(this.props, fallbackProps, "axis");
-    const { animate, standalone, theme } = props;
+    const { animate, standalone, theme, onEnd } = props;
     if (animate) {
       // Do less work by having `VictoryAnimation` tween only values that
       // make sense to tween. In the future, allow customization of animated
@@ -484,7 +485,7 @@ export default class VictoryAxis extends React.Component {
         "offsetX", "offsetY", "padding", "width", "height"
       ];
       return (
-        <VictoryTransition animate={animate} animationWhitelist={whitelist}>
+        <VictoryTransition animate={animate} animationWhitelist={whitelist} onEnd={onEnd}>
           {React.createElement(this.constructor, props)}
         </VictoryTransition>
       );

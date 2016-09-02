@@ -1,4 +1,4 @@
-import { assign, isFunction, defaults, partialRight } from "lodash";
+import { assign, isFunction, defaults, partialRight, identity } from "lodash";
 import React, { PropTypes } from "react";
 import AreaHelpers from "./helper-methods";
 import Data from "../../helpers/data";
@@ -12,7 +12,8 @@ const fallbackProps = {
   width: 450,
   height: 300,
   padding: 50,
-  interpolation: "linear"
+  interpolation: "linear",
+  onEnd: identity
 };
 
 export default class VictoryArea extends React.Component {
@@ -448,7 +449,7 @@ export default class VictoryArea extends React.Component {
   render() {
     const clipId = this.props.clipId || Math.round(Math.random() * 10000);
     const props = Helpers.modifyProps(assign({clipId}, this.props), fallbackProps, "area");
-    const { animate, style, standalone, theme } = props;
+    const { animate, style, standalone, theme, onEnd } = props;
 
     if (animate) {
       const whitelist = [
@@ -456,7 +457,7 @@ export default class VictoryArea extends React.Component {
         "x", "y", "clipWidth", "clipHeight", "translateX"
       ];
       return (
-        <VictoryTransition animate={animate} animationWhitelist={whitelist}>
+        <VictoryTransition animate={animate} animationWhitelist={whitelist} onEnd={onEnd}>
           {React.createElement(this.constructor, props)}
         </VictoryTransition>
       );
