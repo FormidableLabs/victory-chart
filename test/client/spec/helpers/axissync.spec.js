@@ -1,9 +1,9 @@
 /* eslint no-unused-expressions: 0 */
-import syncAxis from "src/helpers/axissync";
+import axisSync from "src/helpers/axissync";
 
 describe("helpers/axissync", () => {
   it("return expected tick count, based on size of domain labels width", () => {
-    const res = syncAxis([
+    const res = axisSync.sync([
       { domain: [124.12312222, 3523], style: {}, width: 150, orientation: "bottom" },
       { domain: [124.12312222, 3523], style: {}, width: 150, orientation: "bottom" }]
     );
@@ -13,7 +13,7 @@ describe("helpers/axissync", () => {
   });
   it("return expected tick count, based on size of domain labels height", () => {
     expect(
-      syncAxis([
+      axisSync.sync([
         {
           domain: [1.00000000000000000000001, 3],
           style: { tickLabels: { fontSize: 20 } }, orientation: "left", height: 200
@@ -26,7 +26,7 @@ describe("helpers/axissync", () => {
     ).to.be.eql(11);
   });
   it("return syncronized ticks with same ticks count", () => {
-    const syncedAxises = syncAxis(
+    const syncedAxises = axisSync.sync(
       [
         {
           domain: [2, 8],
@@ -42,7 +42,7 @@ describe("helpers/axissync", () => {
     expect(syncedAxises[1].length).to.be.eql(7);
   });
   it("return expected ticks", () => {
-    const syncedAxises = syncAxis(
+    const syncedAxises = axisSync.sync(
       [{
         domain: [1, 15],
         style: {}, orientation: "left", height: 100
@@ -57,7 +57,7 @@ describe("helpers/axissync", () => {
     expect(syncedAxises[1]).to.be.eql([-1000, 0, 1000, 2000, 3000, 4000, 5000]);
   });
   it("sync expected horizontal axis", () => {
-    const syncedAxises = syncAxis(
+    const syncedAxises = axisSync.sync(
       [{
         domain: [1, 15],
         style: {}, orientation: "bottom", width: 100
@@ -77,7 +77,7 @@ describe("helpers/axissync", () => {
     expect(syncedAxises[2]).to.be.eql([-1000, -500, 0, 500, 1000]);
   });
   it("sync time axis", () => {
-    const syncedAxises = syncAxis(
+    const syncedAxises = axisSync.sync(
       [{
         domain: [new Date(2015, 1, 1), new Date(2016, 1, 1)],
         style: {}, orientation: "left", height: 100, scale: "time"

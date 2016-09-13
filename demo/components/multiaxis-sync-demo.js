@@ -1,7 +1,7 @@
 import React from "react";
 import { merge, min, max } from "lodash";
 import { VictoryLine, VictoryAxis } from "../../src/index";
-import syncAxis from "../../src/helpers/axissync";
+import axisSync from "../../src/helpers/axissync";
 
 export default class MultipleAxes extends React.Component {
   getStyles() {
@@ -41,7 +41,7 @@ export default class MultipleAxes extends React.Component {
       label: "High Frequency",
       standalone: false
     };
-    const ticks = syncAxis([firstAxisProps, secondAxisProps]);
+    const ticks = axisSync.sync([firstAxisProps, secondAxisProps]);
     return (
       <svg style={styles.parent} viewBox="0 0 500 300">
         <VictoryAxis
