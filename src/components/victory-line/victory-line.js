@@ -478,11 +478,12 @@ export default class VictoryLine extends React.Component {
       clipHeight: props.clipHeight || props.height
     });
 
+    const newChildren = [clipComponent].concat(children);
+
     return React.cloneElement(
       this.props.groupComponent,
       { role: "presentation", style},
-      children,
-      clipComponent
+      newChildren
     );
   }
 
