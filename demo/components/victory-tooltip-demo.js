@@ -177,6 +177,7 @@ class App extends React.Component {
 
 class VictoryTooltipInPortal extends VictoryTooltip {
   static contextTypes = {
+    portalUpdate: React.PropTypes.func,
     portalRegister: React.PropTypes.func,
     portalDeregister: React.PropTypes.func
   }
@@ -187,35 +188,45 @@ class VictoryTooltipInPortal extends VictoryTooltip {
   }
 
   componentDidUpdate() {
-    this.context.portalRegister(this, this.element);
+    if (!this.portalKey) {
+      this.portalKey = this.context.portalRegister();
+    }
+    this.context.portalUpdate(this.portalKey, this.element);
   }
 
   componentWillUnmount() {
-    this.context.portalDeregister(this);
+    this.context.portalDeregister(this.portalKey);
   }
 }
 
 class SvgPortal extends React.Component {
   componentWillMount() {
-    this.map = new Map();
+    this.map = {};
+    this.index = 1;
+    this.portalUpdate = this.portalUpdate.bind(this);
     this.portalRegister = this.portalRegister.bind(this);
     this.portalDeregister = this.portalDeregister.bind(this);
   }
 
-  portalRegister(key, element) {
-    this.map.set(key, element);
+  portalRegister() {
+    return ++this.index;
+  }
+
+  portalUpdate(key, element) {
+    this.map[key] = element;
     this.forceUpdate();
   }
 
   portalDeregister(key) {
-    this.map.delete(key);
+    delete this.map[key];
   }
 
   render() {
     return (
       <g>
-        {[...this.map.values()].map((el, i) => {
-          return el ? React.cloneElement(el, {key: i}) : el;
+        {Object.keys(this.map).map((key) => {
+          const el = this.map[key];
+          return el ? React.cloneElement(el, {key}) : el;
         })}
       </g>
     );
@@ -231,17 +242,20 @@ class VictoryContainer extends React.Component {
   }
 
   static childContextTypes = {
+    portalUpdate: React.PropTypes.func,
     portalRegister: React.PropTypes.func,
     portalDeregister: React.PropTypes.func
   }
 
   componentWillMount() {
-    this.portalRegister = (...args) => this.refs.portal.portalRegister(...args);
+    this.portalUpdate = (key, el) => this.refs.portal.portalUpdate(key, el);
+    this.portalRegister = () => this.refs.portal.portalRegister();
     this.portalDeregister = (key) => this.refs.portal.portalDeregister(key);
   }
 
   getChildContext() {
     return {
+      portalUpdate: this.portalUpdate,
       portalRegister: this.portalRegister,
       portalDeregister: this.portalDeregister
     };
