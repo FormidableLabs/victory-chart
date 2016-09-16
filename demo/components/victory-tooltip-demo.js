@@ -105,10 +105,13 @@ class App extends React.Component {
             ]}
           />
 
-          <VictoryChart style={{parent: parentStyle}}>
+          <VictoryChart
+            style={{parent: parentStyle}}
+            containerComponent={<VictoryContainer />}
+          >
             <VictoryGroup
               labels={["a", "b", "c"]}
-              labelComponent={<VictoryTooltip/>}
+              labelComponent={<VictoryTooltipInPortal/>}
               horizontal
               offset={20}
               colorScale={"qualitative"}
@@ -169,6 +172,96 @@ class App extends React.Component {
         </div>
       </div>
     );
+  }
+}
+
+class VictoryTooltipInPortal extends VictoryTooltip {
+  static contextTypes = {
+    portalRegister: React.PropTypes.func,
+    portalDeregister: React.PropTypes.func
+  }
+
+  render() {
+    this.element = super.render();
+    return null;
+  }
+
+  componentDidUpdate() {
+    this.context.portalRegister(this, this.element);
+  }
+
+  componentWillUnmount() {
+    this.context.portalDeregister(this);
+  }
+}
+
+class SvgPortal extends React.Component {
+  componentWillMount() {
+    this.map = new Map();
+    this.portalRegister = this.portalRegister.bind(this);
+    this.portalDeregister = this.portalDeregister.bind(this);
+  }
+
+  portalRegister(key, element) {
+    this.map.set(key, element);
+    this.forceUpdate();
+  }
+
+  portalDeregister(key) {
+    this.map.delete(key);
+  }
+
+  render() {
+    return (
+      <g>
+        {[...this.map.values()].map((el, i) => {
+          return el ? React.cloneElement(el, {key: i}) : el;
+        })}
+      </g>
+    );
+  }
+}
+
+class VictoryContainer extends React.Component {
+  static displayName = "VictoryContainer";
+
+  static defaultProps = {
+    title: "Victory Chart",
+    desc: ""
+  }
+
+  static childContextTypes = {
+    portalRegister: React.PropTypes.func,
+    portalDeregister: React.PropTypes.func
+  }
+
+  componentWillMount() {
+    this.portalRegister = (...args) => this.refs.portal.portalRegister(...args);
+    this.portalDeregister = (key) => this.refs.portal.portalDeregister(key);
+  }
+
+  getChildContext() {
+    return {
+      portalRegister: this.portalRegister,
+      portalDeregister: this.portalDeregister
+    };
+  }
+
+  render() {
+    return (
+      <svg
+        style={this.props.style}
+        viewBox={`0 0 ${this.props.width} ${this.props.height}`}
+        role="img"
+        aria-labelledby="title desc"
+        {...this.props.events}
+      >
+        <title id="title">{this.props.title}</title>
+        <desc id="desc">{this.props.desc}</desc>
+        {this.props.children}
+        <SvgPortal ref="portal" />
+      </svg>
+      );
   }
 }
 
