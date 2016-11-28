@@ -165,7 +165,7 @@ class VictoryScatter extends React.Component {
 
     if (this.shouldAnimate()) {
       const whitelist = [
-        "data", "domain", "height", "maxBubbleSize", "padding", "samples", "size",
+        "data", "domain", "height", "maxBubbleSize","bubbleProperty","padding", "samples", "size",
         "style", "width", "x", "y"
       ];
       return (
