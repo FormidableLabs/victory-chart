@@ -106,10 +106,13 @@ class App extends React.Component {
             ]}
           />
 
-          <VictoryChart style={{parent: parentStyle}}>
+          <VictoryChart
+            style={{parent: parentStyle}}
+            containerComponent={<VictoryContainer />}
+          >
             <VictoryGroup
               labels={["a", "b", "c"]}
-              labelComponent={<VictoryTooltip/>}
+              labelComponent={<VictoryTooltipInPortal/>}
               horizontal
               offset={35}
               colorScale={"qualitative"}
@@ -173,6 +176,110 @@ class App extends React.Component {
         </div>
       </div>
     );
+  }
+}
+
+class VictoryTooltipInPortal extends VictoryTooltip {
+  static contextTypes = {
+    portalUpdate: React.PropTypes.func,
+    portalRegister: React.PropTypes.func,
+    portalDeregister: React.PropTypes.func
+  }
+
+  render() {
+    this.element = super.render();
+    return null;
+  }
+
+  componentDidUpdate() {
+    if (!this.portalKey) {
+      this.portalKey = this.context.portalRegister();
+    }
+    this.context.portalUpdate(this.portalKey, this.element);
+  }
+
+  componentWillUnmount() {
+    this.context.portalDeregister(this.portalKey);
+  }
+}
+
+class SvgPortal extends React.Component {
+  componentWillMount() {
+    this.map = {};
+    this.index = 1;
+    this.portalUpdate = this.portalUpdate.bind(this);
+    this.portalRegister = this.portalRegister.bind(this);
+    this.portalDeregister = this.portalDeregister.bind(this);
+  }
+
+  portalRegister() {
+    return ++this.index;
+  }
+
+  portalUpdate(key, element) {
+    this.map[key] = element;
+    this.forceUpdate();
+  }
+
+  portalDeregister(key) {
+    delete this.map[key];
+  }
+
+  render() {
+    return (
+      <g>
+        {Object.keys(this.map).map((key) => {
+          const el = this.map[key];
+          return el ? React.cloneElement(el, {key}) : el;
+        })}
+      </g>
+    );
+  }
+}
+
+class VictoryContainer extends React.Component {
+  static displayName = "VictoryContainer";
+
+  static defaultProps = {
+    title: "Victory Chart",
+    desc: ""
+  }
+
+  static childContextTypes = {
+    portalUpdate: React.PropTypes.func,
+    portalRegister: React.PropTypes.func,
+    portalDeregister: React.PropTypes.func
+  }
+
+  componentWillMount() {
+    this.portalUpdate = (key, el) => this.refs.portal.portalUpdate(key, el);
+    this.portalRegister = () => this.refs.portal.portalRegister();
+    this.portalDeregister = (key) => this.refs.portal.portalDeregister(key);
+  }
+
+  getChildContext() {
+    return {
+      portalUpdate: this.portalUpdate,
+      portalRegister: this.portalRegister,
+      portalDeregister: this.portalDeregister
+    };
+  }
+
+  render() {
+    return (
+      <svg
+        style={this.props.style}
+        viewBox={`0 0 ${this.props.width} ${this.props.height}`}
+        role="img"
+        aria-labelledby="title desc"
+        {...this.props.events}
+      >
+        <title id="title">{this.props.title}</title>
+        <desc id="desc">{this.props.desc}</desc>
+        {this.props.children}
+        <SvgPortal ref="portal" />
+      </svg>
+      );
   }
 }
 
