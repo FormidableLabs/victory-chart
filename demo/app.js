@@ -1,6 +1,7 @@
 /*global document:false window */
 import React from "react";
 import ReactDOM from "react-dom";
+import PropTypes from "prop-types";
 import AreaDemo from "./components/victory-area-demo";
 import AxisDemo from "./components/victory-axis-demo";
 import BarDemo from "./components/victory-bar-demo";
@@ -24,22 +25,18 @@ import { startCase } from "lodash";
 
 const content = document.getElementById("content");
 
-const App = React.createClass({
-  propTypes: {
-    children: React.PropTypes.element
-  },
-
+class App extends React.Component {
   componentWillUpdate() {
     this.setTitle();
-  },
+  }
 
   componentWillMount() {
     this.setTitle();
-  },
+  }
 
   setTitle() {
     document.title = startCase(window.location.hash.match(/\/(.*)\?/)[1] || "Victory Chart Demos");
-  },
+  }
 
   render() {
     return (
@@ -69,7 +66,11 @@ const App = React.createClass({
       </div>
     );
   }
-});
+}
+
+App.propTypes = {
+  children: PropTypes.element
+};
 
 ReactDOM.render((
   <Router history={hashHistory}>
