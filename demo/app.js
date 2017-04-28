@@ -1,4 +1,4 @@
-/*global document:false window */
+/*global document:false window:false */
 import React from "react";
 import ReactDOM from "react-dom";
 import AreaDemo from "./components/victory-area-demo";
@@ -24,22 +24,22 @@ import { startCase } from "lodash";
 
 const content = document.getElementById("content");
 
-const App = React.createClass({
-  propTypes: {
+class App extends React.Component {
+  static propTypes = {
     children: React.PropTypes.element
-  },
-
-  componentWillUpdate() {
-    this.setTitle();
-  },
+  }
 
   componentWillMount() {
     this.setTitle();
-  },
+  }
+
+  componentWillUpdate() {
+    this.setTitle();
+  }
 
   setTitle() {
     document.title = startCase(window.location.hash.match(/\/(.*)\?/)[1] || "Victory Chart Demos");
-  },
+  }
 
   render() {
     return (
@@ -69,7 +69,7 @@ const App = React.createClass({
       </div>
     );
   }
-});
+}
 
 ReactDOM.render((
   <Router history={hashHistory}>

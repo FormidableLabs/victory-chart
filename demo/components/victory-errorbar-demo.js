@@ -16,22 +16,22 @@ const getData = () => {
 };
 
 const basicData = [
-  {x: 1, y: 1, errorX: [1, 0.5], errorY: .1},
-  {x: 2, y: 2, errorX: [1, 3], errorY: .1},
-  {x: 3, y: 3, errorX: [1, 3], errorY: [.2, .3]},
-  {x: 4, y: 2, errorX: [1, 0.5], errorY: .1},
-  {x: 5, y: 1, errorX: [1, 0.5], errorY: .2}
+  { x: 1, y: 1, errorX: [1, 0.5], errorY: .1 },
+  { x: 2, y: 2, errorX: [1, 3], errorY: .1 },
+  { x: 3, y: 3, errorX: [1, 3], errorY: [.2, .3] },
+  { x: 4, y: 2, errorX: [1, 0.5], errorY: .1 },
+  { x: 5, y: 1, errorX: [1, 0.5], errorY: .2 }
 ];
 
 const style = {
-  parent: {border: "1px solid #ccc", margin: "2%", maxWidth: "40%"}
+  parent: { border: "1px solid #ccc", margin: "2%", maxWidth: "40%" }
 };
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      hoverStyle: {stroke: "gold"},
+      hoverStyle: { stroke: "gold" },
       data: props.data
     };
   }
@@ -73,14 +73,14 @@ export default class App extends React.Component {
           width={500}
           height={500}
           domain={[0, 6]}
-          animate={{duration: 2000}}
+          animate={{ duration: 2000 }}
           data={this.state.data}
           dataComponent={<ErrorBar />}
           containerComponent={
             <VictoryContainer
               title="ErrorBar Chart"
               desc="This is a errorbar chart with data points!"
-              style={Object.assign({}, style.parent, {border: "1px solid red"})}
+              style={Object.assign({}, style.parent, { border: "1px solid red" })}
             />
           }
         />
@@ -90,7 +90,7 @@ export default class App extends React.Component {
           width={500}
           height={500}
           domain={[0, 6]}
-          animate={{duration: 2000}}
+          animate={{ duration: 2000 }}
           borderWidth={30}
           data={this.state.data}
         />
@@ -98,7 +98,7 @@ export default class App extends React.Component {
         <VictoryErrorBar
           style={{
             parent: style.parent,
-            data: {fill: (data) => data.y > 0 ? "red" : "blue"}
+            data: { fill: (data) => data.y > 0 ? "red" : "blue" }
           }}
           width={500}
           height={500}
@@ -107,7 +107,7 @@ export default class App extends React.Component {
         <VictoryErrorBar
           style={{
             parent: style.parent,
-            data: {stroke: "blue", opacity: 0.7, strokeWidth: 3}
+            data: { stroke: "blue", opacity: 0.7, strokeWidth: 3 }
           }}
           width={500}
           height={500}
@@ -122,7 +122,7 @@ export default class App extends React.Component {
         </svg>
 
         <VictoryErrorBar
-          style={{parent: style.parent, data: this.state.hoverStyle}}
+          style={{ parent: style.parent, data: this.state.hoverStyle }}
           data={this.state.data}
           events={[{
             target: "data",
@@ -132,7 +132,7 @@ export default class App extends React.Component {
                   {
                     mutation: (props) => {
                       return {
-                        style: merge({}, props.style, {stroke: "orange"})
+                        style: merge({}, props.style, { stroke: "orange" })
                       };
                     }
                   }

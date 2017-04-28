@@ -1,6 +1,6 @@
 /*global window:false*/
 import React from "react";
-import {VictoryBar, VictoryChart, VictoryGroup, VictoryStack } from "../../src/index";
+import { VictoryBar, VictoryChart, VictoryGroup, VictoryStack } from "../../src/index";
 import { VictorySharedEvents } from "victory-core";
 import { assign, random, range, merge } from "lodash";
 import { VictoryContainer, VictoryTheme } from "victory-core";
@@ -79,7 +79,7 @@ export default class App extends React.Component {
   getBarTransitionData() {
     const bars = random(6, 10);
     return range(bars).map((bar) => {
-      return {a: bar + 1, b: random(2, 10)};
+      return { a: bar + 1, b: random(2, 10) };
     });
   }
 
@@ -87,7 +87,7 @@ export default class App extends React.Component {
     const bars = random(3, 5);
     return range(4).map(() => {
       return range(bars).map((bar) => {
-        return {x: bar + 1, y: random(2, 10)};
+        return { x: bar + 1, y: random(2, 10) };
       });
     });
   }
@@ -109,42 +109,42 @@ export default class App extends React.Component {
   }
 
   render() {
-    const parentStyle = {border: "1px solid #ccc", margin: "2%", maxWidth: "40%"};
+    const parentStyle = { border: "1px solid #ccc", margin: "2%", maxWidth: "40%" };
 
     return (
       <div className="demo">
         <h1>VictoryBar</h1>
 
-        <ChartWrap scale={{x: "log", y: "linear"}}>
+        <ChartWrap scale={{ x: "log", y: "linear" }}>
           <VictoryBar
-            scale={{x: "log", y: "linear"}}
+            scale={{ x: "log", y: "linear" }}
             horizontal
             data={[
-              {x: 1, y: 0.1},
-              {x: 2, y: 1},
-              {x: 3, y: 10},
-              {x: 4, y: 100},
-              {x: 5, y: 0.1},
-              {x: 6, y: 1},
-              {x: 7, y: 10},
-              {x: 8, y: 100}
+              { x: 1, y: 0.1 },
+              { x: 2, y: 1 },
+              { x: 3, y: 10 },
+              { x: 4, y: 100 },
+              { x: 5, y: 0.1 },
+              { x: 6, y: 1 },
+              { x: 7, y: 10 },
+              { x: 8, y: 100 }
             ]}
           />
         </ChartWrap>
 
-        <ChartWrap scale={{x: "linear", y: "log"}}>
+        <ChartWrap scale={{ x: "linear", y: "log" }}>
           <VictoryBar
-            style={{data: {width: 15, fill: "red"}}}
-            scale={{x: "linear", y: "log"}}
+            style={{ data: { width: 15, fill: "red" } }}
+            scale={{ x: "linear", y: "log" }}
             data={[
-              {x: 1, y: 0.1},
-              {x: 2, y: 1},
-              {x: 3, y: 10},
-              {x: 4, y: 100},
-              {x: 5, y: 0.1},
-              {x: 6, y: 1},
-              {x: 7, y: 10},
-              {x: 8, y: 100}
+              { x: 1, y: 0.1 },
+              { x: 2, y: 1 },
+              { x: 3, y: 10 },
+              { x: 4, y: 100 },
+              { x: 5, y: 0.1 },
+              { x: 6, y: 1 },
+              { x: 7, y: 10 },
+              { x: 8, y: 100 }
             ]}
           />
         </ChartWrap>
@@ -153,10 +153,10 @@ export default class App extends React.Component {
             horizontal
             labels={(d) => d.y}
             data={[
-              {x: 1, y: "Label 1"},
-              {x: 7, y: "Label 2"},
-              {x: 3, y: "Label 3"},
-              {x: 4, y: "Label 4"}
+              { x: 1, y: "Label 1" },
+              { x: 7, y: "Label 2" },
+              { x: 3, y: "Label 3" },
+              { x: 4, y: "Label 4" }
             ]}
           />
         </ChartWrap>
@@ -164,27 +164,27 @@ export default class App extends React.Component {
         <ChartWrap>
           <VictoryBar horizontal
             labels={(d) => d.y}
-            data={[ {x: 1, y: 20}, {x: 7, y: -40}, {x: 3, y: -60}, {x: 4, y: 80} ]}
+            data={[ { x: 1, y: 20 }, { x: 7, y: -40 }, { x: 3, y: -60 }, { x: 4, y: 80 } ]}
           />
         </ChartWrap>
 
         <ChartWrap>
           <VictoryBar
             labels={(d) => d.y}
-            data={[ {x: 1, y: 20}, {x: 7, y: -40}, {x: 3, y: -60}, {x: 4, y: 80} ]}
+            data={[ { x: 1, y: 20 }, { x: 7, y: -40 }, { x: 3, y: -60 }, { x: 4, y: 80 } ]}
           />
         </ChartWrap>
 
         <VictoryChart
-          domainPadding={{x: 20}}
+          domainPadding={{ x: 20 }}
         >
           <VictoryBar
             horizontal
             data={[
-              {x: 1, y: "Alpha"},
-              {x: 7, y: "Beta"},
-              {x: 3, y: "Charlie"},
-              {x: 4, y: "Delta"}
+              { x: 1, y: "Alpha" },
+              { x: 7, y: "Beta" },
+              { x: 3, y: "Charlie" },
+              { x: 4, y: "Delta" }
             ]}
           />
         </VictoryChart>
@@ -192,15 +192,15 @@ export default class App extends React.Component {
         <VictoryChart
           style={{ parent: parentStyle }}
           theme={VictoryTheme.material}
-          scale={{x: "linear", y: "log"}}
+          scale={{ x: "linear", y: "log" }}
         >
           <VictoryBar
             horizontal
             data={[
-              {x: 2, y: "Echo"},
-              {x: 6, y: "Foxtrot"},
-              {x: 3, y: "Golf"},
-              {x: 4, y: "Hotel"}
+              { x: 2, y: "Echo" },
+              { x: 6, y: "Foxtrot" },
+              { x: 3, y: "Golf" },
+              { x: 4, y: "Hotel" }
             ]}
           />
         </VictoryChart>
@@ -208,7 +208,7 @@ export default class App extends React.Component {
         <VictoryBar
           style={{
             parent: parentStyle,
-            labels: {angle: 45, verticalAnchor: "end", textAnchor: "end"}
+            labels: { angle: 45, verticalAnchor: "end", textAnchor: "end" }
           }}
           labels={() => "HELLO"}
           animate={{
@@ -233,12 +233,12 @@ export default class App extends React.Component {
                 return [
                   {
                     mutation: (props) => {
-                      return {style: merge({}, props.style, {fill: "orange"})};
+                      return { style: merge({}, props.style, { fill: "orange" }) };
                     }
                   }, {
                     target: "labels",
                     mutation: () => {
-                      return {text: "hey"};
+                      return { text: "hey" };
                     }
                   }
                 ];
@@ -250,20 +250,20 @@ export default class App extends React.Component {
           y="b"
         />
         <VictoryStack
-          style={{parent: parentStyle}}
-          animate={{duration: 1000}}
+          style={{ parent: parentStyle }}
+          animate={{ duration: 1000 }}
         >
           {this.state.multiTransitionData.map((data, index) => {
             return <Wrapper key={index}><VictoryBar data={data} colorScale={"warm"}/></Wrapper>;
           })}
         </VictoryStack>
 
-        <VictoryChart style={{parent: parentStyle}} domainPadding={{x: 30}}
+        <VictoryChart style={{ parent: parentStyle }} domainPadding={{ x: 30 }}
           theme={VictoryTheme.material}
         >
           <VictoryGroup
             offset={15}
-            animate={{duration: 1000}}
+            animate={{ duration: 1000 }}
             colorScale={"warm"}
           >
             {this.state.multiTransitionData.map((data, index) => {
@@ -273,24 +273,24 @@ export default class App extends React.Component {
         </VictoryChart>
 
         <VictoryGroup
-          style={{parent: parentStyle}} offset={18}
+          style={{ parent: parentStyle }} offset={18}
           colorScale={"qualitative"}
-          animate={{duration: 2000}}
+          animate={{ duration: 2000 }}
         >
           {this.getBarData().map((data, index) => {
             return <VictoryBar key={index} data={data} labels={["a", "b", "c"]}/>;
           })}
         </VictoryGroup>
 
-        <VictoryGroup horizontal style={{parent: parentStyle}} offset={10}
-          colorScale={"cool"} animate={{duration: 2000}} labels={["a", "b", "c"]}
+        <VictoryGroup horizontal style={{ parent: parentStyle }} offset={10}
+          colorScale={"cool"} animate={{ duration: 2000 }} labels={["a", "b", "c"]}
         >
           {this.getBarData().map((data, index) => {
             return <VictoryBar key={index} data={data}/>;
           })}
         </VictoryGroup>
 
-        <VictoryGroup style={{parent: parentStyle}} offset={15} animate={{duration: 2000}}>
+        <VictoryGroup style={{ parent: parentStyle }} offset={15} animate={{ duration: 2000 }}>
           <VictoryStack colorScale={"red"}>
             {this.getBarData().map((data, index) => {
               return <VictoryBar key={index} data={data}/>;
@@ -309,8 +309,8 @@ export default class App extends React.Component {
         </VictoryGroup>
 
         <VictoryStack
-          style={{parent: parentStyle}}
-          animate={{duration: 2000}}
+          style={{ parent: parentStyle }}
+          animate={{ duration: 2000 }}
           colorScale={"warm"}
           labels={["one", "two", "three"]}
         >
@@ -349,16 +349,16 @@ export default class App extends React.Component {
         <ChartWrap>
           <VictoryBar
             height={250}
-            data={[{a: {b: {c: 1, d: 1}}}, {a: {b: {c: 2, d: 3}}}]}
+            data={[{ a: { b: { c: 1, d: 1 } } }, { a: { b: { c: 2, d: 3 } } }]}
             x={"a.b.c"}
             y={"a.b.d"}
           />
         </ChartWrap>
 
-          <VictoryStack colorScale="warm" style={{parent: parentStyle}}>
+          <VictoryStack colorScale="warm" style={{ parent: parentStyle }}>
             <Wrapper>
               <VictoryBar
-                data={[{x: "a", y: 2}, {x: "b", y: 3}, {x: "c", y: 4}]}
+                data={[{ x: "a", y: 2 }, { x: "b", y: 3 }, { x: "c", y: 4 }]}
                 events={[
                   {
                     target: "data",
@@ -367,7 +367,7 @@ export default class App extends React.Component {
                         return [
                           {
                             mutation: (props) => {
-                              return {style: merge({}, props.style, {fill: "orange"})};
+                              return { style: merge({}, props.style, { fill: "orange" }) };
                             }
                           }
                         ];
@@ -378,7 +378,7 @@ export default class App extends React.Component {
               />
             </Wrapper>
             <VictoryBar
-              data={[{x: "c", y: 2}, {x: "d", y: 3}, {x: "e", y: 4}]}
+              data={[{ x: "c", y: 2 }, { x: "d", y: 3 }, { x: "e", y: 4 }]}
               events={[
                 {
                   target: "data",
@@ -387,7 +387,7 @@ export default class App extends React.Component {
                       return [
                         {
                           mutation: (props) => {
-                            return {style: merge({}, props.style, {fill: "blue"})};
+                            return { style: merge({}, props.style, { fill: "blue" }) };
                           }
                         }
                       ];
@@ -397,7 +397,7 @@ export default class App extends React.Component {
               ]}
             />
           </VictoryStack>
-          <svg width={500} height={300} style={{parent: parentStyle}}>
+          <svg width={500} height={300} style={{ parent: parentStyle }}>
             <VictorySharedEvents
               events={[
                 {
@@ -409,7 +409,7 @@ export default class App extends React.Component {
                       return {
                         childName: "secondBar",
                         mutation: (props) => {
-                          return {style: merge({}, props.style, {fill: "blue"})};
+                          return { style: merge({}, props.style, { fill: "blue" }) };
                         }
                       };
                     }
@@ -425,19 +425,19 @@ export default class App extends React.Component {
                           childName: "firstBar",
                           mutation: (props) => {
                             return props.style.fill === "cyan" ? null :
-                              {style: merge({}, props.style, {fill: "cyan"})};
+                              { style: merge({}, props.style, { fill: "cyan" }) };
                           }
                         },
                         {
                           mutation: (props) => {
-                            return {style: merge({}, props.style, {fill: "orange"})};
+                            return { style: merge({}, props.style, { fill: "orange" }) };
                           }
                         },
                         {
                           target: "labels",
                           eventKey: 1,
                           mutation: () => {
-                            return {text: "CLICKED"};
+                            return { text: "CLICKED" };
                           }
                         }
                       ];
@@ -449,13 +449,13 @@ export default class App extends React.Component {
               <VictoryBar
                 name="firstBar"
                 style={{
-                  data: {width: 25, fill: "gold"}
+                  data: { width: 25, fill: "gold" }
                 }}
-                data={[{x: "a", y: 2}, {x: "b", y: 3}, {x: "c", y: 4}]}
+                data={[{ x: "a", y: 2 }, { x: "b", y: 3 }, { x: "c", y: 4 }]}
               />
               <VictoryBar
                 name={"secondBar"}
-                data={[{x: "a", y: 2}, {x: "b", y: 3}, {x: "c", y: 4}]}
+                data={[{ x: "a", y: 2 }, { x: "b", y: 3 }, { x: "c", y: 4 }]}
               />
           </VictorySharedEvents>
         </svg>
@@ -463,17 +463,17 @@ export default class App extends React.Component {
           theme={VictoryTheme.grayscale}
           style={{
             parent: parentStyle,
-            data: {fill: "blue"}
+            data: { fill: "blue" }
           }}
           labels={[
             "a", "b", "c", "d", "e"
           ]}
           data={[
-            {x: 1, y: 1},
-            {x: 2, y: 2},
-            {x: 3, y: 3, label: "click me"},
-            {x: 4, y: 2},
-            {x: 5, y: 1}
+            { x: 1, y: 1 },
+            { x: 2, y: 2 },
+            { x: 3, y: 3, label: "click me" },
+            { x: 4, y: 2 },
+            { x: 5, y: 1 }
           ]}
           events={[
             {
@@ -485,7 +485,7 @@ export default class App extends React.Component {
                   return [
                     {
                       mutation: () => {
-                        return {style: {fill: "orange"}};
+                        return { style: { fill: "orange" } };
                       }
                     }
                   ];
@@ -499,7 +499,7 @@ export default class App extends React.Component {
                     {
                       target: "labels",
                       mutation: () => {
-                        return {text: "o shit"};
+                        return { text: "o shit" };
                       }
                     }
                   ];
@@ -512,10 +512,10 @@ export default class App extends React.Component {
         <VictoryChart>
           <VictoryBar horizontal
             data={[
-              {x: 21, y: "Label 1"},
-              {x: 28, y: "Label 2"},
-              {x: 35, y: "Label 3"},
-              {x: 40, y: "Label 4"}
+              { x: 21, y: "Label 1" },
+              { x: 28, y: "Label 2" },
+              { x: 35, y: "Label 3" },
+              { x: 40, y: "Label 4" }
             ]}
             x={"y"}
             y={"x"}
@@ -540,14 +540,14 @@ class ChartWrap extends React.Component {
   // renders both a standalone chart, and a version wrapped in VictoryChart,
   // to test both cases at once
   render() {
-    const parentStyle = {border: "1px solid #ccc", margin: "2%", maxWidth: "40%"};
+    const parentStyle = { border: "1px solid #ccc", margin: "2%", maxWidth: "40%" };
     const childProps = this.props.children.props;
-    const style = Object.assign({}, childProps.style, {parent: parentStyle});
-    const props = Object.assign({}, childProps, {style});
+    const style = Object.assign({}, childProps.style, { parent: parentStyle });
+    const props = Object.assign({}, childProps, { style });
     return (
       <div>
         {React.cloneElement(this.props.children, props)}
-        <VictoryChart {...this.props} style={{parent: parentStyle}}>
+        <VictoryChart {...this.props} style={{ parent: parentStyle }}>
           {this.props.children}
         </VictoryChart>
       </div>

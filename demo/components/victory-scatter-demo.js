@@ -1,8 +1,8 @@
 /*global window:false */
 import React from "react";
 import { merge, random, range } from "lodash";
-import {VictoryScatter, VictoryChart} from "../../src/index";
-import {VictoryLabel} from "victory-core";
+import { VictoryScatter, VictoryChart } from "../../src/index";
+import { VictoryLabel } from "victory-core";
 import bubbleData from "./bubble-data.js";
 import symbolData from "./symbol-data.js";
 import { VictoryContainer, VictoryTheme } from "victory-core";
@@ -26,11 +26,11 @@ const getData = () => {
 };
 
 const style = {
-  parent: {border: "1px solid #ccc", margin: "2%", maxWidth: "40%"}
+  parent: { border: "1px solid #ccc", margin: "2%", maxWidth: "40%" }
 };
 
 const symbolStyle = {
-  parent: {border: "1px solid #ccc", margin: "2%", maxWidth: "40%"},
+  parent: { border: "1px solid #ccc", margin: "2%", maxWidth: "40%" },
   data: {
     fill: "red"
   },
@@ -49,7 +49,7 @@ class CatPoint extends React.Component {
   };
 
   render() {
-    const {x, y, symbol} = this.props;
+    const { x, y, symbol } = this.props;
 
     return (
       <text x={x} y={y} fontSize={40}>
@@ -77,7 +77,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      hoverStyle: {fill: "gold"},
+      hoverStyle: { fill: "gold" },
       data: props.data
     };
   }
@@ -105,14 +105,14 @@ export default class App extends React.Component {
           width={500}
           height={500}
           domain={[0, 600]}
-          animate={{duration: 2000}}
+          animate={{ duration: 2000 }}
           data={this.state.data}
           dataComponent={<CatPoint />}
           containerComponent={
             <VictoryContainer
               title="Scatter Chart"
               desc="This is a scatter chart with cat data points!"
-              style={Object.assign({}, style.parent, {border: "1px solid red"})}
+              style={Object.assign({}, style.parent, { border: "1px solid red" })}
             />
           }
         />
@@ -122,14 +122,14 @@ export default class App extends React.Component {
           width={500}
           height={500}
           domain={[0, 600]}
-          animate={{duration: 2000}}
+          animate={{ duration: 2000 }}
           data={this.state.data}
         />
 
         <VictoryScatter
           style={{
             parent: style.parent,
-            data: {fill: (data) => data.y > 0 ? "red" : "blue"}
+            data: { fill: (data) => data.y > 0 ? "red" : "blue" }
           }}
           width={500}
           height={500}
@@ -143,14 +143,14 @@ export default class App extends React.Component {
           width={500}
           height={500}
           padding={50}
-          labelComponent={<VictoryLabel style={{fill: "red"}}/>}
+          labelComponent={<VictoryLabel style={{ fill: "red" }}/>}
           data={symbolData}
         />
 
         <VictoryScatter
           style={{
             parent: style.parent,
-            data: {fill: "blue", opacity: 0.7}
+            data: { fill: "blue", opacity: 0.7 }
           }}
           width={500}
           height={500}
@@ -168,16 +168,16 @@ export default class App extends React.Component {
         </svg>
 
         <VictoryScatter
-          style={{parent: style.parent, data: this.state.hoverStyle}}
+          style={{ parent: style.parent, data: this.state.hoverStyle }}
           data={[
-            {x: new Date(1982, 1, 1), y: 125},
-            {x: new Date(1987, 1, 1), y: 257},
-            {x: new Date(1993, 1, 1), y: 345},
-            {x: new Date(1997, 1, 1), y: 515},
-            {x: new Date(2001, 1, 1), y: 132},
-            {x: new Date(2005, 1, 1), y: 305},
-            {x: new Date(2011, 1, 1), y: 270},
-            {x: new Date(2015, 1, 1), y: 470}
+            { x: new Date(1982, 1, 1), y: 125 },
+            { x: new Date(1987, 1, 1), y: 257 },
+            { x: new Date(1993, 1, 1), y: 345 },
+            { x: new Date(1997, 1, 1), y: 515 },
+            { x: new Date(2001, 1, 1), y: 132 },
+            { x: new Date(2005, 1, 1), y: 305 },
+            { x: new Date(2011, 1, 1), y: 270 },
+            { x: new Date(2015, 1, 1), y: 470 }
           ]}
           events={[{
             target: "data",
@@ -187,14 +187,14 @@ export default class App extends React.Component {
                   {
                     mutation: (props) => {
                       return {
-                        style: merge({}, props.style, {fill: "orange"}),
+                        style: merge({}, props.style, { fill: "orange" }),
                         symbol: "circle"
                       };
                     }
                   }, {
                     target: "labels",
                     mutation: () => {
-                      return {text: "hey"};
+                      return { text: "hey" };
                     }
                   }
                 ];
@@ -230,7 +230,7 @@ export default class App extends React.Component {
           style={style}
           theme={VictoryTheme.material}
           data={range(0, 200).map((i) => {
-            return {a: {b: [{y: i * Math.sin(i * 0.3)}], x: Math.cos(i * 0.3)}};
+            return { a: { b: [{ y: i * Math.sin(i * 0.3) }], x: Math.cos(i * 0.3) } };
           })}
           x="a.x"
           y="a.b[0]y"

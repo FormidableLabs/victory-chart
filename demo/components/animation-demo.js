@@ -1,7 +1,7 @@
 /*global window:false */
 import React from "react";
 import { random, range } from "lodash";
-import {VictoryArea, VictoryStack, VictoryChart} from "../../src/index";
+import { VictoryArea, VictoryStack, VictoryChart } from "../../src/index";
 import { VictoryTheme } from "victory-core";
 
 export default class App extends React.Component {
@@ -20,7 +20,7 @@ export default class App extends React.Component {
     const areas = random(8, 10);
     return range(8).map(() => {
       return range(areas).map((area) => {
-        return {x: area, y: random(2, 10)};
+        return { x: area, y: random(2, 10) };
       });
     });
   }
@@ -28,7 +28,7 @@ export default class App extends React.Component {
   getAreaTransitionData() {
     const areas = random(6, 10);
     return range(areas).map((area) => {
-      return {x: area, y: random(2, 10)};
+      return { x: area, y: random(2, 10) };
     });
   }
 
@@ -93,21 +93,21 @@ export default class App extends React.Component {
 
   render() {
     const style = {
-      parent: {border: "1px solid #ccc", margin: "2%", maxWidth: "40%"}
+      parent: { border: "1px solid #ccc", margin: "2%", maxWidth: "40%" }
     };
 
     return (
       <div className="demo">
 
         <VictoryArea
-          style={style} animate={{duration: 1000}}
+          style={style} animate={{ duration: 1000 }}
           data={this.state.areaTransitionData}
           x={(d) => d.x}
           theme={VictoryTheme.material}
         />
 
         <VictoryChart
-          style={style} animate={{duration: 1000}}
+          style={style} animate={{ duration: 1000 }}
           theme={VictoryTheme.material}
         >
           <VictoryArea
@@ -117,7 +117,7 @@ export default class App extends React.Component {
 
         <VictoryStack
           style={style}
-          animate={{duration: 1000}}
+          animate={{ duration: 1000 }}
           theme={VictoryTheme.material}
           colorScale={"warm"}
         >
@@ -134,7 +134,7 @@ export default class App extends React.Component {
 
         <VictoryChart
           style={style}
-          animate={{duration: 1000}}
+          animate={{ duration: 1000 }}
           theme={VictoryTheme.material}
         >
           <VictoryStack

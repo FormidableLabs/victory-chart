@@ -27,24 +27,24 @@
     "version": "builder run npm:version"
   },
   "dependencies": {
-    "builder": "^3.1.0",
+    "builder": "^3.2.1",
     "builder-victory-component": "^3.1.0",
     "d3-voronoi": "^1.1.2",
-    "lodash": "^4.12.0",
+    "lodash": "^4.17.4",
     "victory-core": "^14.1.1"
   },
   "devDependencies": {
     "builder-victory-component-dev": "^3.1.0",
-    "chai": "^3.2.0",
+    "chai": "^3.5.0",
     "d3-scale": "^1.0.0",
     "d3-shape": "^1.0.0",
-    "enzyme": "^2.3.0",
-    "mocha": "^2.2.5",
-    "react": "~15.1.0",
-    "react-addons-test-utils": "~15.1.0",
-    "react-dom": "~15.1.0",
+    "enzyme": "^2.4.1",
+    "mocha": "^3.0.2",
+    "react": "^15.3.0",
+    "react-addons-test-utils": "^15.3.0",
+    "react-dom": "^15.3.0",
     "react-router": "^2.4.0",
-    "sinon": "^1.17.2",
+    "sinon": "^1.17.5",
     "sinon-chai": "^2.8.0"
   },
   "publishr": {
