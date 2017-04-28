@@ -28,13 +28,13 @@
   },
   "dependencies": {
     "builder": "^3.2.1",
-    "builder-victory-component": "^3.2.2",
+    "builder-victory-component": "^3.2.3",
     "d3-voronoi": "^1.1.2",
     "lodash": "^4.17.4",
     "victory-core": "^14.1.1"
   },
   "devDependencies": {
-    "builder-victory-component-dev": "^3.2.1",
+    "builder-victory-component-dev": "^3.2.3",
     "chai": "^3.5.0",
     "d3-scale": "^1.0.0",
     "d3-shape": "^1.0.0",
