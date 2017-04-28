@@ -1,3 +1,4 @@
+/*eslint no-magic-numbers: ["error", { "ignore": [0, 1, 2] }]*/
 import { Selection } from "victory-core";
 import { assign, throttle, isFunction, isEqual, defaults } from "lodash";
 import { attachId } from "../../helpers/event-handlers.js";
@@ -224,6 +225,7 @@ const Helpers = {
         }
       }];
     }
+    return {};
   },
 
   onMouseUp(evt, targetProps) {
@@ -262,7 +264,7 @@ export default {
   onMouseLeave: Helpers.onMouseLeave.bind(Helpers),
   onMouseMove: throttle(
     attachId(Helpers.onMouseMove.bind(Helpers)),
-    16,
+    16, // eslint-disable-line no-magic-numbers
     { leading: true, trailing: false }
   )
 };

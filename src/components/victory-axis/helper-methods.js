@@ -1,3 +1,4 @@
+/*eslint no-magic-numbers: ["error", { "ignore": [-90, -1, 0, 1, 2] }]*/
 import { includes, defaults, defaultsDeep, isFunction, range, without } from "lodash";
 import { Helpers, Scale, Domain } from "victory-core";
 
@@ -326,8 +327,10 @@ export default {
     }
     const isVertical = Helpers.isVertical(props);
     // TODO: magic numbers
+    /*eslint-disable no-magic-numbers*/
     const fontSize = labelStyle.fontSize || 14;
     return props.label ? (fontSize * (isVertical ? 2.3 : 1.6)) : 0;
+    /*eslint-enable no-magic-numbers*/
   },
 
   getOffset(props, calculatedValues) {
@@ -336,7 +339,7 @@ export default {
     } = calculatedValues;
     const xPadding = orientation === "right" ? padding.right : padding.left;
     const yPadding = orientation === "top" ? padding.top : padding.bottom;
-    const fontSize = style.axisLabel.fontSize || 14;
+    const fontSize = style.axisLabel.fontSize || 14; // eslint-disable-line no-magic-numbers
     const offsetX = (props.offsetX !== null) && (props.offsetX !== undefined)
       ? props.offsetX : xPadding;
     const offsetY = (props.offsetY !== null) && (props.offsetY !== undefined)
@@ -347,7 +350,7 @@ export default {
       return tickStyle.size || 0;
     });
     const totalPadding = fontSize + (2 * Math.max(...tickSizes)) + labelPadding;
-    const minimumPadding = 1.2 * fontSize; // TODO: magic numbers
+    const minimumPadding = 1.2 * fontSize; // eslint-disable-line no-magic-numbers
     const x = isVertical ? totalPadding : minimumPadding;
     const y = isVertical ? minimumPadding : totalPadding;
     return {

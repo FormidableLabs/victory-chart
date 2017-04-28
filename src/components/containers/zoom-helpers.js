@@ -1,3 +1,4 @@
+/*eslint no-magic-numbers: ["error", { "ignore": [-1, 0, 1, 2, 1000] }]*/
 import { Selection, Collection } from "victory-core";
 import { throttle, isFunction, defaults } from "lodash";
 import { attachId } from "../../helpers/event-handlers.js";
@@ -60,6 +61,7 @@ const Helpers = {
 
   getScaleFactor(evt) {
     const sign = evt.deltaY > 0 ? 1 : -1;
+   // eslint-disable-next-line no-magic-numbers
     const delta = Math.min(Math.abs(evt.deltaY / 300), 0.5); // TODO: Check scale factor
     return Math.abs(1 + sign * delta);
   },
@@ -123,6 +125,7 @@ const Helpers = {
       return isFunction(getTimer().resumeAnimation) ?
         () => getTimer().resumeAnimation() : undefined;
     }
+    return undefined;
   },
 
   getDomain(props) {
@@ -198,6 +201,7 @@ const Helpers = {
         }
       }];
     }
+    return undefined;
   },
 
   onWheel(evt, targetProps, eventKey, ctx) { // eslint-disable-line max-params
@@ -239,12 +243,12 @@ export default {
   onMouseLeave: Helpers.onMouseLeave.bind(Helpers),
   onMouseMove: throttle(
     attachId(Helpers.onMouseMove.bind(Helpers)),
-    16,
+    16, // eslint-disable-line no-magic-numbers
     { leading: true, trailing: false }
   ),
   onWheel: throttle(
     attachId(Helpers.onWheel.bind(Helpers)),
-    16,
+    16, // eslint-disable-line no-magic-numbers
     { leading: true, trailing: false }
   )
 };

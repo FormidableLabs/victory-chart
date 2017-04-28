@@ -1,6 +1,7 @@
 /*
   This component is being temporarily re-added to suppprt an upgrade to `victory-native`
 */
+/*global requestAnimationFrame:false*/
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { assign, isEqual } from "lodash";
@@ -21,14 +22,14 @@ class VictoryZoom extends Component {
   static role = "zoom";
 
   static propTypes = {
+    allowZoom: PropTypes.bool,
     children: PropTypes.node,
+    clipContainerComponent: PropTypes.element.isRequired,
+    onDomainChange: PropTypes.func,
     zoomDomain: PropTypes.shape({
       x: CustomPropTypes.domain,
       y: CustomPropTypes.domain
-    }),
-    onDomainChange: PropTypes.func,
-    clipContainerComponent: PropTypes.element.isRequired,
-    allowZoom: PropTypes.bool
+    })
   }
 
   static childContextTypes = {
@@ -64,19 +65,8 @@ class VictoryZoom extends Component {
     };
   }
 
-  getTimer() {
-    if (!this.timer) {
-      this.timer = new Timer();
-    }
-    return this.timer;
-  }
-
   componentWillMount() {
     this.getChartRef = (chart) => { this.chartRef = chart; };
-  }
-
-  componentWillUnmount() {
-    this.getTimer().stop();
   }
 
   componentWillReceiveProps({ allowZoom: nextAllowZoom, zoomDomain: nextDomain }) {
@@ -88,6 +78,17 @@ class VictoryZoom extends Component {
     if (allowZoom !== nextAllowZoom) {
       this.events = this.getEvents(nextAllowZoom);
     }
+  }
+
+  componentWillUnmount() {
+    this.getTimer().stop();
+  }
+
+  getTimer() {
+    if (!this.timer) {
+      this.timer = new Timer();
+    }
+    return this.timer;
   }
 
   getDataDomain() {
@@ -113,7 +114,7 @@ class VictoryZoom extends Component {
       onMouseMove: (evt) => {
         const clientX = evt.clientX;
         if (this.isPanning) {
-          requestAnimationFrame(() => { // eslint-disable-line no-undef
+          requestAnimationFrame(() => {
             const domain = this.getDataDomain();
             const delta = this.startX - (clientX - this.targetBounds.left);
             const calculatedDx = delta / this.getDomainScale();
@@ -128,11 +129,12 @@ class VictoryZoom extends Component {
       onWheel: (evt) => {
         evt.preventDefault();
         const deltaY = evt.deltaY;
-        requestAnimationFrame(() => { // eslint-disable-line no-undef
+        requestAnimationFrame(() => {
           const { x } = this.state.domain;
           const xBounds = this.getDataDomain().x;
 
           // TODO: Check scale factor
+          // eslint-disable-next-line no-magic-numbers
           const nextXDomain = ZoomHelpers.scale(x, xBounds, 1 + (deltaY / 300));
           this.setDomain({ x: nextXDomain });
         });

@@ -37,6 +37,8 @@ export const selectionContainerMixin = (base) => class VictorySelectionContainer
           this.mouseMoveMutationId = mutations.id; // eslint-disable-line
           return mutations.mutations;
         }
+
+        return undefined;
       },
       onMouseUp: (evt, targetProps) => {
         return SelectionHelpers.onMouseUp(evt, targetProps);

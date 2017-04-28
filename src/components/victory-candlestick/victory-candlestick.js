@@ -7,6 +7,7 @@ import {
 } from "victory-core";
 import CandlestickHelpers from "./helper-methods";
 
+/*eslint-disable no-magic-numbers */
 const fallbackProps = {
   width: 450,
   height: 300,
@@ -27,6 +28,7 @@ const defaultData = [
   { x: new Date(2016, 6, 7), open: 35, close: 40, high: 45, low: 30 },
   { x: new Date(2016, 6, 8), open: 40, close: 45, high: 50, low: 35 }
 ];
+/*eslint-enable no-magic-numbers */
 
 const animationWhitelist = [
   "data", "domain", "height", "padding", "samples", "size", "style", "width"
@@ -54,6 +56,11 @@ class VictoryCandlestick extends React.Component {
     ]),
     containerComponent: PropTypes.element,
     data: PropTypes.array,
+    dataComponent: PropTypes.element,
+    domain: PropTypes.oneOfType([
+      CustomPropTypes.domain,
+      PropTypes.shape({ x: CustomPropTypes.domain, y: CustomPropTypes.domain })
+    ]),
     domainPadding: PropTypes.oneOfType([
       PropTypes.shape({
         x: PropTypes.oneOfType([ PropTypes.number, CustomPropTypes.domain ]),
@@ -61,10 +68,10 @@ class VictoryCandlestick extends React.Component {
       }),
       PropTypes.number
     ]),
-    dataComponent: PropTypes.element,
-    domain: PropTypes.oneOfType([
-      CustomPropTypes.domain,
-      PropTypes.shape({ x: CustomPropTypes.domain, y: CustomPropTypes.domain })
+    eventKey: PropTypes.oneOfType([
+      PropTypes.func,
+      CustomPropTypes.allOfType([CustomPropTypes.integer, CustomPropTypes.nonNegative]),
+      PropTypes.string
     ]),
     events: PropTypes.arrayOf(PropTypes.shape({
       target: PropTypes.oneOf(["data", "labels", "parent"]),
@@ -76,11 +83,6 @@ class VictoryCandlestick extends React.Component {
       ]),
       eventHandlers: PropTypes.object
     })),
-    eventKey: PropTypes.oneOfType([
-      PropTypes.func,
-      CustomPropTypes.allOfType([CustomPropTypes.integer, CustomPropTypes.nonNegative]),
-      PropTypes.string
-    ]),
     groupComponent: PropTypes.element,
     height: CustomPropTypes.nonNegative,
     high: PropTypes.oneOfType([
@@ -89,8 +91,8 @@ class VictoryCandlestick extends React.Component {
       PropTypes.string,
       PropTypes.arrayOf(PropTypes.string)
     ]),
-    labels: PropTypes.oneOfType([ PropTypes.func, PropTypes.array ]),
     labelComponent: PropTypes.element,
+    labels: PropTypes.oneOfType([ PropTypes.func, PropTypes.array ]),
     low: PropTypes.oneOfType([
       PropTypes.func,
       CustomPropTypes.allOfType([CustomPropTypes.integer, CustomPropTypes.nonNegative]),
@@ -120,15 +122,15 @@ class VictoryCandlestick extends React.Component {
       events: PropTypes.array,
       getEventState: PropTypes.func
     }),
+    size: PropTypes.oneOfType([
+      CustomPropTypes.nonNegative,
+      PropTypes.func
+    ]),
     sortKey: PropTypes.oneOfType([
       PropTypes.func,
       CustomPropTypes.allOfType([CustomPropTypes.integer, CustomPropTypes.nonNegative]),
       PropTypes.string,
       PropTypes.arrayOf(PropTypes.string)
-    ]),
-    size: PropTypes.oneOfType([
-      CustomPropTypes.nonNegative,
-      PropTypes.func
     ]),
     standalone: PropTypes.bool,
     style: PropTypes.shape({
@@ -177,6 +179,7 @@ class VictoryCandlestick extends React.Component {
       if (labelProps.text !== undefined && labelProps.text !== null) {
         return React.cloneElement(labelComponent, labelProps);
       }
+      return undefined;
     }).filter(Boolean);
 
     const children = [...dataComponents, ...labelComponents];

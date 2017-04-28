@@ -232,7 +232,7 @@ export default {
     labelStyle = labelStyle || {};
     const { size, style } = dataProps;
     const matchedStyle = pick(style, ["opacity", "fill"]);
-    const padding = labelStyle.padding || size * 0.25;
+    const padding = labelStyle.padding || size * 0.25; // eslint-disable-line no-magic-numbers
     return defaults({}, labelStyle, matchedStyle, { padding }) || {};
   }
 };

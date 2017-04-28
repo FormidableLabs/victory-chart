@@ -163,6 +163,6 @@ export default {
   onMouseLeave: VoronoiHelpers.onMouseLeave.bind(VoronoiHelpers),
   onMouseMove: throttle(
     attachId(VoronoiHelpers.onMouseMove.bind(VoronoiHelpers)),
-    32,
+    32, // eslint-disable-line no-magic-numbers
     { leading: true, trailing: false })
 };

@@ -1,3 +1,4 @@
+/*eslint no-magic-numbers: ["error", { "ignore": [0, 1, 2] }]*/
 import { invert, sortBy, values } from "lodash";
 import Axis from "../../helpers/axis";
 import Wrapper from "../../helpers/wrapper";

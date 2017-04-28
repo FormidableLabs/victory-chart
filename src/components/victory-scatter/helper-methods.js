@@ -87,7 +87,7 @@ export default {
   getLabelStyle(labelStyle, dataProps) {
     const { size, style } = dataProps;
     const matchedStyle = pick(style, ["opacity", "fill"]);
-    const padding = labelStyle.padding || size * 0.25;
+    const padding = labelStyle.padding || size * 0.25; // eslint-disable-line no-magic-numbers
     return defaults({}, labelStyle, matchedStyle, { padding });
   },
 
@@ -102,13 +102,13 @@ export default {
     const { data, z } = calculatedValues;
     const getMaxRadius = () => {
       const minPadding = Math.min(...values(Helpers.getPadding(props)));
-      return Math.max(minPadding, 5);
+      return Math.max(minPadding, 5); // eslint-disable-line no-magic-numbers
     };
     const zData = data.map((point) => point[z]);
     const zMin = Math.min(...zData);
     const zMax = Math.max(...zData);
     const maxRadius = props.maxBubbleSize || getMaxRadius();
-    const maxArea = Math.PI * Math.pow(maxRadius, 2);
+    const maxArea = Math.PI * Math.pow(maxRadius, 2); // eslint-disable-line no-magic-numbers
     const area = ((datum[z] - zMin) / (zMax - zMin)) * maxArea;
     const radius = Math.sqrt(area / Math.PI);
     return Math.max(radius, 1);

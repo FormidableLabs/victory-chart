@@ -147,6 +147,6 @@ export default {
   onMouseUp: SelectionHelpers.onMouseUp.bind(SelectionHelpers),
   onMouseMove: throttle(
     attachId(SelectionHelpers.onMouseMove.bind(SelectionHelpers)),
-    16,
+    16, // eslint-disable-line no-magic-numbers
     { leading: true, trailing: false })
 };

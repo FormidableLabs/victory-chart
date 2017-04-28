@@ -1,3 +1,4 @@
+/*eslint no-magic-numbers: ["error", { "ignore": [0, 1, 2] }]*/
 import PropTypes from "prop-types";
 import React from "react";
 import { VictoryContainer, Selection } from "victory-core";
@@ -49,6 +50,8 @@ export const brushContainerMixin = (base) => class VictoryBrushContainer extends
           this.mouseMoveMutationId = mutations.id; // eslint-disable-line
           return mutations.mutations;
         }
+
+        return undefined;
       },
       onMouseUp: (evt, targetProps) => {
         return BrushHelpers.onMouseUp(evt, targetProps);

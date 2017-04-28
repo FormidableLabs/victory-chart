@@ -1,3 +1,4 @@
+/*eslint no-magic-numbers: ["error", { "ignore": [-1, 0, 1, 2] }]*/
 import { defaults } from "lodash";
 import { Helpers, Log, Data, Domain, Scale } from "victory-core";
 

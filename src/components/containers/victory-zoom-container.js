@@ -6,21 +6,23 @@ import { VictoryContainer, VictoryClipContainer, PropTypes as CustomPropTypes } 
 
 export const zoomContainerMixin = (base) => class VictoryZoomContainer extends base {
   static displayName = "VictoryZoomContainer";
+
   static propTypes = {
     ...VictoryContainer.propTypes,
-    zoomDomain: PropTypes.shape({
-      x: CustomPropTypes.domain,
-      y: CustomPropTypes.domain
-    }),
+    allowZoom: PropTypes.bool,
+    clipContainerComponent: PropTypes.element.isRequired,
+    dimension: PropTypes.oneOf(["x", "y"]),
     minimumZoom: PropTypes.shape({
       x: PropTypes.number,
       y: PropTypes.number
     }),
     onDomainChange: PropTypes.func,
-    clipContainerComponent: PropTypes.element.isRequired,
-    allowZoom: PropTypes.bool,
-    dimension: PropTypes.oneOf(["x", "y"])
+    zoomDomain: PropTypes.shape({
+      x: CustomPropTypes.domain,
+      y: CustomPropTypes.domain
+    })
   };
+
   static defaultProps = {
     ...VictoryContainer.defaultProps,
     clipContainerComponent: <VictoryClipContainer/>,
@@ -47,6 +49,8 @@ export const zoomContainerMixin = (base) => class VictoryZoomContainer extends b
           this.mouseMoveMutationId = mutations.id; // eslint-disable-line
           return mutations.mutations;
         }
+
+        return undefined;
       },
       onWheel: (evt, targetProps, eventKey, ctx) => { // eslint-disable-line max-params
         evt.preventDefault();
@@ -56,6 +60,8 @@ export const zoomContainerMixin = (base) => class VictoryZoomContainer extends b
           this.wheelMutationId = mutations.id; // eslint-disable-line
           return mutations.mutations;
         }
+
+        return undefined;
       }
     }
   }];

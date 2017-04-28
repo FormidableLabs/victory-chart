@@ -1,3 +1,4 @@
+/*eslint no-magic-numbers: ["error", { "ignore": [-1, 0, 1, 2] }]*/
 import PropTypes from "prop-types";
 import React from "react";
 import { VictoryContainer, VictoryTooltip, Helpers, TextSize } from "victory-core";
@@ -36,6 +37,8 @@ export const voronoiContainerMixin = (base) => class VictoryVoronoiContainer ext
           this.mouseMoveMutationId = mutations.id; // eslint-disable-line
           return mutations.mutations;
         }
+
+        return undefined;
       }
     }
   }, {

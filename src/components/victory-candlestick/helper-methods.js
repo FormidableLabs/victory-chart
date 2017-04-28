@@ -1,3 +1,4 @@
+/*eslint no-magic-numbers: ["error", { "ignore": [0, 1] }]*/
 import { assign, pick, sortBy, omit, defaults } from "lodash";
 import { Helpers, Log, Scale, Domain, Data } from "victory-core";
 
@@ -175,7 +176,7 @@ export default {
     labelStyle = labelStyle || {};
     const { size, style } = dataProps;
     const matchedStyle = pick(style, ["opacity", "fill"]);
-    const padding = labelStyle.padding || size * 0.25;
+    const padding = labelStyle.padding || size * 0.25; // eslint-disable-line no-magic-numbers
     return defaults({}, labelStyle, matchedStyle, { padding });
   }
 };

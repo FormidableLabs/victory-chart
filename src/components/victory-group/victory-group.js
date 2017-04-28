@@ -1,3 +1,4 @@
+/*eslint no-magic-numbers: ["error", { "ignore": [0, 1, 2] }]*/
 import { assign, defaults } from "lodash";
 import PropTypes from "prop-types";
 import React from "react";
@@ -39,6 +40,10 @@ export default class VictoryGroup extends React.Component {
     containerComponent: PropTypes.element,
     data: PropTypes.array,
     dataComponent: PropTypes.element,
+    domain: PropTypes.oneOfType([
+      CustomPropTypes.domain,
+      PropTypes.shape({ x: CustomPropTypes.domain, y: CustomPropTypes.domain })
+    ]),
     domainPadding: PropTypes.oneOfType([
       PropTypes.shape({
         x: PropTypes.oneOfType([ PropTypes.number, CustomPropTypes.domain ]),
@@ -46,9 +51,10 @@ export default class VictoryGroup extends React.Component {
       }),
       PropTypes.number
     ]),
-    domain: PropTypes.oneOfType([
-      CustomPropTypes.domain,
-      PropTypes.shape({ x: CustomPropTypes.domain, y: CustomPropTypes.domain })
+    eventKey: PropTypes.oneOfType([
+      PropTypes.func,
+      CustomPropTypes.allOfType([CustomPropTypes.integer, CustomPropTypes.nonNegative]),
+      PropTypes.string
     ]),
     events: PropTypes.arrayOf(PropTypes.shape({
       childName: PropTypes.oneOfType([
@@ -64,16 +70,11 @@ export default class VictoryGroup extends React.Component {
       ]),
       eventHandlers: PropTypes.object
     })),
-    eventKey: PropTypes.oneOfType([
-      PropTypes.func,
-      CustomPropTypes.allOfType([CustomPropTypes.integer, CustomPropTypes.nonNegative]),
-      PropTypes.string
-    ]),
     groupComponent: PropTypes.element,
     height: CustomPropTypes.nonNegative,
     horizontal: PropTypes.bool,
-    labels: PropTypes.oneOfType([ PropTypes.func, PropTypes.array ]),
     labelComponent: PropTypes.element,
+    labels: PropTypes.oneOfType([ PropTypes.func, PropTypes.array ]),
     modifyChildren: PropTypes.func,
     name: PropTypes.string,
     offset: PropTypes.number,

@@ -48,6 +48,11 @@ export default class VictoryStack extends React.Component {
       }),
       PropTypes.number
     ]),
+    eventKey: PropTypes.oneOfType([
+      PropTypes.func,
+      CustomPropTypes.allOfType([CustomPropTypes.integer, CustomPropTypes.nonNegative]),
+      PropTypes.string
+    ]),
     events: PropTypes.arrayOf(PropTypes.shape({
       childName: PropTypes.oneOfType([
         PropTypes.string,
@@ -62,16 +67,11 @@ export default class VictoryStack extends React.Component {
       ]),
       eventHandlers: PropTypes.object
     })),
-    eventKey: PropTypes.oneOfType([
-      PropTypes.func,
-      CustomPropTypes.allOfType([CustomPropTypes.integer, CustomPropTypes.nonNegative]),
-      PropTypes.string
-    ]),
     groupComponent: PropTypes.element,
     height: CustomPropTypes.nonNegative,
     horizontal: PropTypes.bool,
-    labels: PropTypes.oneOfType([ PropTypes.func, PropTypes.array ]),
     labelComponent: PropTypes.element,
+    labels: PropTypes.oneOfType([ PropTypes.func, PropTypes.array ]),
     name: PropTypes.string,
     padding: PropTypes.oneOfType([
       PropTypes.number,
