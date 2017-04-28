@@ -1,4 +1,5 @@
 /*global window:false */
+/*eslint-disable no-magic-numbers,react/no-multi-comp */
 import React from "react";
 import PropTypes from "prop-types";
 import { merge, random, range } from "lodash";
@@ -65,6 +66,21 @@ export default class App extends React.Component {
     };
   }
 
+  componentDidMount() {
+    /* eslint-disable react/no-did-mount-set-state */
+    this.setStateInterval = window.setInterval(() => {
+      this.setState({
+        data: this.getData(),
+        transitionData: this.getTransitionData(),
+        style: this.getStyles()
+      });
+    }, 3000);
+  }
+
+  componentWillUnmount() {
+    window.clearInterval(this.setStateInterval);
+  }
+
   getTransitionData() {
     const lines = random(6, 10);
     return range(lines).map((line) => {
@@ -90,21 +106,6 @@ export default class App extends React.Component {
       stroke: colors[random(0, 5)],
       strokeWidth: random(1, 5)
     };
-  }
-
-  componentDidMount() {
-    /* eslint-disable react/no-did-mount-set-state */
-    this.setStateInterval = window.setInterval(() => {
-      this.setState({
-        data: this.getData(),
-        transitionData: this.getTransitionData(),
-        style: this.getStyles()
-      });
-    }, 3000);
-  }
-
-  componentWillUnmount() {
-    window.clearInterval(this.setStateInterval);
   }
 
   render() {

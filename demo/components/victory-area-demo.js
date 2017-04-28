@@ -1,4 +1,5 @@
 /*global window:false */
+/*eslint-disable no-magic-numbers */
 import React from "react";
 import { merge, random, range } from "lodash";
 import { VictoryArea, VictoryStack, VictoryGroup, VictoryChart } from "../../src/index";
@@ -14,6 +15,18 @@ export default class App extends React.Component {
       multiTransitionData: this.getMultiTransitionData(),
       areaTransitionData: this.getAreaTransitionData()
     };
+  }
+
+  componentWillMount() {
+    window.setInterval(() => {
+      this.setState({
+        data: this.getData(),
+        groupedData: this.getGroupedData(),
+        multiTransitionData: this.getMultiTransitionData(),
+        areaTransitionData: this.getAreaTransitionData(),
+        style: this.getStyles()
+      });
+    }, 5000);
   }
 
   getMultiTransitionData() {
@@ -79,18 +92,6 @@ export default class App extends React.Component {
     };
   }
 
-  componentWillMount() {
-    window.setInterval(() => {
-      this.setState({
-        data: this.getData(),
-        groupedData: this.getGroupedData(),
-        multiTransitionData: this.getMultiTransitionData(),
-        areaTransitionData: this.getAreaTransitionData(),
-        style: this.getStyles()
-      });
-    }, 5000);
-  }
-
   render() {
     const style = {
       parent: { border: "1px solid #ccc", margin: "2%", maxWidth: "40%" }
@@ -102,14 +103,18 @@ export default class App extends React.Component {
           <VictoryArea
             style={{ data: { fill: "cyan", stroke: "cyan" } }}
             labels={(d) => Math.round(d.y)}
-            data={[{ x: 1, y: 0.2 }, { x: 2, y: 3 }, { x: 3, y: 50 }, { x: 4, y: 400 }, { x: 5, y: 70 }]}
+            data={[
+              { x: 1, y: 0.2 }, { x: 2, y: 3 }, { x: 3, y: 50 }, { x: 4, y: 400 }, { x: 5, y: 70 }
+            ]}
           />
         </VictoryChart>
 
         <VictoryChart style={style} scale={{ x: "log" }}>
           <VictoryArea
             style={{ data: { fill: "cyan", stroke: "cyan" } }}
-            data={[{ x: 1, y: 0.2 }, { x: 2, y: 3 }, { x: 3, y: 50 }, { x: 4, y: 400 }, { x: 5, y: 70 }]}
+            data={[
+              { x: 1, y: 0.2 }, { x: 2, y: 3 }, { x: 3, y: 50 }, { x: 4, y: 400 }, { x: 5, y: 70 }
+            ]}
           />
         </VictoryChart>
 

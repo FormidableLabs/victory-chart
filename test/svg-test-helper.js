@@ -38,7 +38,7 @@ const exhibitsShapeSequence = (wrapper, shapeSequence) => {
 };
 
 const calculateD3Path = (props, pathType, index) => {
-  const {width, height, padding, scale, interpolation, data, domain} = props;
+  const { width, height, padding, scale, interpolation, data, domain } = props;
   const scaleType = scale ?
     `scale${scale[0].toUpperCase() + scale.slice(1)}` : "scaleLinear";
   const curveType = interpolation &&
@@ -58,7 +58,7 @@ const calculateD3Path = (props, pathType, index) => {
     }
 
     return prev;
-  }, {x: [0, 0], y: [0, 0]});
+  }, { x: [0, 0], y: [0, 0] });
 
   const range = {
     x: [padding, width - padding],
@@ -80,7 +80,7 @@ const calculateD3Path = (props, pathType, index) => {
       .y((d) => scaleY(d.y))(data);
   case "area":
     const modifiedData = props.data.map((datum) => {
-      return {x: datum.x, y: datum.y, y1: datum.y, y0: datum.y0};
+      return { x: datum.x, y: datum.y, y1: datum.y, y0: datum.y0 };
     });
     return d3Shape.area()
       .curve(d3Shape[curveType])
@@ -226,7 +226,7 @@ const helpers = {
   */
   isHorizontalAxis(wrapper, svgDimensions) {
     const { width, padding } = svgDimensions;
-    const {x1, x2, y1, y2} = wrapper.render().find("line").attr();
+    const { x1, x2, y1, y2 } = wrapper.render().find("line").attr();
 
     const isHorizontalLine = (x1 !== x2) && (y1 === y2);
     const isCorrectWidth = (width - padding * 2) === (x2 - x1);
@@ -246,7 +246,7 @@ const helpers = {
   */
   isVerticalAxis(wrapper, svgDimensions) {
     const { height, padding } = svgDimensions;
-    const {x1, x2, y1, y2} = wrapper.render().find("line").attr();
+    const { x1, x2, y1, y2 } = wrapper.render().find("line").attr();
 
     const isVerticalLine = (x1 === x2) && (y1 !== y2);
     const isCorrectHeight = (height - padding * 2) === (y2 - y1);

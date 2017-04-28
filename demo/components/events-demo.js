@@ -1,3 +1,4 @@
+/*eslint-disable no-magic-numbers */
 import React from "react";
 import { VictoryChart, VictoryArea, VictoryStack, VictoryBar, VictoryLine } from "../../src/index";
 import { VictoryTheme, VictoryLabel } from "victory-core";
@@ -201,22 +202,38 @@ class App extends React.Component {
             <VictoryStack>
               <VictoryArea name="area-1"
                 data={[
-                  { x: "a", y: 2 }, { x: "b", y: 3 }, { x: "c", y: 5 }, { x: "d", y: 4 }, { x: "e", y: 7 }
+                  { x: "a", y: 2 },
+                  { x: "b", y: 3 },
+                  { x: "c", y: 5 },
+                  { x: "d", y: 4 },
+                  { x: "e", y: 7 }
                 ]}
               />
               <VictoryArea name="area-2"
                 data={[
-                  { x: "a", y: 1 }, { x: "b", y: 4 }, { x: "c", y: 5 }, { x: "d", y: 7 }, { x: "e", y: 5 }
+                  { x: "a", y: 1 },
+                  { x: "b", y: 4 },
+                  { x: "c", y: 5 },
+                  { x: "d", y: 7 },
+                  { x: "e", y: 5 }
                 ]}
               />
               <VictoryArea name="area-3"
                 data={[
-                  { x: "a", y: 3 }, { x: "b", y: 2 }, { x: "c", y: 6 }, { x: "d", y: 2 }, { x: "e", y: 6 }
+                  { x: "a", y: 3 },
+                  { x: "b", y: 2 },
+                  { x: "c", y: 6 },
+                  { x: "d", y: 2 },
+                  { x: "e", y: 6 }
                 ]}
               />
               <VictoryArea name="area-4"
                 data={[
-                  { x: "a", y: 2 }, { x: "b", y: 3 }, { x: "c", y: 3 }, { x: "d", y: 4 }, { x: "e", y: 7 }
+                  { x: "a", y: 2 },
+                  { x: "b", y: 3 },
+                  { x: "c", y: 3 },
+                  { x: "d", y: 4 },
+                  { x: "e", y: 7 }
                 ]}
               />
             </VictoryStack>

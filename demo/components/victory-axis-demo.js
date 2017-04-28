@@ -1,9 +1,9 @@
 /*global window:false */
+/*eslint-disable no-magic-numbers */
 import React from "react";
 import { VictoryAxis } from "../../src/index";
-import { VictoryLabel } from "victory-core";
+import { VictoryLabel, VictoryContainer, VictoryTheme } from "victory-core";
 import { merge, random, range } from "lodash";
-import { VictoryContainer, VictoryTheme } from "victory-core";
 import XYTheme from "../theme/victory-axis-differential-styling-theme";
 
 export default class App extends React.Component {
@@ -13,17 +13,6 @@ export default class App extends React.Component {
       tickValues: [5, 10, 25, 31, 42],
       domain: [-5, 5]
     };
-  }
-
-  getTickValues() {
-    return range(5).map((i) => {
-      return 10 * i + random(5);
-    });
-  }
-
-  getDomain() {
-    const someNumber = random(2, 5);
-    return [-someNumber, someNumber];
   }
 
   componentDidMount() {
@@ -38,6 +27,17 @@ export default class App extends React.Component {
 
   componentWillUnmount() {
     window.clearInterval(this.setStateInterval);
+  }
+
+  getTickValues() {
+    return range(5).map((i) => {
+      return 10 * i + random(5);
+    });
+  }
+
+  getDomain() {
+    const someNumber = random(2, 5);
+    return [-someNumber, someNumber];
   }
 
   render() {

@@ -1,4 +1,5 @@
 /*global window:false */
+/*eslint-disable no-magic-numbers */
 import React from "react";
 import { VictoryVoronoi, VictoryVoronoiTooltip } from "../../src/index";
 import { range, random } from "lodash";

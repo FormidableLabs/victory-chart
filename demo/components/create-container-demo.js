@@ -1,3 +1,4 @@
+/*eslint-disable no-magic-numbers,react/no-multi-comp */
 import React from "react";
 import {
   VictoryChart, VictoryGroup, VictoryStack, VictoryScatter, VictoryBar, VictoryLine,
@@ -6,7 +7,7 @@ import {
 
 import { VictoryTooltip } from "victory-core";
 
-const Charts = ({ CustomContainer }) => {
+const Charts = ({ CustomContainer }) => { // eslint-disable-line react/prop-types
   const containerStyle = {
     display: "flex",
     flexDirection: "row",

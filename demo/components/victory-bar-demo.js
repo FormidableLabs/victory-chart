@@ -1,10 +1,10 @@
 /*global window:false*/
+/*eslint-disable no-magic-numbers,react/no-multi-comp */
 import React from "react";
 import PropTypes from "prop-types";
 import { VictoryBar, VictoryChart, VictoryGroup, VictoryStack } from "../../src/index";
-import { VictorySharedEvents } from "victory-core";
+import { VictorySharedEvents, VictoryContainer, VictoryTheme } from "victory-core";
 import { assign, random, range, merge } from "lodash";
-import { VictoryContainer, VictoryTheme } from "victory-core";
 
 class Wrapper extends React.Component {
   static propTypes = {
@@ -37,6 +37,22 @@ export default class App extends React.Component {
       multiTransitionData: this.getMultiTransitionData(),
       numericBarData: this.getNumericBarData()
     };
+  }
+
+  componentDidMount() {
+    /* eslint-disable react/no-did-mount-set-state */
+    this.setStateInterval = window.setInterval(() => {
+      this.setState({
+        barData: this.getBarData(),
+        barTransitionData: this.getBarTransitionData(),
+        multiTransitionData: this.getMultiTransitionData(),
+        numericBarData: this.getNumericBarData()
+      });
+    }, 5000);
+  }
+
+  componentWillUnmount() {
+    window.clearInterval(this.setStateInterval);
   }
 
   getBarData() {
@@ -91,22 +107,6 @@ export default class App extends React.Component {
         return { x: bar + 1, y: random(2, 10) };
       });
     });
-  }
-
-  componentDidMount() {
-    /* eslint-disable react/no-did-mount-set-state */
-    this.setStateInterval = window.setInterval(() => {
-      this.setState({
-        barData: this.getBarData(),
-        barTransitionData: this.getBarTransitionData(),
-        multiTransitionData: this.getMultiTransitionData(),
-        numericBarData: this.getNumericBarData()
-      });
-    }, 5000);
-  }
-
-  componentWillUnmount() {
-    window.clearInterval(this.setStateInterval);
   }
 
   render() {

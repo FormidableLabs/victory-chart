@@ -1,12 +1,12 @@
 /*global window:false */
+/*eslint-disable no-magic-numbers,react/no-multi-comp */
 import React from "react";
 import PropTypes from "prop-types";
 import { merge, random, range } from "lodash";
 import { VictoryScatter, VictoryChart } from "../../src/index";
-import { VictoryLabel } from "victory-core";
+import { VictoryLabel, VictoryContainer, VictoryTheme } from "victory-core";
 import bubbleData from "./bubble-data.js";
 import symbolData from "./symbol-data.js";
-import { VictoryContainer, VictoryTheme } from "victory-core";
 
 const getData = () => {
   const colors =
@@ -49,16 +49,6 @@ class CatPoint extends React.Component {
     y: PropTypes.number
   };
 
-  render() {
-    const { x, y, symbol } = this.props;
-
-    return (
-      <text x={x} y={y} fontSize={40}>
-        {this.renderSymbol(symbol)}
-      </text>
-    );
-  }
-
   static symbolMap = {
     "circle": 0x1F431,
     "diamond": 0x1F638,
@@ -71,6 +61,16 @@ class CatPoint extends React.Component {
 
   renderSymbol(symbol) {
     return String.fromCodePoint(CatPoint.symbolMap[symbol]);
+  }
+
+  render() {
+    const { x, y, symbol } = this.props;
+
+    return (
+      <text x={x} y={y} fontSize={40}>
+        {this.renderSymbol(symbol)}
+      </text>
+    );
   }
 }
 

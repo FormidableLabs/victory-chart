@@ -1,3 +1,4 @@
+/*eslint-disable no-magic-numbers */
 import React from "react";
 import {
   VictoryChart, VictoryGroup, VictoryStack, VictoryScatter, VictoryBar, VictoryLine,
@@ -5,7 +6,6 @@ import {
 } from "../../src/index";
 
 class App extends React.Component {
-
   constructor() {
     super();
     this.state = {};

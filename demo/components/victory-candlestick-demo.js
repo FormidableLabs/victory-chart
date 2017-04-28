@@ -1,4 +1,5 @@
 /*global window:false */
+/*eslint-disable no-magic-numbers */
 import React from "react";
 import PropTypes from "prop-types";
 import { random, range, merge } from "lodash";

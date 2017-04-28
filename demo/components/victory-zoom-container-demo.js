@@ -1,4 +1,5 @@
 /* globals window */
+/*eslint-disable no-magic-numbers,react/no-multi-comp */
 import React from "react";
 import { range, merge, random } from "lodash";
 import {
@@ -8,11 +9,6 @@ import {
 import { VictoryTheme, VictoryClipContainer } from "victory-core";
 
 export default class App extends React.Component {
-
-  state = {
-    barData: range(-50, 75).map((i) => ({ x: i, y: Math.random() }))
-  };
-
   constructor() {
     super();
     this.state = {
@@ -25,6 +21,25 @@ export default class App extends React.Component {
       },
       zoomDomain: this.getZoomDomain()
     };
+  }
+
+  state = {
+    barData: range(-50, 75).map((i) => ({ x: i, y: Math.random() }))
+  };
+
+  componentDidMount() {
+    /* eslint-disable react/no-did-mount-set-state */
+    this.setStateInterval = window.setInterval(() => {
+      this.setState({
+        data: this.getData(),
+        transitionData: this.getTransitionData(),
+        style: this.getStyles()
+      });
+    }, 3000);
+  }
+
+  componentWillUnmount() {
+    window.clearInterval(this.setStateInterval);
   }
 
   getZoomDomain() {
@@ -58,21 +73,6 @@ export default class App extends React.Component {
       stroke: colors[random(0, 5)],
       strokeWidth: random(1, 5)
     };
-  }
-
-  componentDidMount() {
-    /* eslint-disable react/no-did-mount-set-state */
-    this.setStateInterval = window.setInterval(() => {
-      this.setState({
-        data: this.getData(),
-        transitionData: this.getTransitionData(),
-        style: this.getStyles()
-      });
-    }, 3000);
-  }
-
-  componentWillUnmount() {
-    window.clearInterval(this.setStateInterval);
   }
 
   render() {
@@ -177,7 +177,10 @@ export default class App extends React.Component {
             />
           </VictoryChart>
 
-          <VictoryChart style={{ parent: parentStyle }} containerComponent={<VictoryZoomContainer/>}>
+          <VictoryChart
+            style={{ parent: parentStyle }}
+            containerComponent={<VictoryZoomContainer/>}
+          >
             <VictoryLine
               style={{
                 parent: parentStyle,
@@ -207,7 +210,10 @@ export default class App extends React.Component {
             />
           </VictoryChart>
 
-          <VictoryChart style={{ parent: parentStyle }} containerComponent={<VictoryZoomContainer/>}>
+          <VictoryChart
+            style={{ parent: parentStyle }}
+            containerComponent={<VictoryZoomContainer/>}
+          >
             <VictoryArea
               style={{ parent: parentStyle, data: { stroke: "#333", fill: "#888", opacity: 0.4 } }}
               data={this.state.data}
@@ -259,22 +265,38 @@ export default class App extends React.Component {
             <VictoryStack>
               <VictoryArea name="area-1"
                 data={[
-                  { x: "a", y: 2 }, { x: "b", y: 3 }, { x: "c", y: 5 }, { x: "d", y: 4 }, { x: "e", y: 7 }
+                  { x: "a", y: 2 },
+                  { x: "b", y: 3 },
+                  { x: "c", y: 5 },
+                  { x: "d", y: 4 },
+                  { x: "e", y: 7 }
                 ]}
               />
               <VictoryArea name="area-2"
                 data={[
-                  { x: "a", y: 1 }, { x: "b", y: 4 }, { x: "c", y: 5 }, { x: "d", y: 7 }, { x: "e", y: 5 }
+                  { x: "a", y: 1 },
+                  { x: "b", y: 4 },
+                  { x: "c", y: 5 },
+                  { x: "d", y: 7 },
+                  { x: "e", y: 5 }
                 ]}
               />
               <VictoryArea name="area-3"
                 data={[
-                  { x: "a", y: 3 }, { x: "b", y: 2 }, { x: "c", y: 6 }, { x: "d", y: 2 }, { x: "e", y: 6 }
+                  { x: "a", y: 3 },
+                  { x: "b", y: 2 },
+                  { x: "c", y: 6 },
+                  { x: "d", y: 2 },
+                  { x: "e", y: 6 }
                 ]}
               />
               <VictoryArea name="area-4"
                 data={[
-                  { x: "a", y: 2 }, { x: "b", y: 3 }, { x: "c", y: 3 }, { x: "d", y: 4 }, { x: "e", y: 7 }
+                  { x: "a", y: 2 },
+                  { x: "b", y: 3 },
+                  { x: "c", y: 3 },
+                  { x: "d", y: 4 },
+                  { x: "e", y: 7 }
                 ]}
               />
             </VictoryStack>

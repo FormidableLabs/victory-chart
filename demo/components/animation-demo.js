@@ -1,4 +1,5 @@
 /*global window:false */
+/*eslint-disable no-magic-numbers */
 import React from "react";
 import { random, range } from "lodash";
 import { VictoryArea, VictoryStack, VictoryChart } from "../../src/index";
@@ -14,6 +15,18 @@ export default class App extends React.Component {
       multiTransitionData: this.getMultiTransitionData(),
       areaTransitionData: this.getAreaTransitionData()
     };
+  }
+
+  componentWillMount() {
+    window.setInterval(() => {
+      this.setState({
+        data: this.getData(),
+        groupedData: this.getGroupedData(),
+        multiTransitionData: this.getMultiTransitionData(),
+        areaTransitionData: this.getAreaTransitionData(),
+        style: this.getStyles()
+      });
+    }, 3000);
   }
 
   getMultiTransitionData() {
@@ -77,18 +90,6 @@ export default class App extends React.Component {
     return {
       fill: colors[random(0, 5)]
     };
-  }
-
-  componentWillMount() {
-    window.setInterval(() => {
-      this.setState({
-        data: this.getData(),
-        groupedData: this.getGroupedData(),
-        multiTransitionData: this.getMultiTransitionData(),
-        areaTransitionData: this.getAreaTransitionData(),
-        style: this.getStyles()
-      });
-    }, 3000);
   }
 
   render() {

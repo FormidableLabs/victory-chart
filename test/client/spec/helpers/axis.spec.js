@@ -10,8 +10,8 @@ describe("helpers/axis", () => {
   const getVictoryBar = (props) => React.createElement(VictoryBar, props);
 
   describe("getAxisComponent", () => {
-    const dependentAxis = getVictoryAxis({dependentAxis: true});
-    const independentAxis = getVictoryAxis({dependentAxis: false});
+    const dependentAxis = getVictoryAxis({ dependentAxis: true });
+    const independentAxis = getVictoryAxis({ dependentAxis: false });
     const bar = getVictoryBar({});
 
     let sandbox;
