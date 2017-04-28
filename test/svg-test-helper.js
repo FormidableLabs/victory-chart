@@ -37,7 +37,7 @@ const exhibitsShapeSequence = (wrapper, shapeSequence) => {
   });
 };
 
-const calculateD3Path = (props, pathType, index) => {
+const calculateD3Path = (props, pathType, index) => { // eslint-disable-line max-statements
   const { width, height, padding, scale, interpolation, data, domain } = props;
   const scaleType = scale ?
     `scale${scale[0].toUpperCase() + scale.slice(1)}` : "scaleLinear";
@@ -73,12 +73,13 @@ const calculateD3Path = (props, pathType, index) => {
     .range(range.y);
 
   switch (pathType) {
-  case "line":
+  case "line": {
     return d3Shape.line()
       .curve(d3Shape[curveType])
       .x((d) => scaleX(d.x))
       .y((d) => scaleY(d.y))(data);
-  case "area":
+  }
+  case "area": {
     const modifiedData = props.data.map((datum) => {
       return { x: datum.x, y: datum.y, y1: datum.y, y0: datum.y0 };
     });
@@ -87,7 +88,8 @@ const calculateD3Path = (props, pathType, index) => {
       .x((d) => scaleX(d.x))
       .y1((d) => scaleY(d.y1))
       .y0((d) => scaleY(d.y0))(modifiedData);
-  case "voronoi":
+  }
+  case "voronoi": {
     const minRange = [Math.min(...range.x), Math.min(...range.y)];
     const maxRange = [Math.max(...range.x), Math.max(...range.y)];
     const voronoi = d3Voronoi()
@@ -98,6 +100,9 @@ const calculateD3Path = (props, pathType, index) => {
     const polygon = without(polygons[index], "data");
     return `M ${polygon.join("L")} Z`;
   }
+  }
+
+  return undefined;
 };
 
 const expectations = {

@@ -18,14 +18,14 @@ const fallbackProps = {
 };
 
 const defaultData = [
-  {x: new Date(2016, 6, 1), open: 5, close: 10, high: 15, low: 0},
-  {x: new Date(2016, 6, 2), open: 10, close: 15, high: 20, low: 5},
-  {x: new Date(2016, 6, 3), open: 15, close: 20, high: 25, low: 10},
-  {x: new Date(2016, 6, 4), open: 20, close: 25, high: 30, low: 15},
-  {x: new Date(2016, 6, 5), open: 25, close: 30, high: 35, low: 20},
-  {x: new Date(2016, 6, 6), open: 30, close: 35, high: 40, low: 25},
-  {x: new Date(2016, 6, 7), open: 35, close: 40, high: 45, low: 30},
-  {x: new Date(2016, 6, 8), open: 40, close: 45, high: 50, low: 35}
+  { x: new Date(2016, 6, 1), open: 5, close: 10, high: 15, low: 0 },
+  { x: new Date(2016, 6, 2), open: 10, close: 15, high: 20, low: 5 },
+  { x: new Date(2016, 6, 3), open: 15, close: 20, high: 25, low: 10 },
+  { x: new Date(2016, 6, 4), open: 20, close: 25, high: 30, low: 15 },
+  { x: new Date(2016, 6, 5), open: 25, close: 30, high: 35, low: 20 },
+  { x: new Date(2016, 6, 6), open: 30, close: 35, high: 40, low: 25 },
+  { x: new Date(2016, 6, 7), open: 35, close: 40, high: 45, low: 30 },
+  { x: new Date(2016, 6, 8), open: 40, close: 45, high: 50, low: 35 }
 ];
 
 const animationWhitelist = [
@@ -165,7 +165,7 @@ class VictoryCandlestick extends React.Component {
   ];
 
   renderData(props) {
-    const { dataComponent, labelComponent, groupComponent} = props;
+    const { dataComponent, labelComponent, groupComponent } = props;
 
     const dataComponents = this.dataKeys.map((_dataKey, index) => {
       const dataProps = this.getComponentProps(dataComponent, "data", index);
@@ -194,7 +194,7 @@ class VictoryCandlestick extends React.Component {
   }
 
   render() {
-    const {role} = this.constructor;
+    const { role } = this.constructor;
     const props = Helpers.modifyProps(this.props, fallbackProps, role);
     if (this.shouldAnimate()) {
       return (

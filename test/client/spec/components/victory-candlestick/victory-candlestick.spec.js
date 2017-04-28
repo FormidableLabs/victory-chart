@@ -1,11 +1,8 @@
 /**
  * Client tests
  */
-/*eslint-disable max-nested-callbacks */
-/*eslint-disable no-console */
-/*eslint-disable no-undef */
 /* global sinon */
-/* eslint no-unused-expressions: 0 */
+/*eslint-disable max-nested-callbacks,no-console,no-undef,no-unused-expressions: 0 */
 import React from "react";
 import { shallow, mount } from "enzyme";
 import { range, omit } from "lodash";
@@ -13,12 +10,13 @@ import VictoryCandlestick from "src/components/victory-candlestick/victory-candl
 import { VictoryLabel, Candle } from "victory-core";
 
 class MyCandle extends React.Component {
-
   render() { }
 }
 
-const dataSet = [{ x: 5, open: 10, close: 20, high: 25, low: 5 },
-{ x: 1, open: 80, close: 40, high: 120, low: 10, label: "1" }];
+const dataSet = [
+  { x: 5, open: 10, close: 20, high: 25, low: 5 },
+  { x: 1, open: 80, close: 40, high: 120, low: 10, label: "1" }
+];
 
 describe("components/victory-candlestick", () => {
   describe("default component rendering", () => {
@@ -80,7 +78,9 @@ describe("components/victory-candlestick", () => {
     });
 
     it("renders points for deeply-nested data", () => {
-      const data = range(40).map((i) => ({ a: { b: [{ x: i, open: i, close: i, high: i, low: i }] } }));
+      const data = range(40).map((i) => ({
+        a: { b: [{ x: i, open: i, close: i, high: i, low: i }] }
+      }));
       const wrapper = shallow(
         <VictoryCandlestick data={data} x="a.b[0].x"
           open="a.b[0].open"
@@ -145,7 +145,7 @@ describe("components/victory-candlestick", () => {
       const Labels = wrapper.find(VictoryLabel);
       Labels.forEach((node, index) => {
         node.childAt(0).simulate("click");
-        expect(clickHandler).called;
+        expect(clickHandler.called).to.equal(true);
         // the first argument is the standard evt object
         expect(clickHandler.args[index][1]).to.contain({ text: `${index}` });
         expect(`${clickHandler.args[index][2]}`).to.eql(`${index}`);

@@ -163,7 +163,7 @@ export default class VictoryStack extends React.Component {
       y: Wrapper.getCategories(props, "y")
     };
     const colorScale = props.colorScale;
-    return {datasets, categories, range, domain, horizontal, scale, style, colorScale};
+    return { datasets, categories, range, domain, horizontal, scale, style, colorScale };
   }
 
   addLayoutData(props, calculatedProps, datasets, index) { // eslint-disable-line max-params
@@ -258,7 +258,7 @@ export default class VictoryStack extends React.Component {
     const props = this.state && this.state.nodesWillExit ?
       this.state.oldProps || this.props : this.props;
     const modifiedProps = Helpers.modifyProps(props, fallbackProps, role);
-    const { eventKey, containerComponent} = modifiedProps;
+    const { eventKey, containerComponent } = modifiedProps;
     const childComponents = React.Children.toArray(modifiedProps.children);
     const calculatedProps = this.getCalculatedProps(modifiedProps, childComponents);
     const newChildren = this.getNewChildren(modifiedProps, childComponents, calculatedProps);

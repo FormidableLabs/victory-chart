@@ -1,5 +1,5 @@
-/* eslint no-unused-expressions: 0 */
 /* global sinon */
+/* eslint-disable no-unused-expressions,react/no-multi-comp */
 import Helpers from "src/components/victory-chart/helper-methods";
 import React from "react";
 import { VictoryAxis, VictoryLine, VictoryBar } from "src/index";

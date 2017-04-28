@@ -22,9 +22,9 @@ export default {
       return childComponents.concat([defaultAxes.independent, defaultAxes.dependent]);
     }
     if (axisComponents.dependent.length > 1 || axisComponents.independent.length > 1) {
-      const msg = `Only one VictoryAxis component of each axis type is allowed when ` +
-        `using the VictoryChart wrapper. Only the first axis will be used. Please compose ` +
-        `multi-axis charts manually`;
+      const msg = "Only one VictoryAxis component of each axis type is allowed when " +
+        "using the VictoryChart wrapper. Only the first axis will be used. Please compose " +
+        "multi-axis charts manually";
       Log.warn(msg);
       const dataComponents = this.getDataComponents(childComponents);
       return Collection.removeUndefined(
@@ -45,8 +45,8 @@ export default {
 
     const { offset, children } = groupComponent[0].props;
     return horizontal ?
-      {y: (offset * children.length) / 2} :
-      {x: (offset * children.length) / 2};
+      { y: (offset * children.length) / 2 } :
+      { x: (offset * children.length) / 2 };
   },
 
   getDataComponents(childComponents) {
@@ -72,7 +72,7 @@ export default {
   },
 
   getAxisOffset(props, calculatedProps) {
-    const {axisComponents, scale, origin, originSign} = calculatedProps;
+    const { axisComponents, scale, origin, originSign } = calculatedProps;
     // make the axes line up, and cross when appropriate
     const axisOrientations = {
       x: Axis.getOrientation(axisComponents.x, "x", originSign.x),

@@ -75,20 +75,20 @@ class VictoryZoom extends Component {
     this.getChartRef = (chart) => { this.chartRef = chart; };
   }
 
- componentWillUnmount() {
-   this.getTimer().stop();
- }
+  componentWillUnmount() {
+    this.getTimer().stop();
+  }
 
- componentWillReceiveProps({allowZoom: nextAllowZoom, zoomDomain: nextDomain}) {
-   const {allowZoom, zoomDomain} = this.props;
-   if (!isEqual(zoomDomain, nextDomain)) {
-     this.setState({domain: nextDomain});
-   }
+  componentWillReceiveProps({ allowZoom: nextAllowZoom, zoomDomain: nextDomain }) {
+    const { allowZoom, zoomDomain } = this.props;
+    if (!isEqual(zoomDomain, nextDomain)) {
+      this.setState({ domain: nextDomain });
+    }
 
-   if (allowZoom !== nextAllowZoom) {
-     this.events = this.getEvents(nextAllowZoom);
-   }
- }
+    if (allowZoom !== nextAllowZoom) {
+      this.events = this.getEvents(nextAllowZoom);
+    }
+  }
 
   getDataDomain() {
     const chart = React.Children.only(this.props.children);
@@ -118,8 +118,8 @@ class VictoryZoom extends Component {
             const delta = this.startX - (clientX - this.targetBounds.left);
             const calculatedDx = delta / this.getDomainScale();
             const nextXDomain = ZoomHelpers.pan(this.lastDomain.x, domain.x, calculatedDx);
-            this.setDomain({x: nextXDomain});
-            this.setState({domain: {x: nextXDomain}});
+            this.setDomain({ x: nextXDomain });
+            this.setState({ domain: { x: nextXDomain } });
           });
         }
       }
@@ -129,12 +129,12 @@ class VictoryZoom extends Component {
         evt.preventDefault();
         const deltaY = evt.deltaY;
         requestAnimationFrame(() => { // eslint-disable-line no-undef
-          const {x} = this.state.domain;
+          const { x } = this.state.domain;
           const xBounds = this.getDataDomain().x;
 
           // TODO: Check scale factor
           const nextXDomain = ZoomHelpers.scale(x, xBounds, 1 + (deltaY / 300));
-          this.setDomain({x: nextXDomain});
+          this.setDomain({ x: nextXDomain });
         });
       }
     };
@@ -146,14 +146,14 @@ class VictoryZoom extends Component {
   }
 
   setDomain(domain) {
-    const {onDomainChange} = this.props;
+    const { onDomainChange } = this.props;
     this.getTimer().bypassAnimation();
-    this.setState({domain}, () => this.getTimer().resumeAnimation());
+    this.setState({ domain }, () => this.getTimer().resumeAnimation());
     if (onDomainChange) { onDomainChange(domain); }
   }
 
   getDomainScale() {
-    const {x: [from, to]} = this.lastDomain;
+    const { x: [from, to] } = this.lastDomain;
     const ratio = this.targetBounds.width / this.width;
     const absoluteAxisWidth = ratio * this.plottableWidth;
     return absoluteAxisWidth / (to - from);

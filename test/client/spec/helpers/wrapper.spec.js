@@ -1,6 +1,5 @@
-/* eslint no-unused-expressions: 0 */
 /* global sinon */
-
+/* eslint-disable no-unused-expressions,react/no-multi-comp */
 import Wrapper from "src/helpers/wrapper";
 import React from "react";
 import { VictoryAxis, VictoryLine } from "src/index";

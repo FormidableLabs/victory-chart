@@ -1,6 +1,5 @@
-/* eslint no-unused-expressions: 0 */
 /* global sinon */
-
+/* eslint-disable no-unused-expressions,react/no-multi-comp */
 import Axis from "src/helpers/axis";
 import React from "react";
 import { VictoryAxis, VictoryBar } from "src/index";

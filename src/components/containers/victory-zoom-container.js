@@ -111,14 +111,14 @@ export const zoomContainerMixin = (base) => class VictoryZoomContainer extends b
     const childComponents = React.Children.toArray(props.children);
 
     return childComponents.map((child) => {
-      const {currentDomain} = props;
+      const { currentDomain } = props;
       const originalDomain = defaults({}, props.original, props.domain);
       const zoomDomain = defaults({}, props.zoomDomain, props.domain);
       const cachedZoomDomain = defaults({}, props.cachedZoomDomain, props.domain);
       const domain = isEqual(zoomDomain, cachedZoomDomain) ?
         defaults({}, currentDomain, originalDomain) : zoomDomain;
       return React.cloneElement(
-        child, defaults({domain}, child.props)
+        child, defaults({ domain }, child.props)
       );
     });
   }

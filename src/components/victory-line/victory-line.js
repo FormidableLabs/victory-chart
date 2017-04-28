@@ -155,7 +155,7 @@ class VictoryLine extends React.Component {
   }
 
   render() {
-    const {role} = this.constructor;
+    const { role } = this.constructor;
     const props = Helpers.modifyProps(this.props, fallbackProps, role);
     if (this.shouldAnimate()) {
       return (

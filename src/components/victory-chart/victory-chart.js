@@ -133,7 +133,7 @@ export default class VictoryChart extends React.Component {
         userSelect: "none"
       },
       styleProps
-    )};
+    ) };
   }
 
   getAxisProps(child, props, calculatedProps) {
@@ -236,7 +236,7 @@ export default class VictoryChart extends React.Component {
     const getAnimationProps = Wrapper.getAnimationProps.bind(this);
 
     return childComponents.map((child, index) => {
-      const style = defaults({}, child.props.style, {parent: baseStyle});
+      const style = defaults({}, child.props.style, { parent: baseStyle });
       const childProps = this.getChildProps(child, props, calculatedProps);
       const newProps = defaults({
         animate: getAnimationProps(props, child, index),

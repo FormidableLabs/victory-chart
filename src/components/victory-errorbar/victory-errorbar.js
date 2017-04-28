@@ -14,10 +14,10 @@ const fallbackProps = {
 };
 
 const defaultData = [
-  {x: 1, y: 1, errorX: 0.1, errorY: 0.1},
-  {x: 2, y: 2, errorX: 0.2, errorY: 0.2},
-  {x: 3, y: 3, errorX: 0.3, errorY: 0.3},
-  {x: 4, y: 4, errorX: 0.4, errorY: 0.4}
+  { x: 1, y: 1, errorX: 0.1, errorY: 0.1 },
+  { x: 2, y: 2, errorX: 0.2, errorY: 0.2 },
+  { x: 3, y: 3, errorX: 0.3, errorY: 0.3 },
+  { x: 4, y: 4, errorX: 0.4, errorY: 0.4 }
 ];
 
 const animationWhitelist = [
@@ -177,7 +177,7 @@ class VictoryErrorBar extends React.Component {
   }
 
   render() {
-    const {role} = this.constructor;
+    const { role } = this.constructor;
     const props = Helpers.modifyProps(this.props, fallbackProps, role);
     if (this.shouldAnimate()) {
       return (

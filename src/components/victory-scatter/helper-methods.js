@@ -9,7 +9,7 @@ export default {
     const { data, style, scale, domain } = calculatedValues;
     const initialChildProps = { parent: {
       style: style.parent, scale, domain, data, height, width, standalone, theme
-    }};
+    } };
 
     return data.reduce((childProps, datum, index) => {
       const eventKey = datum.eventKey;
@@ -69,7 +69,7 @@ export default {
       y: Scale.getBaseScale(props, "y").domain(domain.y).range(range.y)
     };
     const z = props.bubbleProperty || "z";
-    return {domain, data, scale, style, z};
+    return { domain, data, scale, style, z };
   },
 
   getDataStyles(datum, style) {
@@ -88,7 +88,7 @@ export default {
     const { size, style } = dataProps;
     const matchedStyle = pick(style, ["opacity", "fill"]);
     const padding = labelStyle.padding || size * 0.25;
-    return defaults({}, labelStyle, matchedStyle, {padding});
+    return defaults({}, labelStyle, matchedStyle, { padding });
   },
 
   getSymbol(data, props) {
@@ -99,7 +99,7 @@ export default {
   },
 
   getBubbleSize(datum, props, calculatedValues) {
-    const {data, z} = calculatedValues;
+    const { data, z } = calculatedValues;
     const getMaxRadius = () => {
       const minPadding = Math.min(...values(Helpers.getPadding(props)));
       return Math.max(minPadding, 5);

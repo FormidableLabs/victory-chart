@@ -73,8 +73,8 @@ export const voronoiContainerMixin = (base) => class VictoryVoronoiContainer ext
   }
 
   getFlyoutExtent(position, props, labelProps) {
-    const {text, style} = labelProps;
-    const {orientation, dx = 0, dy = 0} = labelProps;
+    const { text, style } = labelProps;
+    const { orientation, dx = 0, dy = 0 } = labelProps;
     const flyoutSize = this.getFlyoutSize(props.labelComponent, text, style);
     const cornerRadius = this.getLabelCornerRadius(props, labelProps);
     const x = position.x + dx + 2 * cornerRadius;
@@ -116,7 +116,7 @@ export const voronoiContainerMixin = (base) => class VictoryVoronoiContainer ext
       x: [Math.min(...range.x) + voronoiPadding, Math.max(...range.x) - voronoiPadding],
       y: [Math.min(...range.y) + voronoiPadding, Math.max(...range.y) - voronoiPadding]
     };
-    const flyoutExtent = this.getFlyoutExtent({x, y}, props, labelProps);
+    const flyoutExtent = this.getFlyoutExtent({ x, y }, props, labelProps);
     const adjustments = {
       x: [
         flyoutExtent.x[0] < extent.x[0] ? extent.x[0] - flyoutExtent.x[0] : 0,
@@ -151,7 +151,7 @@ export const voronoiContainerMixin = (base) => class VictoryVoronoiContainer ext
   }
 
   getDefaultLabelProps(props, points) {
-    const {dimension} = props;
+    const { dimension } = props;
     const multiPoint = dimension && points.length > 1;
     return {
       orientation: multiPoint ? "top" : undefined,
@@ -160,7 +160,7 @@ export const voronoiContainerMixin = (base) => class VictoryVoronoiContainer ext
   }
 
   getLabelProps(props, points) {
-    const {labels, scale, labelComponent, theme} = props;
+    const { labels, scale, labelComponent, theme } = props;
     const text = points.reduce((memo, point) => {
       const t = Helpers.evaluateProp(labels, point, true);
       if (t === null || t === undefined) {
@@ -182,11 +182,11 @@ export const voronoiContainerMixin = (base) => class VictoryVoronoiContainer ext
       this.getDefaultLabelProps(props, points)
     );
     const labelPosition = this.getLabelPosition(props, points, labelProps);
-    return {...labelProps, ...labelPosition};
+    return { ...labelProps, ...labelPosition };
   }
 
   getTooltip(props) {
-    const {labels, activePoints, labelComponent} = props;
+    const { labels, activePoints, labelComponent } = props;
     if (!labels) {
       return null;
     }
@@ -201,7 +201,7 @@ export const voronoiContainerMixin = (base) => class VictoryVoronoiContainer ext
   getChildren(props) {
     const children = React.Children.toArray(props.children);
     return [...children, this.getTooltip(props)].map((component, i) => {
-      return component ? React.cloneElement(component, {key: i}) : null;
+      return component ? React.cloneElement(component, { key: i }) : null;
     });
   }
 };
