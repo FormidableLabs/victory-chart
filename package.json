@@ -31,7 +31,8 @@
     "builder-victory-component": "^3.1.0",
     "d3-voronoi": "^1.1.2",
     "lodash": "^4.12.0",
-    "victory-core": "^14.1.1"
+    "victory-core": "^14.1.1",
+    "prop-types": "~15.5.8"
   },
   "devDependencies": {
     "builder-victory-component-dev": "^3.1.0",
@@ -40,10 +41,11 @@
     "d3-shape": "^1.0.0",
     "enzyme": "^2.3.0",
     "mocha": "^2.2.5",
-    "react": "~15.1.0",
-    "react-addons-test-utils": "~15.1.0",
-    "react-dom": "~15.1.0",
+    "react": "~15.5.4",
+    "react-addons-test-utils": "~15.5.1",
+    "react-dom": "~15.5.4",
     "react-router": "^2.4.0",
+    "react-test-renderer": "~15.5.4",
     "sinon": "^1.17.2",
     "sinon-chai": "^2.8.0"
   },
