@@ -2,7 +2,7 @@
  * Client tests
  */
 /* global sinon */
-/*eslint-disable max-nested-callbacks,no-console,no-undef,no-unused-expressions: 0 */
+/*eslint-disable max-nested-callbacks,no-unused-expressions */
 import React from "react";
 import { shallow, mount } from "enzyme";
 import { range, omit } from "lodash";
