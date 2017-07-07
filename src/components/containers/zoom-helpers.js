@@ -143,7 +143,7 @@ const Helpers = {
   },
 
   getDomain(props) {
-    const { originalDomain, domain, children, dimension } = props;
+    const { originalDomain, domain, children, dimension, maximumDomain } = props;
     const childComponents = Children.toArray(children);
     let childrenDomain = {};
     if (childComponents.length) {
@@ -154,7 +154,7 @@ const Helpers = {
           y: Wrapper.getDomainFromChildren(props, "y", childComponents)
         });
     }
-    return defaults({}, childrenDomain, originalDomain, domain);
+    return defaults({}, maximumDomain, childrenDomain, originalDomain, domain);
   },
 
   onMouseDown(evt) {
