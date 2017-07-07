@@ -125,6 +125,8 @@ export default class App extends React.Component {
             containerComponent={
               <VictoryZoomContainer
                 minimumZoom={{ x: 5 }}
+                zoomDomain={{ x: [40, 80] }}
+                maximumDomain={{ x: [25, 100] }}
                 dimension="x"
                 clipContainerComponent={
                   <VictoryClipContainer clipPadding={{ top: 15, bottom: 15 }}/>

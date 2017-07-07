@@ -2,7 +2,9 @@ import PropTypes from "prop-types";
 import React from "react";
 import { defaults, isEqual } from "lodash";
 import ZoomHelpers from "./zoom-helpers";
-import { VictoryContainer, VictoryClipContainer, PropTypes as CustomPropTypes } from "victory-core";
+import {
+  Collection, VictoryContainer, VictoryClipContainer, PropTypes as CustomPropTypes
+} from "victory-core";
 
 export const zoomContainerMixin = (base) => class VictoryZoomContainer extends base {
   static displayName = "VictoryZoomContainer";
@@ -12,6 +14,7 @@ export const zoomContainerMixin = (base) => class VictoryZoomContainer extends b
     allowZoom: PropTypes.bool,
     clipContainerComponent: PropTypes.element.isRequired,
     dimension: PropTypes.oneOf(["x", "y"]),
+    maximumDomain: PropTypes.shape({ x: CustomPropTypes.domain, y: CustomPropTypes.domain }),
     minimumZoom: PropTypes.shape({
       x: PropTypes.number,
       y: PropTypes.number
@@ -127,22 +130,46 @@ export const zoomContainerMixin = (base) => class VictoryZoomContainer extends b
     };
   }
 
+  getLimitedDomain(domain, maximumDomain) {
+    if (!maximumDomain) {
+      return domain;
+    }
+    const min = Collection.getMaxValue(
+      [Collection.getMinValue(domain), Collection.getMinValue(maximumDomain)]
+    );
+    const max = Collection.getMinValue(
+      [Collection.getMaxValue(domain), Collection.getMaxValue(maximumDomain)]
+    );
+    return domain[1] > domain[0] ? [min, max] : [max, min];
+  }
+
+  limitDomain(domain, maximumDomain) {
+    return {
+      x: this.getLimitedDomain(domain.x, maximumDomain.x),
+      y: this.getLimitedDomain(domain.y, maximumDomain.y)
+    };
+  }
+
   modifyChildren(props) {
     const childComponents = React.Children.toArray(props.children);
 
     return childComponents.map((child) => {
-      const { currentDomain } = props;
+      const { currentDomain, maximumDomain, dimension } = props;
       const originalDomain = defaults({}, props.originalDomain, props.domain);
       const zoomDomain = defaults({}, props.zoomDomain, props.domain);
       const cachedZoomDomain = defaults({}, props.cachedZoomDomain, props.domain);
       const domain = isEqual(zoomDomain, cachedZoomDomain) ?
         defaults({}, currentDomain, originalDomain) : zoomDomain;
       let newDomain = props.polar ? this.modifyPolarDomain(domain, originalDomain) : domain;
-      if (props.dimension) {
+      if (maximumDomain) {
+        // if a maximumDomain is given, limit zoomDomain to stay within bounds of the maximumDomain
+        newDomain = this.limitDomain(newDomain, maximumDomain);
+      }
+      if (dimension) {
         // if zooming is restricted to a dimension, don't squash changes to zoomDomain in other dim
         newDomain = {
           ...zoomDomain,
-          [props.dimension]: newDomain[props.dimension]
+          [dimension]: newDomain[dimension]
         };
       }
       return React.cloneElement(
