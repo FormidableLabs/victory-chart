@@ -81,7 +81,8 @@ export default class App extends React.Component {
             <VictoryAxis
               style={{
                 parent: styleOverrides.parent,
-                grid: { stroke: "#CFD8DC" }
+                grid: { stroke: "#CFD8DC" },
+                tickLabels: { "xml:space": "preserve" }
               }}
               padding={60}
               label={"animation\nwow!"}
