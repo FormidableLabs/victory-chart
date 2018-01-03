@@ -2,7 +2,8 @@ import PropTypes from "prop-types";
 import React from "react";
 import { VictoryContainer, Selection } from "victory-core";
 import BrushHelpers from "./brush-helpers";
-import { assign, defaults, isEqual } from "lodash";
+import ContainerHelpers from "./container-helpers";
+import { assign, defaults } from "lodash";
 
 export const brushContainerMixin = (base) => class VictoryBrushContainer extends base {
   static displayName = "VictoryBrushContainer";
@@ -128,7 +129,7 @@ export const brushContainerMixin = (base) => class VictoryBrushContainer extends
   getRect(props) {
     const { currentDomain, cachedBrushDomain } = props;
     const brushDomain = defaults({}, props.brushDomain, props.domain);
-    const domain = isEqual(brushDomain, cachedBrushDomain) ?
+    const domain = ContainerHelpers.checkDomainEquality(brushDomain, cachedBrushDomain) ?
       defaults({}, currentDomain, brushDomain) : brushDomain;
     const coordinates = Selection.getDomainCoordinates(props, domain);
     const selectBox = this.getSelectBox(props, coordinates);

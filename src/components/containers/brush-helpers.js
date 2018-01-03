@@ -1,18 +1,9 @@
 import { Selection } from "victory-core";
-import { assign, throttle, isFunction, isEqual, defaults, mapValues } from "lodash";
+import { assign, throttle, isFunction, defaults, mapValues } from "lodash";
 import { attachId } from "../../helpers/event-handlers";
+import ContainerHelpers from "./container-helpers";
 
 const Helpers = {
-  withinBounds(point, bounds, padding) {
-    const { x1, x2, y1, y2 } = mapValues(bounds, Number);
-    const { x, y } = mapValues(point, Number);
-    padding = padding ? padding / 2 : 0;
-    return x + padding >= Math.min(x1, x2) &&
-      x - padding <= Math.max(x1, x2) &&
-      y + padding >= Math.min(y1, y2) &&
-      y - padding <= Math.max(y1, y2);
-  },
-
   getDomainBox(props, fullDomain, selectedDomain) {
     const { brushDimension } = props;
     fullDomain = defaults({}, fullDomain, props.domain);
@@ -46,7 +37,7 @@ const Helpers = {
   getActiveHandles(point, props, domainBox) {
     const handles = this.getHandles(props, domainBox);
     const activeHandles = ["top", "bottom", "left", "right"].reduce((memo, opt) => {
-      memo = this.withinBounds(point, handles[opt]) ? memo.concat(opt) : memo;
+      memo = ContainerHelpers.withinBounds(point, handles[opt]) ? memo.concat(opt) : memo;
       return memo;
     }, []);
     return activeHandles.length && activeHandles;
@@ -125,13 +116,13 @@ const Helpers = {
     const { x, y } = Selection.getSVGEventCoordinates(evt);
 
     // Ignore events that occur outside of the maximum domain region
-    if (!this.withinBounds({ x, y }, fullDomainBox, handleWidth)) {
+    if (!ContainerHelpers.withinBounds({ x, y }, fullDomainBox, handleWidth)) {
       return {};
     }
 
     const brushDomain = defaults({}, targetProps.brushDomain, domain);
 
-    const currentDomain = isEqual(brushDomain, cachedBrushDomain) ?
+    const currentDomain = ContainerHelpers.checkDomainEquality(brushDomain, cachedBrushDomain) ?
       targetProps.currentDomain || brushDomain || domain :
       brushDomain || domain;
 
@@ -150,7 +141,8 @@ const Helpers = {
           };
         }
       }];
-    } else if (this.withinBounds({ x, y }, domainBox) && !isEqual(domain, currentDomain)) {
+    } else if (ContainerHelpers.withinBounds({ x, y },
+        domainBox) && !ContainerHelpers.checkDomainEquality(domain, currentDomain)) {
       // if the event occurs within a selected region start a panning event, unless the whole
       // domain is selected
       return [{
@@ -187,7 +179,7 @@ const Helpers = {
     } = targetProps;
     const { x, y } = Selection.getSVGEventCoordinates(evt);
     // Ignore events that occur outside of the maximum domain region
-    if ((!allowResize && !allowDrag) || !this.withinBounds({ x, y }, fullDomainBox)) {
+    if ((!allowResize && !allowDrag) || !ContainerHelpers.withinBounds({ x, y }, fullDomainBox)) {
       return {};
     }
     if (allowDrag && isPanning) {

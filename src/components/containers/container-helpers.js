@@ -1,5 +1,5 @@
 import React from "react";
-import { isFunction } from "lodash";
+import { isFunction, mapValues } from "lodash";
 import { Data, Collection } from "victory-core";
 
 const Helpers = {
@@ -155,8 +155,8 @@ const Helpers = {
   },
 
   withinBounds(point, bounds, padding) {
-    const { x1, x2, y1, y2 } = bounds;
-    const { x, y } = point;
+    const { x1, x2, y1, y2 } = mapValues(bounds, Number);
+    const { x, y } = mapValues(point, Number);
     padding = padding ? padding / 2 : 0;
     return x + padding >= Math.min(x1, x2) &&
       x - padding <= Math.max(x1, x2) &&

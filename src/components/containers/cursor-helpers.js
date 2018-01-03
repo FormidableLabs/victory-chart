@@ -1,7 +1,7 @@
 import { Selection } from "victory-core";
 import { throttle, isFunction } from "lodash";
 import { attachId } from "../../helpers/event-handlers";
-import BrushHelpers from "./brush-helpers";
+import ContainerHelpers from "./container-helpers";
 
 const CursorHelpers = {
   onMouseMove(evt, targetProps) {
@@ -14,12 +14,16 @@ const CursorHelpers = {
       cursorSVGPosition.y
     );
 
-    const inBounds = BrushHelpers.withinBounds(cursorValue, {
+    const inBounds = ContainerHelpers.withinBounds(cursorValue, {
       x1: domain.x[0],
       x2: domain.x[1],
       y1: domain.y[0],
       y2: domain.y[1]
     });
+    // console.log("//////");
+    // console.log(inBounds);
+    // console.log(cursorValue);
+    // console.log(targetProps);
 
     if (!inBounds) {
       cursorValue = null;

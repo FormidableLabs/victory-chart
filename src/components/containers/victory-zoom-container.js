@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import { defaults, get } from "lodash";
 import ZoomHelpers from "./zoom-helpers";
+import ContainerHelpers from "./container-helpers";
 import {
   VictoryContainer, VictoryClipContainer, Data, PropTypes as CustomPropTypes
 } from "victory-core";
@@ -171,7 +172,7 @@ export const zoomContainerMixin = (base) => class VictoryZoomContainer extends b
       const zoomDomain = defaults({}, props.zoomDomain, props.domain);
       const cachedZoomDomain = defaults({}, props.cachedZoomDomain, props.domain);
       let domain;
-      if (!ZoomHelpers.checkDomainEquality(zoomDomain, cachedZoomDomain)) {
+      if (!ContainerHelpers.checkDomainEquality(zoomDomain, cachedZoomDomain)) {
         // if zoomDomain has been changed, use it
         domain = zoomDomain;
       } else if (allowZoom && !zoomActive) {
