@@ -2,14 +2,18 @@
 import React from "react";
 import {
   VictoryChart, VictoryGroup, VictoryStack, VictoryScatter, VictoryBar, VictoryLine,
-  VictoryBrushContainer, VictoryZoomContainer, VictoryAxis
+  VictoryBrushContainer, VictoryAxis, createContainer
 } from "../../src/index";
 import { VictoryLegend } from "victory-core";
+
+const CustomContainer = createContainer("zoom", "cursor");
 
 class App extends React.Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = {
+      zoomDomain: { x: [new Date(1990, 1, 1), new Date(2009, 1, 1)] }
+    };
   }
 
   handleZoom(domain) {
@@ -32,7 +36,7 @@ class App extends React.Component {
         <div style={containerStyle}>
           <VictoryChart width={800} height={500} scale={{ x: "time" }}
             containerComponent={
-              <VictoryZoomContainer responsive={false}
+              <CustomContainer responsive={false}
                 zoomDomain={this.state.zoomDomain}
                 zoomDimension="x"
                 onZoomDomainChange={this.handleZoom.bind(this)}
