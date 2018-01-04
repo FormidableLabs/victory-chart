@@ -2,6 +2,7 @@ import { Selection, Data, Helpers } from "victory-core";
 import { assign, defaults, throttle, isFunction } from "lodash";
 import React from "react";
 import { attachId } from "../../helpers/event-handlers";
+import ContainerHelpers from "./container-helpers";
 
 const SelectionHelpers = {
   getDatasets(props) {
@@ -43,23 +44,17 @@ const SelectionHelpers = {
   },
 
   getSelectedData(props, dataset) {
-    const { x1, y1, x2, y2 } = props;
-    const withinBounds = (d) => {
-      const scaledPoint = Helpers.scalePoint(props, d);
-      return scaledPoint.x >= Math.min(x1, x2) && scaledPoint.x <= Math.max(x1, x2) &&
-        scaledPoint.y >= Math.min(y1, y2) && scaledPoint.y <= Math.max(y1, y2);
-    };
     const eventKey = [];
     const data = [];
     let count = 0;
-    for (let index = 0, len = dataset.length; index < len; index++) {
-      const datum = dataset[index];
-      if (withinBounds(datum)) {
+    dataset.forEach((datum, index) => {
+      const scaledPoint = Helpers.scalePoint(props, datum);
+      if (ContainerHelpers.withinBounds(scaledPoint, props)) {
         data[count] = datum;
         eventKey[count] = datum.eventKey === undefined ? index : datum.eventKey;
         count++;
       }
-    }
+    });
     return count > 0 ? { eventKey, data } : null;
   },
 

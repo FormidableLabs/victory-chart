@@ -135,12 +135,16 @@ const Helpers = {
 
   getSelectedData(dataset, bounds) {
     const { x, y } = bounds;
-    const withinBounds = (d) => {
-      return d._x >= x[0] && d._x <= x[1] && d._y >= y[0] && d._y <= y[1];
+    const bounds2 = {
+      x1: x[0],
+      x2: x[1],
+      y1: y[0],
+      y2: y[1]
     };
 
     const selectedData = dataset.reduce((accum, datum, index) => {
-      if (withinBounds(datum)) {
+      const point = { x: datum._x, y: datum._y };
+      if (this.withinBounds(point, bounds2)) {
         accum.data.push(datum);
         accum.eventKey.push(datum.eventKey === undefined ? index : datum.eventKey);
       }
