@@ -101,12 +101,12 @@ const Helpers = {
     const lowerBound = fromCurrent + delta;
     const upperBound = toCurrent + delta;
     let newDomain;
-    if (lowerBound > fromOriginal && upperBound < toOriginal) {
+    if (lowerBound >= fromOriginal && upperBound <= toOriginal) {
       newDomain = [lowerBound, upperBound];
-    } else if (lowerBound < fromOriginal) { // Clamp to lower limit
+    } else if (lowerBound <= fromOriginal) { // Clamp to lower limit
       const dx = toCurrent - fromCurrent;
       newDomain = [fromOriginal, fromOriginal + dx];
-    } else if (upperBound > toOriginal) { // Clamp to upper limit
+    } else if (upperBound >= toOriginal) { // Clamp to upper limit
       const dx = toCurrent - fromCurrent;
       newDomain = [toOriginal - dx, toOriginal];
     } else {
@@ -216,12 +216,9 @@ const Helpers = {
       };
       const resumeAnimation = this.handleAnimation(ctx);
 
-      const zoomActive = !ContainerHelpers.checkDomainEquality(originalDomain, lastDomain);
-
       const mutatedProps = {
         parentControlledProps: ["domain"], startX: x, startY: y,
-        domain: currentDomain, currentDomain, originalDomain, cachedZoomDomain: zoomDomain,
-        zoomActive
+        domain: currentDomain, currentDomain, originalDomain, cachedZoomDomain: zoomDomain
       };
 
       if (isFunction(onZoomDomainChange)) {
@@ -250,14 +247,9 @@ const Helpers = {
     };
     const resumeAnimation = this.handleAnimation(ctx);
 
-    const zoomActive = !this.zoommingOut(evt) // if zoomming in or
-      // if zoomActive is already set AND user hasn't zoommed out all the way
-      || (targetProps.zoomActive
-        && !ContainerHelpers.checkDomainEquality(originalDomain, lastDomain));
-
     const mutatedProps = {
       domain: currentDomain, currentDomain, originalDomain, cachedZoomDomain: zoomDomain,
-      parentControlledProps: ["domain"], panning: false, zoomActive
+      parentControlledProps: ["domain"], panning: false
     };
 
     if (isFunction(onZoomDomainChange)) {
