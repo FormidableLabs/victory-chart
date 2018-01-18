@@ -195,7 +195,6 @@ export const voronoiContainerMixin = (base) => class VictoryVoronoiContainer ext
         active: true,
         datum: omit(points[0], ["childName", "style", "continuous"]),
         flyoutStyle: this.getStyle(props, points, "flyout")[0],
-        renderInPortal: false,
         scale, style, theme, text
       },
       componentProps,
