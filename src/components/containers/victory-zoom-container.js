@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import { defaults, isFunction } from "lodash";
 import ZoomHelpers from "./zoom-helpers";
+import ContainerHelpers from "./container-helpers";
 import {
   VictoryContainer, VictoryClipContainer, Data, PropTypes as CustomPropTypes
 } from "victory-core";
@@ -36,8 +37,7 @@ export const zoomContainerMixin = (base) => class VictoryZoomContainer extends b
     ...VictoryContainer.defaultProps,
     clipContainerComponent: <VictoryClipContainer/>,
     allowPan: true,
-    allowZoom: true,
-    zoomActive: false
+    allowZoom: true
   };
 
   static defaultEvents = [{
@@ -177,12 +177,13 @@ export const zoomContainerMixin = (base) => class VictoryZoomContainer extends b
     return childComponents.map((child) => {
       const role = child && child.type && child.type.role;
       const currentChild = child;
-      const { currentDomain, zoomActive, allowZoom } = props;
+      const { currentDomain, allowZoom } = props;
       const originalDomain = defaults({}, props.originalDomain, props.domain);
       const zoomDomain = defaults({}, props.zoomDomain, props.domain);
       const cachedZoomDomain = defaults({}, props.cachedZoomDomain, props.domain);
+      const zoomActive = !ContainerHelpers.checkDomainEquality(currentDomain, originalDomain);
       let domain;
-      if (!ZoomHelpers.checkDomainEquality(zoomDomain, cachedZoomDomain)) {
+      if (!ContainerHelpers.checkDomainEquality(zoomDomain, cachedZoomDomain)) {
         // if zoomDomain has been changed, use it
         domain = zoomDomain;
       } else if (allowZoom && !zoomActive) {

@@ -23,8 +23,8 @@ export default class VictoryChart extends React.Component {
   static propTypes = {
     ...BaseProps,
     children: PropTypes.oneOfType([
-      PropTypes.arrayOf(PropTypes.node),
-      PropTypes.node
+      PropTypes.arrayOf(PropTypes.element),
+      PropTypes.element
     ]),
     defaultAxes: PropTypes.shape({
       independent: PropTypes.element,

@@ -4,21 +4,9 @@ import { Selection, Collection } from "victory-core";
 import { throttle, isFunction, defaults } from "lodash";
 import { attachId } from "../../helpers/event-handlers";
 import Wrapper from "../../helpers/wrapper";
+import ContainerHelpers from "./container-helpers";
 
 const Helpers = {
-  checkDomainEquality(a, b) {
-    const checkDimension = (dim) => {
-      const val1 = a && a[dim];
-      const val2 = b && b[dim];
-      if (!val1 && !val2) {
-        return true;
-      } else if (!val1 || !val2) {
-        return false;
-      }
-      return +val1[0] === +val2[0] && +val1[1] === +val2[1];
-    };
-    return checkDimension("x") && checkDimension("y");
-  },
   /**
    * Generates a new domain scaled by factor and constrained by the original domain.
    * @param  {[Number, Number]} currentDomain  The domain to be scaled.
@@ -113,12 +101,12 @@ const Helpers = {
     const lowerBound = fromCurrent + delta;
     const upperBound = toCurrent + delta;
     let newDomain;
-    if (lowerBound > fromOriginal && upperBound < toOriginal) {
+    if (lowerBound >= fromOriginal && upperBound <= toOriginal) {
       newDomain = [lowerBound, upperBound];
-    } else if (lowerBound < fromOriginal) { // Clamp to lower limit
+    } else if (lowerBound <= fromOriginal) { // Clamp to lower limit
       const dx = toCurrent - fromCurrent;
       newDomain = [fromOriginal, fromOriginal + dx];
-    } else if (upperBound > toOriginal) { // Clamp to upper limit
+    } else if (upperBound >= toOriginal) { // Clamp to upper limit
       const dx = toCurrent - fromCurrent;
       newDomain = [toOriginal - dx, toOriginal];
     } else {
@@ -148,7 +136,7 @@ const Helpers = {
 
   getLastDomain(targetProps, originalDomain) {
     const { zoomDomain, cachedZoomDomain, currentDomain, domain } = targetProps;
-    if (zoomDomain && !this.checkDomainEquality(zoomDomain, cachedZoomDomain)) {
+    if (zoomDomain && !ContainerHelpers.checkDomainEquality(zoomDomain, cachedZoomDomain)) {
       return defaults(
         {}, zoomDomain, domain
       );
@@ -228,12 +216,9 @@ const Helpers = {
       };
       const resumeAnimation = this.handleAnimation(ctx);
 
-      const zoomActive = !this.checkDomainEquality(originalDomain, lastDomain);
-
       const mutatedProps = {
         parentControlledProps: ["domain"], startX: x, startY: y,
-        domain: currentDomain, currentDomain, originalDomain, cachedZoomDomain: zoomDomain,
-        zoomActive
+        domain: currentDomain, currentDomain, originalDomain, cachedZoomDomain: zoomDomain
       };
 
       if (isFunction(onZoomDomainChange)) {
@@ -262,13 +247,9 @@ const Helpers = {
     };
     const resumeAnimation = this.handleAnimation(ctx);
 
-    const zoomActive = !this.zoommingOut(evt) // if zoomming in or
-    //   if zoomActive is already set AND user hasn't zoommed out all the way
-      || (targetProps.zoomActive && !this.checkDomainEquality(originalDomain, lastDomain));
-
     const mutatedProps = {
       domain: currentDomain, currentDomain, originalDomain, cachedZoomDomain: zoomDomain,
-      parentControlledProps: ["domain"], panning: false, zoomActive
+      parentControlledProps: ["domain"], panning: false
     };
 
     if (isFunction(onZoomDomainChange)) {
@@ -286,7 +267,6 @@ const Helpers = {
 export { Helpers as RawZoomHelpers }; // allow victory-native to extend these helpers
 
 export default {
-  checkDomainEquality: Helpers.checkDomainEquality.bind(Helpers),
   onMouseDown: Helpers.onMouseDown.bind(Helpers),
   onMouseUp: Helpers.onMouseUp.bind(Helpers),
   onMouseLeave: Helpers.onMouseLeave.bind(Helpers),

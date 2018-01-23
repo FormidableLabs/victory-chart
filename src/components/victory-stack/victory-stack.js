@@ -26,7 +26,7 @@ export default class VictoryStack extends React.Component {
       })
     ]),
     children: PropTypes.oneOfType([
-      PropTypes.arrayOf(PropTypes.node), PropTypes.node
+      PropTypes.arrayOf(PropTypes.element), PropTypes.element
     ]),
     colorScale: PropTypes.oneOfType([
       PropTypes.arrayOf(PropTypes.string),
