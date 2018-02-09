@@ -47,7 +47,11 @@ const combineDefaultEvents = (defaultEvents) => {
     ([target, eventsArray]) => {
       return {
         target,
-        eventHandlers: combineEventHandlers(eventsArray.map((event) => event.eventHandlers))
+        eventHandlers: combineEventHandlers(eventsArray.map((event) => {
+          // prevent "undefined is not an object (evaluating 'event.eventHandlers')".
+          // if eventsArray = [undefined]
+          return (typeof event !== "undefined") ? event.eventHandlers : {};
+        }))
         // note: does not currently handle eventKey or childName
       };
     }
