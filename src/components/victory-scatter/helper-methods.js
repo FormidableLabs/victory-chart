@@ -1,5 +1,6 @@
-import { assign, keys, values, omit, defaults, isNaN } from "lodash";
+import { assign, keys, values, defaults, isNaN } from "lodash";
 import { Helpers, LabelHelpers, Data, Domain, Scale } from "victory-core";
+import { omit } from "victory-core/lib/victory-util/helpers";
 
 export default {
   getBaseProps(props, fallbackProps) {

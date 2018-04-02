@@ -1,6 +1,7 @@
-import { assign, keys, omit, defaults, without, isNaN } from "lodash";
-import { Helpers, LabelHelpers, Scale, Domain, Data } from "victory-core";
+import { assign, keys, defaults, without, isNaN } from "lodash";
 import { voronoi as d3Voronoi } from "d3-voronoi";
+import { Helpers, LabelHelpers, Scale, Domain, Data } from "victory-core";
+import { omit } from "victory-core/lib/victory-util/helpers";
 
 const getVoronoi = (props, range, scale) => {
   const minRange = [Math.min(...range.x), Math.min(...range.y)];

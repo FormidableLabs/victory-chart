@@ -1,5 +1,6 @@
-import { assign, defaults, keys, omit, isNaN } from "lodash";
+import { assign, defaults, keys, isNaN } from "lodash";
 import { Helpers, LabelHelpers, Data, Domain, Scale } from "victory-core";
+import { omit } from "victory-core/lib/victory-util/helpers";
 
 const getBarPosition = (props, datum) => {
   const getDefaultMin = (axis) => {
