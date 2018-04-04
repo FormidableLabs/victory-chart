@@ -1,4 +1,4 @@
-import { assign, keys, defaults, isArray, flatten, sortBy, isNaN } from "lodash";
+import { assign, defaults, isArray, flatten, sortBy } from "lodash";
 import { Helpers, LabelHelpers, Scale, Domain, Data } from "victory-core";
 
 const getErrors = (datum, scale, axis) => {

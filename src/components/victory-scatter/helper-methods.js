@@ -1,4 +1,4 @@
-import { assign, keys, values, defaults, isNaN } from "lodash";
+import { assign, values, defaults } from "lodash";
 import { Helpers, LabelHelpers, Data, Domain, Scale } from "victory-core";
 
 export default {

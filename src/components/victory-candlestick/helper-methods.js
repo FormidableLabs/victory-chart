@@ -1,4 +1,4 @@
-import { assign, sortBy, keys, defaults, isNaN } from "lodash";
+import { assign, sortBy, defaults } from "lodash";
 import { Helpers, LabelHelpers, Scale, Domain, Data } from "victory-core";
 
 const sortData = (dataset, sortKey, sortOrder = "ascending") => {

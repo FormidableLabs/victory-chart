@@ -1,8 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { defaults, isFunction } from "lodash";
+import { defaults, isFunction, pick } from "lodash";
 import { VictoryContainer, VictoryTooltip, Helpers, TextSize } from "victory-core";
-import { omit } from "victory-core/lib/victory-util/helpers";
 import VoronoiHelpers from "./voronoi-helpers";
 
 export const voronoiContainerMixin = (base) => class VictoryVoronoiContainer extends base {
@@ -108,7 +107,10 @@ export const voronoiContainerMixin = (base) => class VictoryVoronoiContainer ext
 
   getLabelPosition(props, points, labelProps) {
     const { mousePosition, voronoiDimension, scale, voronoiPadding } = props;
-    const basePosition = Helpers.scalePoint(props, omit(points[0], ["_voronoiX", "_voronoiY"]));
+    const basePosition = Helpers.scalePoint(
+      props,
+      pick(points[0], ["_x", "_x1", "_x0", "_y", "_y1", "_y0"]) // exclude _voronoiX, _voronoiY
+    );
     if (!voronoiDimension || points.length < 2) {
       return basePosition;
     }

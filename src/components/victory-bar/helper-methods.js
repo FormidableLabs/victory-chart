@@ -1,4 +1,4 @@
-import { assign, defaults, keys, isNaN } from "lodash";
+import { assign, defaults } from "lodash";
 import { Helpers, LabelHelpers, Data, Domain, Scale } from "victory-core";
 
 const getBarPosition = (props, datum) => {
