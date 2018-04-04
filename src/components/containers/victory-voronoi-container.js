@@ -184,15 +184,21 @@ export const voronoiContainerMixin = (base) => class VictoryVoronoiContainer ext
       return memo;
     }, []);
     const componentProps = labelComponent.props || {};
-    const style = this.getStyle(props, points, "labels");
+
+    // remove properties from first point to make datum
+    // eslint-disable-next-line no-unused-vars
+    const { childName, style, continuous, ...datum } = points[0];
 
     const labelProps = defaults(
       {
         active: true,
-        datum: omit(points[0], ["childName", "style", "continuous"]),
         flyoutStyle: this.getStyle(props, points, "flyout")[0],
         renderInPortal: false,
-        scale, style, theme, text
+        style: this.getStyle(props, points, "labels"),
+        datum,
+        scale,
+        theme,
+        text
       },
       componentProps,
       this.getDefaultLabelProps(props, points),
