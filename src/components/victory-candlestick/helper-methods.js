@@ -1,6 +1,5 @@
 import { assign, sortBy, keys, defaults, isNaN } from "lodash";
 import { Helpers, LabelHelpers, Scale, Domain, Data } from "victory-core";
-import { omit } from "victory-core/lib/victory-util/helpers";
 
 const sortData = (dataset, sortKey, sortOrder = "ascending") => {
   if (!sortKey) {
@@ -119,17 +118,12 @@ const isTransparent = (attr) => {
 
 const getDataStyles = (datum, style, props) => {
   style = style || {};
-  const numKeys = keys(datum).filter((k) => isNaN(k));
-  const omitKeys = [
-    "x", "_x", "_y", "_y0", "size", "name", "label", "open", "close", "high", "low", "eventKey"
-  ];
-  const stylesFromData = omit(datum, [...omitKeys, ...numKeys]);
   const candleColor = datum.open > datum.close ?
     props.candleColors.negative : props.candleColors.positive;
   const fill = datum.fill || style.fill || candleColor;
   const strokeColor = datum.stroke || style.stroke;
   const stroke = isTransparent(strokeColor) ? fill : strokeColor || "black";
-  return defaults({}, stylesFromData, { stroke, fill }, style);
+  return defaults({}, datum, { stroke, fill }, style);
 };
 
 const getLabelProps = (dataProps, text, style) => {
