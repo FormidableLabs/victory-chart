@@ -215,9 +215,7 @@ export default class App extends React.Component {
         </VictoryChart>
 
         <VictoryBar
-          style={{
-            parent: parentStyle,
-          }}
+          style={{ parent: parentStyle }}
           labels={() => "HELLO"}
           labelComponent={<VictoryLabel angle={45} verticalAnchor="end" textAnchor="end" />}
           animate={{
