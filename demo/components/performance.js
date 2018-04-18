@@ -1,9 +1,12 @@
 /*eslint-disable no-magic-numbers */
 import React from "react";
 import { range } from "lodash";
-import { VictoryScatter, VictorySelectionContainer } from "../../src/index";
+import { VictoryScatter } from "../../src/index";
+import VictorySelectionContainer from "../../src/components/containers/victory-selection-container-x";
 
-const scatterData = range(4000).map(() => ({ x: Math.random(), y: Math.random() }));
+// 2000 points
+// 4.8 FPS --> 11.5 FPS
+const scatterData = range(2000).map(() => ({ x: Math.random(), y: Math.random() }));
 
 class App extends React.Component {
 
