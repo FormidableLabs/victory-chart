@@ -2,9 +2,16 @@ import PropTypes from "prop-types";
 import React from "react";
 import { VictoryContainer, Selection } from "victory-core";
 import SelectionHelpers from "./selection-helpers";
-import { assign, defaults, throttle, isFunction, includes } from "lodash";
+import { assign, defaults, isFunction } from "lodash";
 
 let experimentalGlobalRef = null;
+
+/*
+/performance demo
+2000 points
+while dragging
+4.8 FPS --> 11.5 FPS
+*/
 
 export const selectionContainerMixin = (base) => class VictorySelectionContainer extends base {
   static displayName = "VictorySelectionContainer";
