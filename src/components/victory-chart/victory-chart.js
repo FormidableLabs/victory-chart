@@ -74,10 +74,6 @@ export default class VictoryChart extends React.Component {
     this.events = Wrapper.getAllEvents(props);
   }
 
-  componentWillMount() {
-    this.events = Wrapper.getAllEvents(this.props);
-  }
-
   componentWillReceiveProps(nextProps) {
     if (this.props.animate) {
       this.setAnimationState(this.props, nextProps);

@@ -64,10 +64,6 @@ export default class VictoryGroup extends React.Component {
     }
   }
 
-  componentWillMount() {
-    this.events = Wrapper.getAllEvents(this.props);
-  }
-
   componentWillReceiveProps(nextProps) {
     if (this.props.animate) {
       this.setAnimationState(this.props, nextProps);
