@@ -13,11 +13,12 @@ export default class App extends React.Component {
       arrayData: this.getArrayData(),
       groupedData: this.getGroupedData(),
       multiTransitionData: this.getMultiTransitionData(),
-      areaTransitionData: this.getAreaTransitionData()
+      areaTransitionData: this.getAreaTransitionData(),
+      style: this.getStyles()
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     window.setInterval(() => {
       this.setState({
         data: this.getData(),
