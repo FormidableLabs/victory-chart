@@ -1,4 +1,4 @@
-import { defaults } from "lodash";
+import { defaults, assign } from "lodash";
 import PropTypes from "prop-types";
 import React from "react";
 import {
@@ -60,25 +60,27 @@ export default class VictoryChart extends React.Component {
     "groupComponent", "containerComponent"
   ];
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const oldProps = prevState && prevState.oldProps || {};
+    const animationState = Wrapper.getAnimationState(oldProps, nextProps);
+    const eventState = Wrapper.getAllEvents(nextProps);
+    return !eventState && !animationState ? null : assign({}, animationState, eventState);
+  }
+
   constructor(props) {
     super(props);
-    this.state = {};
+    const events = Wrapper.getAllEvents(props);
+    let state = { events };
     if (props.animate) {
-      this.state = {
+      state = {
+        events,
+        oldProps: props,
         nodesShouldLoad: false,
         nodesDoneLoad: false,
         animating: true
       };
     }
-    this.setAnimationState = Wrapper.setAnimationState.bind(this);
-    this.events = Wrapper.getAllEvents(props);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.animate) {
-      this.setAnimationState(this.props, nextProps);
-    }
-    this.events = Wrapper.getAllEvents(nextProps);
+    this.state = state;
   }
 
   getStyles(props) {
@@ -239,12 +241,12 @@ export default class VictoryChart extends React.Component {
     const containerProps = standalone ? this.getContainerProps(modifiedProps, calculatedProps) : {};
     const container = standalone ?
       this.renderContainer(containerComponent, containerProps) : groupComponent;
-    if (this.events) {
+    if (this.state.events) {
       return (
         <VictorySharedEvents
           container={container}
           eventKey={eventKey}
-          events={this.events}
+          events={this.state.events}
           externalEventMutations={externalEventMutations}
         >
           {newChildren}

@@ -52,14 +52,14 @@ export default {
     return Domain.cleanDomain(paddedDomain, props, axis);
   },
 
-  setAnimationState(props, nextProps) {
+  getAnimationState(props, nextProps) {
     if (!props.animate) {
-      return;
+      return null;
     }
     if (props.animate.parentState) {
       const nodesWillExit = props.animate.parentState.nodesWillExit;
       const oldProps = nodesWillExit ? props : null;
-      this.setState(defaults({ oldProps, nextProps }, props.animate.parentState));
+      return defaults({ oldProps, nextProps }, props.animate.parentState);
     } else {
       const oldChildren = React.Children.toArray(props.children);
       const nextChildren = React.Children.toArray(nextProps.children);
@@ -78,7 +78,7 @@ export default {
         nodesShouldEnter
       } = Transitions.getInitialTransitionState(oldChildren, nextChildren);
 
-      this.setState({
+      return {
         nodesWillExit,
         nodesWillEnter,
         nodesShouldEnter,
@@ -87,16 +87,16 @@ export default {
         oldProps: nodesWillExit ? props : null,
         nextProps,
         continuous
-      });
+      };
     }
   },
 
   getAllEvents(props) {
     const components = ["groupComponent", "containerComponent", "labelComponent"];
-    this.componentEvents = Events.getComponentEvents(props, components);
-    if (Array.isArray(this.componentEvents)) {
+    const componentEvents = Events.getComponentEvents(props, components);
+    if (Array.isArray(componentEvents)) {
       return Array.isArray(props.events) ?
-        this.componentEvents.concat(...props.events) : this.componentEvents;
+        componentEvents.concat(...props.events) : componentEvents;
     }
     return props.events;
   },

@@ -60,24 +60,27 @@ export default class VictoryStack extends React.Component {
   static getDomain = Wrapper.getStackedDomain.bind(Wrapper);
   static getData = Wrapper.getData.bind(Wrapper);
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const oldProps = prevState && prevState.oldProps || {};
+    const animationState = Wrapper.getAnimationState(oldProps, nextProps);
+    const eventState = Wrapper.getAllEvents(nextProps);
+    return !eventState && !animationState ? null : assign({}, animationState, eventState);
+  }
+
   constructor(props) {
     super(props);
+    const events = Wrapper.getAllEvents(props);
+    let state = { events };
     if (props.animate) {
-      this.state = {
+      state = {
+        events,
+        oldProps: props,
         nodesShouldLoad: false,
         nodesDoneLoad: false,
         animating: true
       };
-      this.setAnimationState = Wrapper.setAnimationState.bind(this);
-      this.events = Wrapper.getAllEvents(props);
     }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.animate) {
-      this.setAnimationState(this.props, nextProps);
-    }
-    this.events = Wrapper.getAllEvents(nextProps);
+    this.state = state;
   }
 
   getCalculatedProps(props, childComponents) {
@@ -225,12 +228,12 @@ export default class VictoryStack extends React.Component {
     const containerProps = standalone ? this.getContainerProps(modifiedProps, calculatedProps) : {};
     const container = standalone ?
       this.renderContainer(containerComponent, containerProps) : groupComponent;
-    if (this.events) {
+    if (this.state.events) {
       return (
         <VictorySharedEvents
           container={container}
           eventKey={eventKey}
-          events={this.events}
+          events={this.state.events}
           externalEventMutations={externalEventMutations}
         >
           {newChildren}
