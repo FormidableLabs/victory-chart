@@ -18,6 +18,7 @@ export const brushContainerMixin = (base) => class VictoryBrushContainer extends
       y: PropTypes.array
     }),
     brushStyle: PropTypes.object,
+    defaultBrushArea: PropTypes.oneOf(["all", "none", "disable"]),
     disable: PropTypes.bool,
     handleComponent: PropTypes.element,
     handleStyle: PropTypes.object,
