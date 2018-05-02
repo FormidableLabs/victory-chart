@@ -82,7 +82,7 @@ const getBaseProps = (props, fallbackProps) => {
     const { x, y } = Helpers.scalePoint(props, datum);
     const dataProps = {
       x, y, datum, data, index, scale, polar, origin,
-      size: getSize(datum, props),
+      size: getSize(datum, props) + 1,
       symbol: getSymbol(datum, props),
       style: style.data
     };
