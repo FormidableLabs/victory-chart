@@ -120,6 +120,9 @@ export default class VictoryStack extends React.Component {
 
   /* eslint-disable max-params, no-nested-ternary */
   addLayoutData(props, calculatedProps, datasets, index) {
+    if (!datasets[index]) {
+      return [];
+    }
     const xOffset = props.xOffset || 0;
     return datasets[index].map((datum) => {
       const yOffset = Wrapper.getY0(datum, index, calculatedProps) || 0;
