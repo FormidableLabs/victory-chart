@@ -120,9 +120,14 @@ const Helpers = {
     };
   },
   attachWindowHandlers(targetProps) {
-    window.addEventListener("mousemove", this.onMouseMoveOverWindow.bind(this));
+    const throttledMouseMoveOverWindow = throttle(
+      this.onMouseMoveOverWindow.bind(this),
+      16, // eslint-disable-line no-magic-numbers
+      { leading: true, trailing: false }
+    );
+    window.addEventListener("mousemove", throttledMouseMoveOverWindow);
     window.addEventListener("mouseup", () => {
-      window.removeEventListener("mousemove", this.onMouseMoveOverWindow.bind(this));
+      window.removeEventListener("mousemove", throttledMouseMoveOverWindow);
       this.hostSVG = undefined;
       this.savedTargetProps = undefined;
       this.windowHandlersAtached = false;
