@@ -10,5 +10,6 @@ try {
 }
 
 module.exports = {
-  extends: path.join(base, "config/eslint/.eslintrc-source")
+  extends: path.join(base, "config/eslint/.eslintrc-source"),
+  globals: {"window": true}
 };

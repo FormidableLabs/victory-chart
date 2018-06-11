@@ -119,6 +119,30 @@ const Helpers = {
       y2: box.y1 < y1 ? y1 + Math.abs(box.y2 - box.y1) : Math.min(box.y2, y2)
     };
   },
+  attachWindowHandlers(targetProps) {
+    window.addEventListener("mousemove", this.onMouseMoveOverWindow.bind(this));
+    window.addEventListener("mouseup", () => {
+      window.removeEventListener("mousemove", this.onMouseMoveOverWindow.bind(this));
+      this.hostSVG = undefined;
+      this.savedTargetProps = undefined;
+      this.windowHandlersAtached = false;
+      console.log('removing window handlers and targetProps');
+    });
+    this.windowHandlersAtached = true;
+    this.savedTargetProps = targetProps;
+    console.log('saving targetProps as ', targetProps);
+  },
+
+  onMouseMoveOverWindow(evt) {
+    const targetProps = this.savedTargetProps;
+    if (!targetProps) {return;}
+
+    const mutations = this.onMouseMoveOutsideSVG(evt, targetProps, this.hostSVG);
+    
+    if (targetProps.updateMutations) {
+      targetProps.updateMutations(mutations);
+    }
+  },
 
   onMouseDown(evt, targetProps) { // eslint-disable-line max-statements, complexity
     evt.preventDefault();
@@ -133,6 +157,8 @@ const Helpers = {
 
     const fullDomainBox = targetProps.fullDomainBox || this.getDomainBox(targetProps, domain);
     const parentSVG = targetProps.parentSVG || Selection.getParentSVG(evt);
+    this.hostSVG = parentSVG; // save for use in window handler
+
     const { x, y } = Selection.getSVGEventCoordinates(evt, parentSVG);
 
     // Ignore events that occur outside of the maximum domain region
@@ -151,46 +177,109 @@ const Helpers = {
     const activeHandles = allowResize && this.getActiveHandles({ x, y }, targetProps, domainBox);
     // If the event occurs in any of the handle regions, start a resize
     if (activeHandles) {
+      const mutationObject = {
+        isSelecting: true, domainBox, fullDomainBox,
+        cachedBrushDomain: brushDomain, currentDomain, parentSVG,
+        ...this.getResizeMutation(domainBox, activeHandles)
+      };
+      this.attachWindowHandlers.bind(this)(Object.assign(targetProps, mutationObject));
       return [{
         target: "parent",
-        mutation: () => {
-          return {
-            isSelecting: true, domainBox, fullDomainBox,
-            cachedBrushDomain: brushDomain, currentDomain, parentSVG,
-            ...this.getResizeMutation(domainBox, activeHandles)
-          };
-        }
+        mutation: () => mutationObject
       }];
+
     } else if (this.withinBounds({ x, y }, domainBox) && !isEqual(domain, currentDomain)) {
       // if the event occurs within a selected region start a panning event, unless the whole
       // domain is selected
+      const mutationObject = {
+        isPanning: allowDrag, startX: x, startY: y, domainBox, fullDomainBox, currentDomain,
+        cachedBrushDomain: brushDomain, parentSVG,
+        ...domainBox // set x1, x2, y1, y2
+      };
+      this.attachWindowHandlers.bind(this)(Object.assign(targetProps, mutationObject));
       return [{
         target: "parent",
-        mutation: () => ({
-          isPanning: allowDrag, startX: x, startY: y, domainBox, fullDomainBox, currentDomain,
-          cachedBrushDomain: brushDomain, parentSVG,
-          ...domainBox // set x1, x2, y1, y2
-        })
+        mutation: () => mutationObject
       }];
     } else {
       // if the event occurs outside the region, or if the whole domain is selected,
       // start a new selection
+      const mutationObject = {
+        isSelecting: allowResize, domainBox, fullDomainBox, parentSVG,
+        cachedBrushDomain: brushDomain,
+        cachedCurrentDomain: currentDomain,
+        currentDomain: this.getMinimumDomain(),
+        ...this.getSelectionMutation({ x, y }, domainBox, brushDimension)
+      };
+      if (allowDraw) {
+        this.attachWindowHandlers.bind(this)(Object.assign(targetProps, mutationObject));
+      }
       return allowDraw ? [{
         target: "parent",
-        mutation: () => ({
-          isSelecting: allowResize, domainBox, fullDomainBox, parentSVG,
-          cachedBrushDomain: brushDomain,
-          cachedCurrentDomain: currentDomain,
-          currentDomain: this.getMinimumDomain(),
-          ...this.getSelectionMutation({ x, y }, domainBox, brushDimension)
-        })
+        mutation: () => mutationObject
       }] : {};
     }
   },
 
+  onMouseMoveOutsideSVG(evt, targetProps, parentSVG) { // eslint-disable-line max-statements, complexity
+    // if a panning or selection has not been started, ignore the event
+    if ((!targetProps.isPanning && !targetProps.isSelecting) || !this.windowHandlersAtached) {
+      console.log("exiting early due to isPanning, isSelecting, or windowHandlersAttached", targetProps.isPanning, targetProps.isSelecting, this.windowHandlersAtached);
+      return [{}];
+    }
+    const {
+      brushDimension, scale, isPanning, isSelecting, fullDomainBox, onBrushDomainChange,
+      allowResize, allowDrag
+    } = targetProps;
+
+    console.log("|||targetProps", targetProps);
+    const { x, y } = Selection.getSVGEventCoordinates(evt, parentSVG);
+    // Ignore events that occur outside of the maximum domain region
+    // if ((!allowResize && !allowDrag) || !this.withinBounds({ x, y }, fullDomainBox)) {
+    //   return [{}];
+    // }
+    if (allowDrag && isPanning) {
+      const { startX, startY } = targetProps;
+      const pannedBox = this.panBox(targetProps, { x, y });
+      const constrainedBox = this.constrainBox(pannedBox, fullDomainBox);
+      const currentDomain = Selection.getBounds({ ...constrainedBox, scale });
+      const mutatedProps = {
+        currentDomain, parentSVG,
+        startX: pannedBox.x2 >= fullDomainBox.x2 || pannedBox.x1 <= fullDomainBox.x1 ?
+          startX : x,
+        startY: pannedBox.y2 >= fullDomainBox.y2 || pannedBox.y1 <= fullDomainBox.y1 ?
+          startY : y,
+        ...constrainedBox
+      };
+
+      if (isFunction(onBrushDomainChange)) {
+        onBrushDomainChange(currentDomain, defaults({}, mutatedProps, targetProps));
+      }
+      return [{
+        target: "parent",
+        mutation: () => mutatedProps
+      }];
+    } else if (allowResize && isSelecting) {
+      const x2 = brushDimension !== "y" ? x : targetProps.x2;
+      const y2 = brushDimension !== "x" ? y : targetProps.y2;
+      const currentDomain =
+        Selection.getBounds({ x2, y2, x1: targetProps.x1, y1: targetProps.y1, scale });
+
+      const mutatedProps = { x2, y2, currentDomain, parentSVG };
+      if (isFunction(onBrushDomainChange)) {
+        onBrushDomainChange(currentDomain, defaults({}, mutatedProps, targetProps));
+      }
+      return [{
+        target: "parent",
+        mutation: () => mutatedProps
+      }];
+    }
+    return [{}];
+  },
+
   onMouseMove(evt, targetProps) { // eslint-disable-line max-statements, complexity
     // if a panning or selection has not been started, ignore the event
-    if (!targetProps.isPanning && !targetProps.isSelecting) {
+    if ((!targetProps.isPanning && !targetProps.isSelecting) || this.windowHandlersAtached) {
       return {};
     }
     const {

@@ -9,11 +9,26 @@ import { VictoryLegend } from "victory-core";
 class App extends React.Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = {
+      mutations: []
+    };
   }
 
   handleZoom(domain) {
     this.setState({ zoomDomain: domain });
+  }
+  removeMutations() {
+    this.setState({
+      mutations: undefined
+    });
+  }
+  updateMutations = (mutations) => {
+    console.log("|||mutations", mutations);
+    mutations.forEach((mutation) => {
+      mutation = Object.assign({}, mutation, { callback: this.removeMutations.bind(this) });
+    });
+    this.setState({ mutations });
+    console.log("updating mutations", mutations);
   }
 
   render() {
@@ -61,6 +76,8 @@ class App extends React.Component {
             width={800} height={100} scale={{ x: "time" }}
             containerComponent={
               <VictoryBrushContainer responsive={false}
+                externalEventMutations={this.state.mutations}
+                updateMutations={this.updateMutations}
                 brushDomain={this.state.zoomDomain}
                 brushDimension="x"
                 onBrushDomainChange={this.handleZoom.bind(this)}
