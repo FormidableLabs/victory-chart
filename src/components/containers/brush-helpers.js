@@ -126,11 +126,9 @@ const Helpers = {
       this.hostSVG = undefined;
       this.savedTargetProps = undefined;
       this.windowHandlersAtached = false;
-      console.log('removing window handlers and targetProps');
     });
     this.windowHandlersAtached = true;
     this.savedTargetProps = targetProps;
-    console.log('saving targetProps as ', targetProps);
   },
 
   onMouseMoveOverWindow(evt) {
@@ -182,7 +180,7 @@ const Helpers = {
         cachedBrushDomain: brushDomain, currentDomain, parentSVG,
         ...this.getResizeMutation(domainBox, activeHandles)
       };
-      this.attachWindowHandlers.bind(this)(Object.assign(targetProps, mutationObject));
+      if (targetProps.dontLimitActiveBrushArea) { this.attachWindowHandlers.bind(this)(Object.assign(targetProps, mutationObject)); }
       return [{
         target: "parent",
         mutation: () => mutationObject
@@ -196,7 +194,7 @@ const Helpers = {
         cachedBrushDomain: brushDomain, parentSVG,
         ...domainBox // set x1, x2, y1, y2
       };
-      this.attachWindowHandlers.bind(this)(Object.assign(targetProps, mutationObject));
+      if (targetProps.dontLimitActiveBrushArea) { this.attachWindowHandlers.bind(this)(Object.assign(targetProps, mutationObject)); }
       return [{
         target: "parent",
         mutation: () => mutationObject
@@ -212,7 +210,7 @@ const Helpers = {
         ...this.getSelectionMutation({ x, y }, domainBox, brushDimension)
       };
       if (allowDraw) {
-        this.attachWindowHandlers.bind(this)(Object.assign(targetProps, mutationObject));
+        if (targetProps.dontLimitActiveBrushArea) { this.attachWindowHandlers.bind(this)(Object.assign(targetProps, mutationObject)); }
       }
       return allowDraw ? [{
         target: "parent",
@@ -224,7 +222,6 @@ const Helpers = {
   onMouseMoveOutsideSVG(evt, targetProps, parentSVG) { // eslint-disable-line max-statements, complexity
     // if a panning or selection has not been started, ignore the event
     if ((!targetProps.isPanning && !targetProps.isSelecting) || !this.windowHandlersAtached) {
-      console.log("exiting early due to isPanning, isSelecting, or windowHandlersAttached", targetProps.isPanning, targetProps.isSelecting, this.windowHandlersAtached);
       return [{}];
     }
     const {
@@ -232,7 +229,6 @@ const Helpers = {
       allowResize, allowDrag
     } = targetProps;
 
-    console.log("|||targetProps", targetProps);
     const { x, y } = Selection.getSVGEventCoordinates(evt, parentSVG);
     // Ignore events that occur outside of the maximum domain region
     // if ((!allowResize && !allowDrag) || !this.withinBounds({ x, y }, fullDomainBox)) {

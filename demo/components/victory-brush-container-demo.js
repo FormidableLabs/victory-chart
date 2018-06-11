@@ -81,6 +81,7 @@ class App extends React.Component {
                 brushDomain={this.state.zoomDomain}
                 brushDimension="x"
                 onBrushDomainChange={this.handleZoom.bind(this)}
+                dontLimitActiveBrushArea
               />
             }
           >
