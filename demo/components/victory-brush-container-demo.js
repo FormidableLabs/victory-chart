@@ -10,8 +10,15 @@ class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      mutations: []
+      mutations: [],
+      hostNode: null
     };
+  }
+  componentDidMount() {
+    this.setState({
+      hostNode: window
+      // hostNode: document.querySelector("#content > div > div > div")
+    });
   }
 
   handleZoom(domain) {
@@ -23,12 +30,10 @@ class App extends React.Component {
     });
   }
   updateMutations = (mutations) => {
-    console.log("|||mutations", mutations);
     mutations.forEach((mutation) => {
       mutation = Object.assign({}, mutation, { callback: this.removeMutations.bind(this) });
     });
     this.setState({ mutations });
-    console.log("updating mutations", mutations);
   }
 
   render() {
@@ -81,7 +86,9 @@ class App extends React.Component {
                 brushDomain={this.state.zoomDomain}
                 brushDimension="x"
                 onBrushDomainChange={this.handleZoom.bind(this)}
-                dontLimitActiveBrushArea
+                // brushCaptureArea={window}
+                brushCaptureArea={this.state.hostNode}
+
               />
             }
           >
