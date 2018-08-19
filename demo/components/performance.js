@@ -1,9 +1,14 @@
 /*eslint-disable no-magic-numbers */
 import React from "react";
 import { range } from "lodash";
-import { VictoryScatter, VictorySelectionContainer } from "../../src/index";
+import { VictoryScatter } from "../../src/index";
+// or import from 
+import VictorySelectionContainerX from "../../src/components/containers/victory-selection-container-x";
+import VictorySelectionContainer from "../../src/components/containers/victory-selection-container";
 
-const scatterData = range(4000).map(() => ({ x: Math.random(), y: Math.random() }));
+// 2000 points
+// 4.8 FPS --> 11.5 FPS
+const scatterData = range(2000).map(() => ({ x: Math.random(), y: Math.random() }));
 
 class App extends React.Component {
 
@@ -51,23 +56,30 @@ class App extends React.Component {
     };
 
     const chartStyle = { parent: { border: "1px solid #ccc", margin: "2%", maxWidth: "40%" } };
-
+    const selectionStyle = { stroke: "tomato", strokeWidth: 2, fill: "tomato", fillOpacity: 0.1 };
     return (
       <div className="demo">
         <div style={containerStyle}>
+          <h1>VictorySelectionContainer</h1>
           <VictoryScatter
             style={{
               parent: chartStyle.parent,
-              data: {
-                fill: (datum, active) => active ? "tomato" : "black"
-              }
+              data: { fill: (datum, active) => active ? "tomato" : "black" }
             }}
             containerComponent={
-              <VictorySelectionContainer
-                selectionStyle={{
-                  stroke: "tomato", strokeWidth: 2, fill: "tomato", fillOpacity: 0.1
-                }}
-              />
+              <VictorySelectionContainer selectionStyle={selectionStyle} />
+            }
+            size={(datum, active) => active ? 5 : 3}
+            data={scatterData}
+          />
+          <h1>VictorySelectionContainer Experiment</h1>
+          <VictoryScatter
+            style={{
+              parent: chartStyle.parent,
+              data: { fill: (datum, active) => active ? "tomato" : "black" }
+            }}
+            containerComponent={
+              <VictorySelectionContainerX selectionStyle={selectionStyle} />
             }
             size={(datum, active) => active ? 5 : 3}
             data={scatterData}
